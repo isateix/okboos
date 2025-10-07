@@ -1,0 +1,97 @@
+
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+
+const cards = Array.from({ length: 15 }, (_, i) => ({
+  id: i + 1,
+  title: `Produto ${i + 1}`,
+  img: `/images/exemplo_card_${(i % 5) + 1}.png`,
+}));
+
+const Secao1: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(7);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) setCardsPerView(7);
+      else if (window.innerWidth >= 1024) setCardsPerView(6);
+      else if (window.innerWidth >= 768) setCardsPerView(4);
+      else setCardsPerView(2);
+
+      setCurrentIndex((prev) =>
+        Math.min(prev, Math.max(0, Math.ceil(cards.length / cardsPerView) - 1))
+      );
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Avança um "grupo" de cards
+  const nextSlide = () => {
+    setCurrentIndex((prev) =>
+      Math.min(prev + 1, Math.ceil(cards.length / cardsPerView) - 1)
+    );
+  };
+
+  // Volta um "grupo" de cards
+  const prevSlide = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  return (
+    <section className="-mt-16 pb-8 bg-green-100">
+      <div className="relative px-4 overflow-hidden">
+        <button
+          onClick={prevSlide}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-green-500 text-white p-2 rounded-full hover:bg-green-600 disabled:opacity-50"
+          disabled={currentIndex === 0}
+        >
+          ‹
+        </button>
+
+        <motion.div
+          className="flex gap-3 transition-transform duration-300"
+          style={{
+            width: `${(cards.length / cardsPerView) * 100}%`,
+            transform: `translateX(-${currentIndex * 100}%)`,
+          }}
+        >
+          {cards.map((card) => (
+            <div
+              key={card.id}
+              className="flex-shrink-0 flex flex-col items-center"
+              style={{ width: `${100 / cards.length}%` }}
+            >
+              <div className="w-full aspect-square bg-green-400 rounded-md flex items-center justify-center p-2">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={card.img}
+                    alt={card.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              <p className="mt-1 text-gray-800 text-sm">{card.title}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        <button
+          onClick={nextSlide}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-green-500 text-white p-2 rounded-full hover:bg-green-600 disabled:opacity-50"
+          disabled={currentIndex >= Math.ceil(cards.length / cardsPerView) - 1}
+        >
+          ›
+        </button>
+      </div>
+    </section>
+  );
+};
+
+export default Secao1;
