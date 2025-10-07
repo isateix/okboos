@@ -19,6 +19,8 @@ export default function Home() {
 
       {/* Nova Seção 1 */}
       <NovaSecao1 />
+
+      
     </main>
   );
 }
