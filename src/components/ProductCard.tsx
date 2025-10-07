@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Product } from "../data/products";
 import { useCart } from "../context/CartContext";
+import { Star, Heart } from "lucide-react";
 
 interface Props {
   product: Product;
@@ -11,7 +12,10 @@ interface Props {
 export default function ProductCard({ product }: Props) {
   const { addToCart } = useCart();
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "");
-  const [quantity, setQuantity] = useState(product.quantity);
+  const [quantity, setQuantity] = useState(product.quantity ?? 10);
+  const [favorite, setFavorite] = useState(false);
+
+  const rating = 4;
 
   const handleAddToCart = () => {
     if (quantity <= 0) return alert("Produto esgotado!");
@@ -20,15 +24,38 @@ export default function ProductCard({ product }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col items-center text-center p-4">
+    <div className="relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col items-center text-center p-4">
+      <button onClick={() => setFavorite(!favorite)} className="absolute top-2 right-2">
+        <Heart
+          size={22}
+          className={favorite ? "text-red-500 fill-red-500" : "text-gray-400"}
+        />
+      </button>
+
       <img
         src={product.image}
         alt={product.name}
         className="w-full h-48 object-cover rounded-lg mb-4"
       />
+
       <h3 className="text-lg sm:text-xl font-bold mb-1 text-gray-900">{product.name}</h3>
-      <p className="text-gray-700 text-sm sm:text-base mb-2">{product.description}</p>
+
+      <div className="flex justify-center mb-2">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            size={18}
+            className={i < rating ? "text-yellow-500 fill-yellow-500" : "text-gray-300"}
+          />
+        ))}
+      </div>
+
+      {product.description && (
+        <p className="text-gray-700 text-sm sm:text-base mb-2">{product.description}</p>
+      )}
+
       <p className="text-gray-600 text-sm mb-1">Estoque: {quantity}</p>
+
       <p className="text-lg sm:text-xl font-semibold mb-3 text-gray-800">
         {product.price.toLocaleString("pt-AO")} Kz
       </p>
@@ -46,6 +73,7 @@ export default function ProductCard({ product }: Props) {
                 : c.toLowerCase() === "marrom"
                 ? "#8b4513"
                 : c.toLowerCase();
+
             return (
               <button
                 key={c}

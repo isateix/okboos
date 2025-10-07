@@ -1,0 +1,15 @@
+{
+  "header": {
+    "deliver": "Deliver",
+    "search": "Search products...",
+    "login": "Hello, sign in",
+    "orders": "Orders",
+    "returns": "Returns",
+    "cart": "Cart",
+    "offers": "Today's Deals",
+    "lists": "My Lists",
+    "gifts": "Gift Cards",
+    "support": "Customer Service",
+    "sell": "Sell"
+  }
+}

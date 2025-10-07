@@ -1,0 +1,15 @@
+{
+  "header": {
+    "deliver": "Entregar",
+    "search": "Pesquisar produtos...",
+    "login": "Olá, entrar",
+    "orders": "Pedidos",
+    "returns": "Devoluções",
+    "cart": "Carrinho",
+    "offers": "Ofertas do Dia",
+    "lists": "Minhas listas",
+    "gifts": "Vales-presente",
+    "support": "Atendimento ao Cliente",
+    "sell": "Vender"
+  }
+}

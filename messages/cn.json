@@ -1,0 +1,15 @@
+{
+  "header": {
+    "deliver": "送货",
+    "search": "搜索产品...",
+    "login": "你好，登录",
+    "orders": "订单",
+    "returns": "退货",
+    "cart": "购物车",
+    "offers": "今日优惠",
+    "lists": "我的清单",
+    "gifts": "礼品卡",
+    "support": "客户服务",
+    "sell": "出售"
+  }
+}

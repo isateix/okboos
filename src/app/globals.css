@@ -1,30 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f6eee9;
   --foreground: #171717;
 }
 
+/* Definições do tema */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+
+  /* substituí a fonte padrão pelo Arial/Helvetica */
+  --font-sans: Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
+/* ⚡ removido o dark mode automático
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
 }
+*/
 
+/* corpo do site */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif; /* igual Amazon */
 }
-/* adiciona no final do globals.css */
+
+/* animação flutuar */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-18px); }
@@ -34,4 +41,3 @@ body {
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
-

@@ -11,7 +11,7 @@ export default function Contactos() {
       <main className="pt-24 px-6 md:px-16">
         <h2 className="text-3xl font-bold mb-4">Contacte-nos</h2>
 
-        <p className="mb-2">Endereço: Shopping Leon Spark, via Estrada</p>
+        <p className="mb-2">Endereço: Shopping Leoncen Spark, via Estrada</p>
         <p className="mb-2">Telefone: 947965623</p>
         <p className="mb-2">WhatsApp: 947965623</p>
         <p className="mb-2">Email: isateix1996@gmail.com</p>

@@ -1,8 +1,9 @@
+// src/app/carrinho/page.tsx
 "use client";
 
 import { useCart } from "../../context/CartContext";
 
-export default function Carrinho() {
+export default function CarrinhoPage() {
   const { cart, removeFromCart, clearCart } = useCart();
 
   if (cart.length === 0) return <p className="p-6">Seu carrinho está vazio.</p>;
@@ -16,14 +17,12 @@ export default function Carrinho() {
       <div className="flex flex-col gap-4">
         {cart.map((item, index) => (
           <div key={index} className="flex justify-between items-center bg-white p-4 rounded shadow">
-            <div className="flex items-center gap-4">
-              <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
-              <div>
-                <p className="font-semibold">{item.name}</p>
-                {item.selectedColor && <p>Cor: {item.selectedColor}</p>}
-                <p>Preço: {item.price.toLocaleString("pt-AO")} Kz</p>
-                <p>Qtd: {item.quantityInCart}</p>
-              </div>
+            <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
+            <div className="flex-1 px-4">
+              <p className="font-semibold">{item.name}</p>
+              {item.selectedColor && <p>Cor: {item.selectedColor}</p>}
+              <p>Preço: {item.price.toLocaleString("pt-AO")} Kz</p>
+              <p>Qtd: {item.quantityInCart}</p>
             </div>
             <button
               onClick={() => removeFromCart(index)}
