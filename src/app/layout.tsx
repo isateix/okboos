@@ -1,12 +1,8 @@
-// src/app/layout.tsx
 import "./globals.css";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { CartProvider } from "../context/CartContext";
 import { LanguageProvider } from "../context/LanguageContext";
-
-
 import { Rufina } from "next/font/google";
+import ClientLayout from "./client-layout"; // componente cliente
 
 const rufina = Rufina({
   subsets: ["latin"],
@@ -26,9 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${rufina.className} bg-[#f6eee9] text-gray-900`}>
         <LanguageProvider>
           <CartProvider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
+            <ClientLayout>{children}</ClientLayout>
           </CartProvider>
         </LanguageProvider>
       </body>
