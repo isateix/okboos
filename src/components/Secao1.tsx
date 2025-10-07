@@ -5,11 +5,9 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const cards = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  title: `Produto ${i + 1}`,
-  img: `/images/exemplo_card_${(i % 5) + 1}.png`,
-}));
+import { products } from "../data/products";
+
+const cards = products.map(p => ({ id: p.id, title: p.name, img: p.image }));
 
 const Secao1: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -31,10 +29,9 @@ const Secao1: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Avança um "grupo" de cards
   const nextSlide = () => {
     setCurrentIndex((prev) =>
-      Math.min(prev + 1, Math.ceil(cards.length / cardsPerView) - 1)
+      Math.min(prev + 1, cards.length - cardsPerView)
     );
   };
 
@@ -55,17 +52,15 @@ const Secao1: React.FC = () => {
         </button>
 
         <motion.div
-          className="flex gap-3 transition-transform duration-300"
-          style={{
-            width: `${(cards.length / cardsPerView) * 100}%`,
-            transform: `translateX(-${currentIndex * 100}%)`,
-          }}
+          className="flex gap-3"
+          animate={{ x: `-${currentIndex * (100 / cardsPerView)}%` }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
           {cards.map((card) => (
             <div
               key={card.id}
               className="flex-shrink-0 flex flex-col items-center"
-              style={{ width: `${100 / cards.length}%` }}
+              style={{ flex: `0 0 calc(${100 / cardsPerView}% - 0.75rem)` }}
             >
               <div className="w-full aspect-square bg-green-400 rounded-md flex items-center justify-center p-2">
                 <div className="relative w-full h-full">
@@ -85,7 +80,7 @@ const Secao1: React.FC = () => {
         <button
           onClick={nextSlide}
           className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-green-500 text-white p-2 rounded-full hover:bg-green-600 disabled:opacity-50"
-          disabled={currentIndex >= Math.ceil(cards.length / cardsPerView) - 1}
+          disabled={currentIndex >= cards.length - cardsPerView}
         >
           ›
         </button>

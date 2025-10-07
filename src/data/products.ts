@@ -23,6 +23,10 @@ export const products: Product[] = [
   { id: "12", name: "Fitacola 2", price: 1500, image: "/images/fitacola.jpg" },
   { id: "13", name: "Garrafas Plásticas", price: 1500, image: "/images/garafasplasticas.jpeg" },
   { id: "14", name: "Guardanapo", price: 1500, image: "/images/Guardanapo.png" },
-  { id: "15", name: "Fitacola 3", price: 1500, image: "/images/che.png" },
+  { id: "15", name: "Fitacola 3", price: 1500, image: "/images/cha.png" },
   { id: "16", name: "Fitacola 4", price: 1500, image: "/images/tivelas.jpeg" },
+  { id: "17", name: "Terno", price: 1500, image: "/images/terno.png" },
+  { id: "18", name: "Vestido", price: 1500, image: "/images/vestido.png" },
+  { id: "19", name: "Sapatos Sociais", price: 1500, image: "/images/sapatossocias.png" },
+  { id: "20", name: "Panela", price: 1500, image: "/images/panela.jpg" },
 ];
