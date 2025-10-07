@@ -3,19 +3,14 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { products } from "../data/products";
 
-// 15 cards com imagens de 9.jpg a 23.jpg
-const cards = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  title: `Produto ${i + 1}`,
-  img: `/images/${9 + i}.jpg`, // 9.jpg, 10.jpg, ..., 23.jpg
-}));
+const cards = products.map(p => ({ id: p.id, title: p.name, img: p.image }));
 
 const Secao1: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(7);
 
-  // Ajusta cards visíveis conforme tamanho da tela
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1280) setCardsPerView(7);
@@ -24,22 +19,20 @@ const Secao1: React.FC = () => {
       else setCardsPerView(2);
 
       setCurrentIndex((prev) =>
-        Math.min(prev, Math.max(0, cards.length - cardsPerView))
+        Math.min(prev, Math.max(0, Math.ceil(cards.length / cardsPerView) - 1))
       );
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [cards.length, cardsPerView]);
 
-  // Avança um "grupo" de cards
   const nextSlide = () => {
     setCurrentIndex((prev) =>
       Math.min(prev + 1, cards.length - cardsPerView)
     );
   };
 
-  // Volta 1 card
   const prevSlide = () => {
     setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
@@ -47,7 +40,6 @@ const Secao1: React.FC = () => {
   return (
     <section className="-mt-16 pb-8 bg-green-100">
       <div className="relative px-4 overflow-hidden">
-        {/* Botão recuar */}
         <button
           onClick={prevSlide}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-green-500 text-white p-2 rounded-full hover:bg-green-600 disabled:opacity-50"
@@ -56,19 +48,16 @@ const Secao1: React.FC = () => {
           ‹
         </button>
 
-        {/* Cards */}
         <motion.div
-          className="flex gap-3 transition-transform duration-300"
-          style={{
-            width: `${(cards.length / cardsPerView) * 100}%`,
-            transform: `translateX(-${currentIndex * 100}%)`,
-          }}
+          className="flex gap-3"
+          animate={{ x: `-${currentIndex * (100 / cardsPerView)}%` }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
           {cards.map((card) => (
             <div
               key={card.id}
               className="flex-shrink-0 flex flex-col items-center"
-              style={{ width: `${100 / cards.length}%` }}
+              style={{ flex: `0 0 calc(${100 / cardsPerView}% - 0.75rem)` }}
             >
               <div className="w-full aspect-square bg-green-400 rounded-md flex items-center justify-center p-2">
                 <div className="relative w-full h-full">
@@ -85,7 +74,6 @@ const Secao1: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* Botão avançar */}
         <button
           onClick={nextSlide}
           className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-green-500 text-white p-2 rounded-full hover:bg-green-600 disabled:opacity-50"
