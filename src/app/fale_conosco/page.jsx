@@ -3,7 +3,7 @@ import React from "react";
 export default function ContatoPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Mensagem enviada!"); // temporário, só para teste
+    alert("Mensagem enviada!"); 
   };
 
   return (

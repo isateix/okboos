@@ -32,7 +32,7 @@ const Secao1: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Avança 1 card
+  // Avança um "grupo" de cards
   const nextSlide = () => {
     setCurrentIndex((prev) =>
       Math.min(prev + 1, cards.length - cardsPerView)
@@ -61,27 +61,27 @@ const Secao1: React.FC = () => {
           className="flex gap-3 transition-transform duration-300"
           style={{
             width: `${(cards.length / cardsPerView) * 100}%`,
-            transform: `translateX(-${(currentIndex * 100) / cardsPerView}%)`,
+            transform: `translateX(-${currentIndex * 100}%)`,
           }}
         >
           {cards.map((card) => (
             <div
-  key={card.id}
-  className="flex-shrink-0 flex flex-col items-center"
-  style={{ width: `${100 / cardsPerView}%`, maxWidth: "150px" }}
->
-  {/* Card com imagem ocupando todo o espaço */}
-  <div className="w-full aspect-square rounded-md overflow-hidden relative">
-    <Image
-      src={card.img}
-      alt={card.title}
-      fill
-      className="object-cover"
-    />
-  </div>
-  {/* Título */}
-  <p className="mt-1 text-gray-800 text-sm text-center">{card.title}</p>
-</div>
+              key={card.id}
+              className="flex-shrink-0 flex flex-col items-center"
+              style={{ width: `${100 / cards.length}%` }}
+            >
+              <div className="w-full aspect-square bg-green-400 rounded-md flex items-center justify-center p-2">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={card.img}
+                    alt={card.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              <p className="mt-1 text-gray-800 text-sm">{card.title}</p>
+            </div>
           ))}
         </motion.div>
 
