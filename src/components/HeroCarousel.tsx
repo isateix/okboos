@@ -23,12 +23,62 @@ const slides = [
     title: "Novidades da Semana",
     description: "Produtos exclusivos selecionados para você.",
     bg: "bg-orange-500",
-    type: "moda",
+    type: "flex",
     images: ["/images/2.png"],
     textOffset: { top: 0, left: 40 },
-    imageOffset: [{ top: 0, right: 0 }],
+    imageOffset: [{ top: 0, left: 0, width: 500, height: 500 }],
   },
   // ... demais slides
+  {
+    id: 3,
+    title: "Moda Masculina",
+    description: "Ternos e sapatos sociais para homens de negócios.",
+    bg: "bg-gray-800",
+    type: "flex",
+    images: ["/images/terno.png"],
+    textOffset: { top: 0, left: 40 },
+    imageOffset: [{ top: 0, left: 0, width: 500, height: 500 }],
+  },
+  {
+    id: 4,
+    title: "Material de Escritório",
+    description: "Tudo para o seu escritório.",
+    bg: "bg-blue-800",
+    type: "flex",
+    images: ["/images/escritorio2-removebg-preview.png"],
+    textOffset: { top: 0, left: 40 },
+    imageOffset: [{ top: 0, left: 0, width: 500, height: 500 }],
+  },
+  {
+    id: 5,
+    title: "Cozinha Equipada",
+    description: "Equipamentos para a sua cozinha.",
+    bg: "bg-green-800",
+    type: "flex",
+    images: ["/images/cozinha-removebg-preview.png"],
+    textOffset: { top: 0, left: 40 },
+    imageOffset: [{ top: 0, left: 0, width: 500, height: 500 }],
+  },
+  {
+    id: 6,
+    title: "Calçados Modernos",
+    description: "Chinelos e sandálias para todos os gostos.",
+    bg: "bg-yellow-800",
+    type: "flex",
+    images: ["/images/chinelas.jpg"],
+    textOffset: { top: 0, left: 40 },
+    imageOffset: [{ top: 0, left: 0, width: 500, height: 500 }],
+  },
+  {
+    id: 7,
+    title: "Roupas Femininas",
+    description: "Vestidos e saltos para todas as ocasiões.",
+    bg: "bg-pink-800",
+    type: "flex",
+    images: ["/images/vestido.png"],
+    textOffset: { top: 0, left: 40 },
+    imageOffset: [{ top: 0, left: 0, width: 500, height: 500 }],
+  }
 ];
 
 export default function HeroCarousel() {
@@ -60,24 +110,25 @@ export default function HeroCarousel() {
 
               {/* Imagens à direita */}
               <div className="flex flex-col gap-4 items-end">
-                {/* Papelaria maior */}
-                <div className="w-[500px] h-[500px] relative">
-                  <Image
-                    src={slide.images[0]}
-                    alt={slide.title}
-                    fill
-                    className="object-contain rounded-xl shadow-xl"
-                  />
-                </div>
-                {/* Carro/Entrega menor */}
-                <div className="w-[150px] h-[150px] relative">
-                  <Image
-                    src={slide.images[1]}
-                    alt="Transporte Grátis"
-                    fill
-                    className="object-contain rounded-xl shadow-xl"
-                  />
-                </div>
+                {slide.images.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="relative"
+                    style={{
+                      width: slide.imageOffset?.[idx]?.width ?? 500,
+                      height: slide.imageOffset?.[idx]?.height ?? 500,
+                      top: slide.imageOffset?.[idx]?.top ?? 0,
+                      left: slide.imageOffset?.[idx]?.left ?? 0,
+                    }}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${slide.title} ${idx + 1}`}
+                      fill
+                      className="object-contain rounded-xl shadow-xl"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           )}

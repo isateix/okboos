@@ -4,7 +4,6 @@ export default function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#f6eee9] px-4">
       <div className="w-full max-w-md space-y-6">
-        {/* Logo / Nome */}
         <div className="text-center">
           <h1 className="text-5xl font-serif font-bold text-[#5c3b3b]">
             Ok <span className="text-[#d9a7a0]">Boss</span>
@@ -12,7 +11,6 @@ export default function LoginPage() {
           <p className="text-gray-600 mt-2">Bem-vindo de volta</p>
         </div>
 
-        {/* Caixa de Login */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
             Entrar

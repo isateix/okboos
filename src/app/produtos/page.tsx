@@ -1,7 +1,5 @@
-// src/app/produtos/page.tsx
 import { products, Product } from "../../data/products";
 import ProductCard from "../../components/ProductCard";
-
 interface Props {
   searchParams?: { search?: string };
 }
