@@ -10,13 +10,12 @@ const Footer = () => {
         
         {/* Sobre a empresa */}
         <div className="w-4/5">
-          <Link href="/" legacyBehavior>
-            <a>
-              <h1 className="text-2xl text-white">
-                <span className="font-bold text-orange-600">Ok</span>Boss
-              </h1>
-            </a>
-          </Link>
+         <Link href="/">
+  <h1 className="text-2xl text-white">
+    <span className="font-bold text-orange-600">Ok</span>Boss
+  </h1>
+</Link>
+
           <p className="mt-6 text-sm text-gray-300">
             A <span className="font-bold">OkBoss</span> é uma loja online e física. Importamos produtos da China para Angola e estamos localizados na cidade do Século Novo, São Paulo. Oferecemos os melhores produtos com qualidade garantida e preços acessíveis. A sua satisfação é a nossa prioridade!
           </p>

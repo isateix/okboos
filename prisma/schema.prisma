@@ -15,6 +15,7 @@ model User {
   createdAt DateTime @default(now())
   orders    Order[]
   addresses Address[]
+  isAdmin   Boolean @default(false)
 }
 
 model Address {
@@ -45,6 +46,7 @@ model Order {
   guestName         String?
   guestEmail        String?
   guestPhone        String?
+  estimatedDelivery String?
   items             OrderItem[]
 }
 

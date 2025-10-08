@@ -6,6 +6,7 @@ import { AuthProvider } from "../context/AuthContext";
 import { Rufina } from "next/font/google";
 import ClientLayout from "./client-layout"; // componente cliente
 
+
 const rufina = Rufina({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -22,16 +23,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt">
       <body className={`${rufina.className} bg-[#f6eee9] text-gray-900`}>
-        <LanguageProvider>
-          <UserProvider>
-            <AuthProvider>
-              <CartProvider>
-                <ClientLayout>{children}</ClientLayout>
-              </CartProvider>
-            </AuthProvider>
-          </UserProvider>
-        </LanguageProvider>
-      </body>
+  <AuthProvider>
+    <UserProvider>
+      <LanguageProvider>
+        <CartProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </CartProvider>
+      </LanguageProvider>
+    </UserProvider>
+  </AuthProvider>
+</body>
+
     </html>
   );
 }

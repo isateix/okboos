@@ -268,7 +268,7 @@ export default function FeatureGrid() {
     setTimeout(() => {
       setVisibleFeatures((prev) => prev + 4);
       setIsLoading(false);
-    }, 1000); // Simulate network delay
+    }, 500); // Simulate network delay
   };
 
   useEffect(() => {

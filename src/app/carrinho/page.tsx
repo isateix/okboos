@@ -6,17 +6,19 @@ import { useAuth } from "../../context/AuthContext";
 
 import Link from 'next/link';
 
+import { useRouter } from 'next/navigation';
+
 export default function CarrinhoPage() {
   const { cart, removeFromCart, clearCart, total } = useCart();
   const { user } = useUser();
   const { openAuthModal } = useAuth();
+  const router = useRouter();
 
   const handleFinalizePurchase = () => {
     if (!user) {
       openAuthModal();
     } else {
-      alert("Compra finalizada com sucesso!");
-      clearCart();
+      router.push('/checkout');
     }
   };
 

@@ -54,11 +54,9 @@ export default function Header() {
       {/* ================== NAV DESKTOP ================== */}
       <div className="hidden md:flex bg-white px-8 py-3 items-center gap-6 border-b">
         {/* LOGO */}
-        <Link href="/" legacyBehavior>
-          <a className="flex flex-col items-center">
+        <Link href="/" className="flex flex-col items-center">
             <span className="text-2xl font-bold">OkBoss</span>
             <span className="text-sm text-gray-600">Comércio e Serviços</span>
-          </a>
         </Link>
 
         {/* ENTREGA */}
@@ -153,8 +151,8 @@ export default function Header() {
 
       {/* ================== NAV MOBILE ================== */}
       <div className="md:hidden bg-white px-4 py-3 flex items-center justify-between border-b">
-        <Link href="/" legacyBehavior>
-          <a className="text-xl font-bold">OkBoss</a>
+        <Link href="/" className="text-xl font-bold">
+          OkBoss
         </Link>
         <div className="flex items-center gap-3 ml-auto">
           {/* Idioma */}

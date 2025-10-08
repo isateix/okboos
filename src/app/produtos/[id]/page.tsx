@@ -13,7 +13,7 @@ export default function ProdutoDetailsPage() {
   }
 
   const relatedProducts = products.filter(
-    (p) => p.category === product.category && p.id !== product.id
+    (p) => p.category && p.category === product.category && p.id !== product.id
   );
 
   return (
