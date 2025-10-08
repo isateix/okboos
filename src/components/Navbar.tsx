@@ -10,6 +10,8 @@ import { useCart } from "../context/CartContext";
 import { useUser } from "../context/UserContext";
 import { useAuth } from "../context/AuthContext";
 
+import { slugify } from "../lib/utils/slugify";
+
 export default function Header() {
   const router = useRouter();
   const { cart, total } = useCart();
@@ -20,6 +22,8 @@ export default function Header() {
   const [showCategories, setShowCategories] = useState(false);
   const [showLang, setShowLang] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showEntregaModal, setShowEntregaModal] = useState(false);
+  const [cep, setCep] = useState("");
   const [currentCategory, setCurrentCategory] = useState("Todos");
 
   const languages = [
@@ -30,25 +34,45 @@ export default function Header() {
   const [currentLang, setCurrentLang] = useState(languages[0]);
 
   const categories = [
-    "Materiais de embalagem",
-    "Materiais de escritório",
-    "Roupas, sapatos e chapéus",
-    "Utensílios de cozinha e mesa",
-    "Perfumes e beleza",
-    "Eletrodomésticos",
-    "Materiais de proteção do trabalho",
-    "Ferragens e materiais de construção",
+    "Ofertas do Dia",
+    "Mais Avaliados",
+    "Dia das Crianças",
+    "Mais Vantagens",
+    "Echo e Fire TV",
+    "Faça Login",
+    "Ganhe Benefícios",
+    "Cozinha",
+    "Escritório",
+    "Roupas Femininas",
+    "Calçados",
+    "Acessórios",
+    "Material de Construção",
+    "Embalagens",
+    "Descartáveis",
+    "Casa",
+    "Eletrônicos",
+    "Saúde",
+    "Brinquedos",
+    "Esportes",
+    "Livros",
+    "Automotivo",
+    "Bebês",
   ];
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const query = encodeURIComponent(searchTerm.trim());
-    const categoryQuery = currentCategory !== "Todos" ? `&category=${encodeURIComponent(currentCategory)}` : "";
+  const performSearch = (term: string, category: string) => {
+    const query = encodeURIComponent(term.trim());
+    const slugifiedCategory = category !== "Todos" ? slugify(category) : "";
+    const categoryQuery = slugifiedCategory ? `&category=${encodeURIComponent(slugifiedCategory)}` : "";
     if (query || categoryQuery) {
       router.push(`/produtos?search=${query}${categoryQuery}`);
     } else {
       router.push("/produtos");
     }
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    performSearch(searchTerm, currentCategory);
   };
 
   return (
@@ -73,13 +97,14 @@ export default function Header() {
               {currentCategory} <ChevronDown size={16} />
             </button>
             {showCategories && (
-              <ul className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-50">
+              <ul className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
                 {categories.map((cat) => (
                   <li
                     key={cat}
                     onClick={() => {
                       setCurrentCategory(cat);
                       setShowCategories(false);
+                      performSearch(searchTerm, cat); // Trigger search immediately
                     }}
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   >
@@ -93,7 +118,10 @@ export default function Header() {
           {/* INPUT PESQUISA */}
           <input
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              performSearch(e.target.value, currentCategory);
+            }}
             placeholder="Pesquisar produtos..."
             className="flex-1 px-3 py-2 border-t border-b border-gray-300 focus:outline-none"
           />
@@ -164,7 +192,6 @@ export default function Header() {
         </div>
       </div>
 
-<<<<<<< HEAD
       {/* ================== NAV MOBILE ================== */}
       <div className="md:hidden bg-white px-4 py-3 flex items-center justify-between border-b">
         <Link href="/" className="text-xl font-bold">
@@ -308,9 +335,6 @@ export default function Header() {
     </div>
   </div>
 )}
-=======
-      {/* NAV MOBILE continua igual */}
->>>>>>> 4a6ef0dfca03676b8d5ee874c339ffcf1e528efd
     </header>
   );
 }

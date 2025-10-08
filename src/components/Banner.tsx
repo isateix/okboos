@@ -1,9 +1,12 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
-
-
+import { useRouter } from "next/navigation";
 
 const Banner: React.FC = () => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col md:flex-row items-center justify-between md:pl-20 py-14 md:py-0 bg-[#E6E9F2] my-16 rounded-xl overflow-hidden">
       
@@ -24,7 +27,7 @@ const Banner: React.FC = () => {
         <p className="max-w-[343px] font-medium text-gray-800/60">
           Desde som imersivo até controlos precisos — tudo o que precisa para vencer
         </p>
-        <button className="group flex items-center justify-center gap-1 px-12 py-2.5 bg-orange-600 rounded text-white">
+        <button onClick={() => router.push('/signup')} className="group flex items-center justify-center gap-1 px-12 py-2.5 bg-orange-600 rounded text-white">
           Comprar Agora
          <Image
   src="/images/arrow_icon_white.svg" // ✅ correto

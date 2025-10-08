@@ -10,6 +10,8 @@ export async function GET(req: Request) {
   if (!session || !session.user) {
     console.log("Não autenticado na API de meus-pedidos");
     return NextResponse.json({ message: 'Não autenticado' }, { status: 401 });
+  }
+
   try {
     // 1️⃣ Pegar o userId vindo pela query string (ex: /api/meus-pedidos?userId=123)
     const { searchParams } = new URL(req.url);

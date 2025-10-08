@@ -1,13 +1,18 @@
+"use client";
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function ValesPage() {
+  const router = useRouter();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Vales-Presente</h1>
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 className="text-xl font-semibold mb-4">Comprar um Vale-Presente</h2>
         <p className="text-gray-600 mb-4">Surpreenda alguém especial com a liberdade de escolher o que quiser na OkBoss.</p>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Comprar Agora</button>
+        <button onClick={() => router.push('/signup')} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Comprar Agora</button>
       </div>
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Resgatar um Vale-Presente</h2>
