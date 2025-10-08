@@ -1,9 +1,22 @@
 "use client";
 
 import { useCart } from "../../context/CartContext";
+import { useUser } from "../../context/UserContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function CarrinhoPage() {
   const { cart, removeFromCart, clearCart, total } = useCart();
+  const { user } = useUser();
+  const { openAuthModal } = useAuth();
+
+  const handleFinalizePurchase = () => {
+    if (!user) {
+      openAuthModal();
+    } else {
+      alert("Compra finalizada com sucesso!");
+      clearCart();
+    }
+  };
 
   if (cart.length === 0) return <p className="p-6">Seu carrinho está vazio.</p>;
 
@@ -33,12 +46,20 @@ export default function CarrinhoPage() {
 
       <div className="mt-6 flex justify-between items-center">
         <p className="text-xl font-bold">Total: {total.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}</p>
-        <button
-          onClick={clearCart}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Limpar Carrinho
-        </button>
+        <div className="flex gap-4">
+          <button
+            onClick={clearCart}
+            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+          >
+            Limpar Carrinho
+          </button>
+          <button
+            onClick={handleFinalizePurchase}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Finalizar Compra
+          </button>
+        </div>
       </div>
     </div>
   );
