@@ -7,20 +7,22 @@ export type Product = {
   colors?: string[];
   quantity?: number;
   category?: string;
+  originalPrice?: number;
+  discountPercentage?: number;
 };
 
 export const products: Product[] = [
-  { id: "1", name: "A4", price: 1500, image: "/images/a4.jpg", category: "Ofertas do Dia" },
+  { id: "1", name: "A4", price: 1000, originalPrice: 1500, discountPercentage: 33, image: "/images/a4.jpg", category: "Ofertas do Dia" },
   { id: "2", name: "Bone", price: 1500, image: "/images/bone.jpeg", category: "Mais Avaliados" },
   { id: "3", name: "Bone Esportivo", price: 1500, image: "/images/boneesportivos.jpg", category: "Mais Avaliados" },
-  { id: "4", name: "Chá", price: 1500, image: "/images/cha.jpg", category: "Ofertas do Dia" },
+  { id: "4", name: "Chá", price: 1200, originalPrice: 1500, discountPercentage: 20, image: "/images/cha.jpg", category: "Ofertas do Dia" },
   { id: "5", name: "Chá Verde", price: 1500, image: "/images/cha.png", category: "Ofertas do Dia" },
   { id: "6", name: "Chapéu", price: 1500, image: "/images/chapeu.jpeg", category: "Mais Avaliados" },
   { id: "7", name: "Chinela 1", price: 1500, image: "/images/chinela4.webp", category: "Dia das Crianças" },
   { id: "8", name: "Chinela 2", price: 1500, image: "/images/chinelas.jpg", category: "Dia das Crianças" },
   { id: "9", name: "Chinelo", price: 1500, image: "/images/chinelasplasticas.jpeg", category: "Dia das Crianças" },
   { id: "10", name: "Crocs", price: 1500, image: "/images/crocsbranca.jpg", category: "Dia das Crianças" },
-  { id: "11", name: "Fitacola 1", price: 1500, image: "/images/fita.jpg", category: "Ofertas do Dia" },
+  { id: "11", name: "Fitacola 1", price: 1000, originalPrice: 1500, discountPercentage: 33, image: "/images/fita.jpg", category: "Ofertas do Dia" },
   { id: "12", name: "Fitacola 2", price: 1500, image: "/images/fitacola.jpg", category: "Ofertas do Dia" },
   { id: "13", name: "Garrafas Plásticas", price: 1500, image: "/images/garafasplasticas.jpeg", category: "Mais Vantagens" },
   { id: "14", name: "Guardanapo", price: 1500, image: "/images/Guardanapo.png", category: "Mais Vantagens" },
@@ -106,10 +108,10 @@ export const products: Product[] = [
   { id: "94", name: "Livro de Suspense", price: 4500, image: "/images/9.jpg", category: "Livros" },
   { id: "95", name: "Pneu de Carro", price: 15000, image: "/images/1.png", category: "Automotivo" },
   { id: "96", name: "Óleo de Motor", price: 5000, image: "/images/2.png", category: "Automotivo" },
-  { id: "97", name: "Bateria de Carro", price: 25000, image: "/images/3.png", category: "Automotivo" },
-  { id: "98", name: "Limpador de Para-brisa", price: 1500, image: "/images/4.png", category: "Automotivo" },
-  { id: "99", name: "Berço", price: 35000, image: "/images/familiacomtijela.png", category: "Bebês" },
-  { id: "100", name: "Carrinho de Bebê", price: 45000, image: "/images/helo.webp", category: "Bebês" },
-  { id: "101", name: "Cadeira de Alimentação", price: 25000, image: "/images/images.jpg", category: "Bebês" },
-  { id: "102", name: "Fraldas", price: 5000, image: "/images/images.png", category: "Bebês" }
+  { id: "97", name: "Bateria de Carro", price: 20000, originalPrice: 25000, discountPercentage: 20, image: "/images/3.png", category: "Ofertas do Dia" },
+  { id: "98", name: "Limpador de Para-brisa", price: 1000, originalPrice: 1500, discountPercentage: 33, image: "/images/4.png", category: "Ofertas do Dia" },
+  { id: "99", name: "Berço", price: 30000, originalPrice: 35000, discountPercentage: 14, image: "/images/familiacomtijela.png", category: "Ofertas do Dia" },
+  { id: "100", name: "Carrinho de Bebê", price: 40000, originalPrice: 45000, discountPercentage: 11, image: "/images/helo.webp", category: "Ofertas do Dia" },
+  { id: "101", name: "Cadeira de Alimentação", price: 20000, originalPrice: 25000, discountPercentage: 20, image: "/images/images.jpg", category: "Ofertas do Dia" },
+  { id: "102", name: "Fraldas", price: 4000, originalPrice: 5000, discountPercentage: 20, image: "/images/images.png", category: "Ofertas do Dia" }
 ];

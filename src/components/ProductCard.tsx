@@ -61,7 +61,19 @@ export default function ProductCard({ product }: Props) {
         <p className="text-gray-600 text-sm mb-1">Estoque: {stock}</p>
 
         <p className="text-lg sm:text-xl font-semibold mb-3 text-gray-800">
-          {product.price.toLocaleString("pt-AO")} Kz
+          {product.originalPrice && product.originalPrice > product.price && (
+            <span className="text-gray-500 line-through mr-2">
+              {product.originalPrice.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}
+            </span>
+          )}
+          <span className="text-red-600">
+            {product.price.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}
+          </span>
+          {product.discountPercentage && product.discountPercentage > 0 && (
+            <span className="ml-2 text-green-600 font-bold">
+              -{product.discountPercentage}%
+            </span>
+          )}
         </p>
 
         {product.colors && (
