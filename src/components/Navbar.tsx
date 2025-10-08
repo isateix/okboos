@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,8 +20,7 @@ export default function Header() {
   const [showCategories, setShowCategories] = useState(false);
   const [showLang, setShowLang] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showEntregaModal, setShowEntregaModal] = useState(false);
-  const [cep, setCep] = useState("");
+  const [currentCategory, setCurrentCategory] = useState("Todos");
 
   const languages = [
     { code: "PT", label: "Português", flag: "/flags/pt.png" },
@@ -34,7 +34,7 @@ export default function Header() {
     "Materiais de escritório",
     "Roupas, sapatos e chapéus",
     "Utensílios de cozinha e mesa",
-    "Perfumes de beleza",
+    "Perfumes e beleza",
     "Eletrodomésticos",
     "Materiais de proteção do trabalho",
     "Ferragens e materiais de construção",
@@ -42,8 +42,10 @@ export default function Header() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      router.push(`/produtos?search=${encodeURIComponent(searchTerm)}`);
+    const query = encodeURIComponent(searchTerm.trim());
+    const categoryQuery = currentCategory !== "Todos" ? `&category=${encodeURIComponent(currentCategory)}` : "";
+    if (query || categoryQuery) {
+      router.push(`/produtos?search=${query}${categoryQuery}`);
     } else {
       router.push("/produtos");
     }
@@ -55,29 +57,40 @@ export default function Header() {
       <div className="hidden md:flex bg-white px-8 py-3 items-center gap-6 border-b">
         {/* LOGO */}
         <Link href="/" className="flex flex-col items-center">
-            <span className="text-2xl font-bold">OkBoss</span>
-            <span className="text-sm text-gray-600">Comércio e Serviços</span>
+          <span className="text-2xl font-bold">OkBoss</span>
+          <span className="text-sm text-gray-600">Comércio e Serviços</span>
         </Link>
-
-        {/* ENTREGA */}
-        <div className="relative">
-          <button
-            onClick={() => setShowEntregaModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-200 border border-gray-300 rounded-md hover:bg-gray-300 font-semibold"
-          >
-            <MapPin size={20} /> Entregar
-          </button>
-        </div>
 
         {/* PESQUISA */}
         <form onSubmit={handleSearchSubmit} className="flex flex-1 relative max-w-2xl mx-auto">
-          <button
-            onClick={() => setShowCategories((s) => !s)}
-            type="button"
-            className="flex items-center gap-1 px-3 py-2 bg-gray-200 border border-gray-300 rounded-l-md font-medium hover:bg-gray-300"
-          >
-            Todos <ChevronDown size={16} />
-          </button>
+          {/* BOTÃO CATEGORIAS */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowCategories((s) => !s)}
+              className="flex items-center gap-1 px-3 py-2 bg-gray-200 border border-gray-300 rounded-l-md font-medium hover:bg-gray-300"
+            >
+              {currentCategory} <ChevronDown size={16} />
+            </button>
+            {showCategories && (
+              <ul className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-50">
+                {categories.map((cat) => (
+                  <li
+                    key={cat}
+                    onClick={() => {
+                      setCurrentCategory(cat);
+                      setShowCategories(false);
+                    }}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    {cat}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* INPUT PESQUISA */}
           <input
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -145,10 +158,13 @@ export default function Header() {
             {cart.length}
           </span>
           <span className="hidden md:inline">Carrinho</span>
-          <span className="hidden md:inline font-bold">{total.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}</span>
+          <span className="hidden md:inline font-bold">
+            {total.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}
+          </span>
         </div>
       </div>
 
+<<<<<<< HEAD
       {/* ================== NAV MOBILE ================== */}
       <div className="md:hidden bg-white px-4 py-3 flex items-center justify-between border-b">
         <Link href="/" className="text-xl font-bold">
@@ -292,6 +308,9 @@ export default function Header() {
     </div>
   </div>
 )}
+=======
+      {/* NAV MOBILE continua igual */}
+>>>>>>> 4a6ef0dfca03676b8d5ee874c339ffcf1e528efd
     </header>
   );
 }
