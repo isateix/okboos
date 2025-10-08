@@ -7,6 +7,7 @@ import { Star } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import ProductCard from '../../../components/ProductCard';
+import SuccessModal from '../../../components/SuccessModal'; // Import SuccessModal
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -18,6 +19,8 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState('');
   const [stock, setStock] = useState(0);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // State for modal visibility
+  const [successMessage, setSuccessMessage] = useState(''); // State for modal message
 
   useEffect(() => {
     const foundProduct = products.find(p => p.id === productId);
@@ -40,12 +43,17 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     if (stock < quantityToAdd) {
-      alert("Produto esgotado!");
+      alert("Produto esgotado!"); // Keep alert for out of stock
       return;
     }
     addToCart({ ...product, quantidade: Number(quantityToAdd), selectedColor });
-    alert(`${quantityToAdd} ${product.name} adicionado(s) ao carrinho!`);
-    // Optionally, redirect to cart or show a confirmation message
+    setSuccessMessage(`${quantityToAdd} ${product.name} adicionado(s) ao carrinho!`);
+    setShowSuccessModal(true);
+  };
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+    setSuccessMessage('');
   };
 
   const rating = 4; // Static rating for now
@@ -154,6 +162,13 @@ export default function ProductDetailPage() {
             ))}
           </div>
         </div>
+      )}
+
+      {showSuccessModal && (
+        <SuccessModal
+          message={successMessage}
+          onClose={handleCloseSuccessModal}
+        />
       )}
     </div>
   );

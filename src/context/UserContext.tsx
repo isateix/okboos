@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { getAuthSession } from "../lib/auth";
+import { useCart } from "./CartContext"; // Import useCart
 
 type User = {
   id: number;
@@ -22,6 +23,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { clearCart } = useCart(); // Access clearCart from CartContext
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -48,6 +50,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('mockAuthToken');
     }
+    clearCart(); // Clear the cart on logout
   };
 
   return (

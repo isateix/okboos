@@ -170,12 +170,24 @@ export default function Header() {
         </div>
 
         {/* LOGIN / USUÁRIO */}
-        <button
-          onClick={openAuthModal}
-          className="font-semibold px-3 py-2 rounded-md hover:bg-gray-200"
-        >
-          {user ? `Olá, ${user.name}` : "Olá, entrar"}
-        </button>
+        {user ? (
+          <div className="flex items-center gap-2">
+            <span className="font-semibold">Olá, {user.name}</span>
+            <button
+              onClick={logout}
+              className="font-semibold px-3 py-2 rounded-md hover:bg-gray-200"
+            >
+              Sair
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => router.push("/login")}
+            className="font-semibold px-3 py-2 rounded-md hover:bg-gray-200"
+          >
+            Olá, entrar
+          </button>
+        )}
 
         {/* CARRINHO */}
         <div
