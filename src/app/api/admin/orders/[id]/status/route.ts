@@ -1,10 +1,10 @@
 // src/app/api/admin/orders/[id]/status/route.ts
 import { NextResponse } from 'next/server';
 import prisma from '../../../../../../../lib/prisma';
-import { getAuthSession } from 'src/lib/auth'; // Assuming you have an auth utility
+import { getServerAuthSession } from 'src/lib/auth';
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  const session = await getAuthSession();
+  const session = await getServerAuthSession(req as any);
 
   if (!session || !session.user || !session.user.isAdmin) {
     return NextResponse.json({ message: 'Não autorizado' }, { status: 403 });

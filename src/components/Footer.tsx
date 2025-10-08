@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Facebook, Whatsapp, Instagram, TikTok } from "lucide-react";
+import { BsWhatsapp } from "react-icons/bs";
+import { FaTiktok } from "react-icons/fa6";
+
+
 
 const Footer = () => {
   return (
@@ -58,9 +63,9 @@ const Footer = () => {
                 href="https://www.facebook.com/share/16QH5teFJj/?mibextid=wwXIfr" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-orange-600 transition"
+                className="text-orange-600 hover:text-orange-500 transition"
               >
-                <Image src="/images/facebook.png" alt="Facebook" width={32} height={32} />
+                <Facebook size={32} />
               </a>
 
               {/* WhatsApp Business */}
@@ -68,9 +73,9 @@ const Footer = () => {
                 href="https://wa.me/244939814478" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-orange-600 transition"
+                className="text-orange-600 hover:text-orange-500 transition"
               >
-                <Image src="/images/whatsapp.png" alt="WhatsApp" width={32} height={32} />
+<BsWhatsapp size={32} />
               </a>
 
               {/* Instagram */}
@@ -78,9 +83,9 @@ const Footer = () => {
                 href="https://www.instagram.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-orange-600 transition"
+                className="text-orange-600 hover:text-orange-500 transition"
               >
-                <Image src="/images/instagram.png" alt="Instagram" width={32} height={32} />
+                <Instagram size={32} />
               </a>
 
               {/* TikTok */}
@@ -88,9 +93,9 @@ const Footer = () => {
                 href="https://www.tiktok.com/@ok.boss00" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-orange-600 transition"
+                className="text-orange-600 hover:text-orange-500 transition"
               >
-                <Image src="/images/tik-tok.png" alt="TikTok" width={32} height={32} />
+<FaTiktok size={32} />
               </a>
             </section>
           </div>

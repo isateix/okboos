@@ -1,10 +1,10 @@
 // src/app/api/admin/orders/route.ts
 import { NextResponse } from 'next/server';
 import prisma from '../../../../../lib/prisma';
-import { getAuthSession } from 'src/lib/auth'; // Assuming you have an auth utility
+import { getServerAuthSession } from 'src/lib/auth';
 
 export async function GET(req: Request) {
-  const session = await getAuthSession();
+  const session = await getServerAuthSession(req as any);
 
   if (!session || !session.user || !session.user.isAdmin) {
     return NextResponse.json({ message: 'Não autorizado' }, { status: 403 });
@@ -21,6 +21,7 @@ export async function GET(req: Request) {
         createdAt: 'desc',
       },
     });
+    console.log("Fetched orders for admin:", orders);
     return NextResponse.json(orders, { status: 200 });
   } catch (error) {
     console.error('Error fetching all orders:', error);

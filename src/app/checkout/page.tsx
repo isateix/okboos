@@ -5,14 +5,16 @@ import { useCart } from '../../context/CartContext';
 import { useUser } from '../../context/UserContext';
 import { useRouter } from 'next/navigation';
 import SuccessModal from '../../components/SuccessModal';
+import { useAuth } from '../../context/AuthContext';
 
 const IBAN = "AO06.0006.0000.0000.0000.0000.000"; // Hardcoded IBAN
 
 const CheckoutPage = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { cart, total, clearCart } = useCart();
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser();
   const router = useRouter();
+  const { openAuthModal } = useAuth();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -25,9 +27,9 @@ const CheckoutPage = () => {
   const [proofOfPaymentFile, setProofOfPaymentFile] = useState<File | null>(null);
 
   useEffect(() => {
-    if (!user) {
-      router.push('/carrinho'); // Redirect to cart if not logged in
-    } else {
+    if (!userLoading && !user) {
+      openAuthModal();
+    } else if (user) {
       setFormData({
         name: user.name || '',
         email: user.email || '',
@@ -35,7 +37,8 @@ const CheckoutPage = () => {
         address: '',
       });
     }
-  }, [user, router]);
+  }, [user, userLoading, router, openAuthModal]);
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -118,9 +121,6 @@ const CheckoutPage = () => {
     router.push('/meus-pedidos');
   };
 
-  if (!user) {
-    return null; // Or a loading spinner, as redirect happens in useEffect
-  }
 
   return (
     <div className="container mx-auto p-4">

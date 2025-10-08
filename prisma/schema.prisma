@@ -74,3 +74,16 @@ enum PaymentMethod {
   BANK_TRANSFER
   CASH_ON_DELIVERY
 }
+
+model Offer {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  imageUrl    String?
+  startDate   DateTime
+  endDate     DateTime
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

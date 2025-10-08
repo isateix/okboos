@@ -44,7 +44,8 @@ export default function AuthModal() {
         return;
       }
 
-      login({ nome: data.user.name });
+      login(data.user);
+      localStorage.setItem('mockAuthToken', JSON.stringify(data.user));
       closeAuthModal();
     } catch (err) {
       console.error(err);
@@ -80,7 +81,8 @@ export default function AuthModal() {
         return;
       }
 
-      login({ nome: data.user.name });
+      login(data.user);
+      localStorage.setItem('mockAuthToken', JSON.stringify(data.user));
       closeAuthModal();
     } catch (err) {
       console.error(err);

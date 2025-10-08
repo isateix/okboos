@@ -47,8 +47,19 @@ const AdminPage = () => {
     }
 
     const fetchOrders = async () => {
+      const mockAuthToken = localStorage.getItem('mockAuthToken');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+      if (mockAuthToken) {
+        headers['Authorization'] = `Bearer ${mockAuthToken}`;
+      }
+
       try {
-        const response = await fetch('/api/admin/orders');
+        const response = await fetch('/api/admin/orders', {
+          method: 'GET',
+          headers: headers,
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch orders');
         }
@@ -70,12 +81,18 @@ const AdminPage = () => {
   const handleStatusChange = async (orderId: number) => {
     if (!newStatus) return;
 
+    const mockAuthToken = localStorage.getItem('mockAuthToken');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+    if (mockAuthToken) {
+      headers['Authorization'] = `Bearer ${mockAuthToken}`;
+    }
+
     try {
       const response = await fetch(`/api/admin/orders/${orderId}/status`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify({ status: newStatus, estimatedDelivery: newEstimatedDelivery }),
       });
 

@@ -1,4 +1,3 @@
-// src/app/meus-pedidos/page.tsx
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -29,32 +28,89 @@ const MeusPedidosPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!userLoading && !user) {
-      router.push('/login');
-      return;
-    }
+    useEffect(() => {
 
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch('/api/meus-pedidos');
-        if (!response.ok) {
-          throw new Error('Failed to fetch orders');
-        }
-        const data = await response.json();
-        setOrders(data);
-      } catch (err) {
-        console.error('Error fetching orders:', err);
-        setError('Erro ao carregar seus pedidos.');
-      } finally {
-        setLoading(false);
+      if (!userLoading && !user) {
+
+        router.push('/login');
+
+        return;
+
       }
-    };
 
-    if (user && !userLoading) {
-      fetchOrders();
-    }
-  }, [user, userLoading, router]);
+  
+
+      const fetchOrders = async () => {
+
+        const mockAuthToken = localStorage.getItem('mockAuthToken');
+
+        const headers: HeadersInit = {
+
+          'Content-Type': 'application/json',
+
+        };
+
+        if (mockAuthToken) {
+
+          headers['Authorization'] = `Bearer ${mockAuthToken}`;
+
+        }
+
+  
+
+        try {
+
+          const response = await fetch('/api/meus-pedidos', {
+
+            method: 'GET',
+
+            headers: headers,
+
+          });
+
+  
+
+          if (!response.ok) {
+
+            if (response.status === 401) {
+
+              throw new Error('Não autorizado. Faça login novamente.');
+
+            }
+
+            throw new Error('Falha ao buscar pedidos');
+
+          }
+
+  
+
+          const data = await response.json();
+
+          setOrders(data);
+
+        } catch (err: any) {
+
+          console.error('Error fetching orders:', err);
+
+          setError(err.message || 'Erro ao carregar seus pedidos.');
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      };
+
+  
+
+      if (user && !userLoading) {
+
+        fetchOrders();
+
+      }
+
+    }, [user, userLoading, router]);
 
   if (loading || userLoading) {
     return <div className="container mx-auto p-4 text-center">Carregando pedidos...</div>;
@@ -76,21 +132,43 @@ const MeusPedidosPage = () => {
           <div key={order.id} className="bg-white shadow-md rounded-lg p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Pedido #{order.id}</h2>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${order.status === 'APPROVED' ? 'bg-green-100 text-green-800' : order.status === 'PENDING_APPROVAL' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  order.status === 'APPROVED'
+                    ? 'bg-green-100 text-green-800'
+                    : order.status === 'PENDING_APPROVAL'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-gray-100 text-gray-800'
+                }`}
+              >
                 {order.status.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-gray-600 mb-2">Data do Pedido: {new Date(order.createdAt).toLocaleDateString()}</p>
-            <p className="text-gray-600 mb-2">Total: {order.total.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}</p>
+            <p className="text-gray-600 mb-2">
+              Data do Pedido: {new Date(order.createdAt).toLocaleDateString()}
+            </p>
+            <p className="text-gray-600 mb-2">
+              Total:{' '}
+              {order.total.toLocaleString('pt-AO', {
+                style: 'currency',
+                currency: 'AOA',
+              })}
+            </p>
             {order.estimatedDelivery && (
-              <p className="text-gray-600 mb-2">Entrega Estimada: {order.estimatedDelivery}</p>
+              <p className="text-gray-600 mb-2">
+                Entrega Estimada: {order.estimatedDelivery}
+              </p>
             )}
             <div className="mt-4">
               <h3 className="text-lg font-medium mb-2">Itens do Pedido:</h3>
               <ul className="list-disc list-inside space-y-1">
                 {order.items.map((item) => (
                   <li key={item.id} className="text-gray-700">
-                    {item.name} (x{item.quantity}) - {item.price.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}
+                    {item.name} (x{item.quantity}) -{' '}
+                    {item.price.toLocaleString('pt-AO', {
+                      style: 'currency',
+                      currency: 'AOA',
+                    })}
                   </li>
                 ))}
               </ul>

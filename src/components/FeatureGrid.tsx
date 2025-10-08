@@ -257,6 +257,166 @@ const features = [
       "/images/images.png",
     ],
   },
+  {
+    id: 25,
+    title: "Novidades 1",
+    images: [
+      "/images/1.png",
+      "/images/2.png",
+      "/images/3.png",
+      "/images/4.png",
+    ],
+  },
+  {
+    id: 26,
+    title: "Novidades 2",
+    images: [
+      "/images/5.png",
+      "/images/6.png",
+      "/images/7.png",
+      "/images/8.jpg",
+    ],
+  },
+  {
+    id: 27,
+    title: "Novidades 3",
+    images: [
+      "/images/9.jpg",
+      "/images/10.jpg",
+      "/images/11.jpg",
+      "/images/12.jpg",
+    ],
+  },
+  {
+    id: 28,
+    title: "Novidades 4",
+    images: [
+      "/images/13.jpg",
+      "/images/14.jpg",
+      "/images/15.jpg",
+      "/images/16.jpg",
+    ],
+  },
+  {
+    id: 29,
+    title: "Novidades 5",
+    images: [
+      "/images/17.jpg",
+      "/images/18.jpg",
+      "/images/19.jpg",
+      "/images/20.mp4",
+    ],
+  },
+  {
+    id: 30,
+    title: "Novidades 6",
+    images: [
+      "/images/a4.jpg",
+      "/images/agenda.png",
+      "/images/agrafos-removebg-preview.png",
+      "/images/arca.png",
+    ],
+  },
+  {
+    id: 31,
+    title: "Novidades 7",
+    images: [
+      "/images/blocodenotas.png",
+      "/images/blosa-removebg-preview.png",
+      "/images/bone.jpeg",
+      "/images/boneesportivos.jpg",
+    ],
+  },
+  {
+    id: 32,
+    title: "Novidades 8",
+    images: [
+      "/images/Boss.png",
+      "/images/cadeira_de_roda-removebg-preview.png",
+      "/images/caixamadeira.png",
+      "/images/calsasocialfem-removebg-preview.png",
+    ],
+  },
+  {
+    id: 33,
+    title: "Novidades 9",
+    images: [
+      "/images/cartucho.png",
+      "/images/casa.jpg",
+      "/images/casa1.jpg",
+      "/images/casa2.jpeg",
+    ],
+  },
+  {
+    id: 34,
+    title: "Novidades 10",
+    images: [
+      "/images/cha.jpg",
+      "/images/cha.png",
+      "/images/chapeu.jpeg",
+      "/images/chavina.png",
+    ],
+  },
+  {
+    id: 35,
+    title: "Novidades 11",
+    images: [
+      "/images/chinela4.webp",
+      "/images/chinelas.jpg",
+      "/images/chinelasplasticas.jpeg",
+      "/images/chinelos.jpg",
+    ],
+  },
+  {
+    id: 36,
+    title: "Novidades 12",
+    images: [
+      "/images/colete.png",
+      "/images/cozinha-removebg-preview.png",
+      "/images/cozinha.png",
+      "/images/crocs (2).png",
+    ],
+  },
+  {
+    id: 37,
+    title: "Novidades 13",
+    images: [
+      "/images/crocsbranca.jpg",
+      "/images/entre.jpeg",
+      "/images/entrega.jpg",
+      "/images/entrega.png",
+    ],
+  },
+  {
+    id: 38,
+    title: "Novidades 14",
+    images: [
+      "/images/escritorio2-removebg-preview.png",
+      "/images/facebook.png",
+      "/images/familiacomtijela.png",
+      "/images/ferragens.jpg",
+    ],
+  },
+  {
+    id: 39,
+    title: "Novidades 15",
+    images: [
+      "/images/fita.jpg",
+      "/images/fita.png",
+      "/images/fitaadesiva.png",
+      "/images/fitacola.jpg",
+    ],
+  },
+  {
+    id: 40,
+    title: "Novidades 16",
+    images: [
+      "/images/garafasplasticas.jpeg",
+      "/images/garfo.png",
+      "/images/gelerira.png",
+      "/images/google.png",
+    ],
+  },
 ];
 
 export default function FeatureGrid() {
@@ -318,11 +478,13 @@ export default function FeatureGrid() {
             </div>
 
             {/* Link "Ver mais" */}
-            <Link href={`/produtos?category=${slugify(item.title)}`} legacyBehavior>
-              <a className="mt-4 text-blue-600 hover:text-orange-600 text-sm font-semibold text-left">
-                Ver mais
-              </a>
-            </Link>
+           <Link
+  href={`/produtos?category=${slugify(item.title)}`}
+  className="mt-4 text-blue-600 hover:text-orange-600 text-sm font-semibold text-left"
+>
+  Ver mais
+</Link>
+
           </motion.div>
         ))}
       </div>

@@ -45,6 +45,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('mockAuthToken');
+    }
   };
 
   return (
