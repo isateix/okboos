@@ -8,27 +8,31 @@ interface Props {
 
 export default function ProdutosPage({ searchParams }: Props) {
   const search = searchParams?.search?.toLowerCase() || "";
-  let category = searchParams?.category?.toLowerCase() || "";
+  let categoryParams = searchParams?.category?.toLowerCase() || "";
+  let selectedCategories: string[] = [];
 
-  if (category === 'undefined') {
-    category = '';
+  if (categoryParams && categoryParams !== 'undefined') {
+    selectedCategories = categoryParams.split(',').map(cat => cat.trim());
   }
 
   const filtered: Product[] = products.filter((p) => {
-    if (category) {
-      return p.category ? slugify(p.category) === category : false;
-    }
-    if (search) {
-      return (
-        p.name.toLowerCase().includes(search) ||
-        (p.description?.toLowerCase().includes(search) ?? false)
-      );
-    }
-    return true;
+    const productCategorySlug = p.category ? slugify(p.category) : '';
+
+    const matchesCategory = selectedCategories.length === 0 || 
+                            (productCategorySlug && selectedCategories.includes(productCategorySlug));
+
+    const matchesSearch = search ? (
+      p.name.toLowerCase().includes(search) ||
+      (p.description?.toLowerCase().includes(search) ?? false)
+    ) : true;
+
+    return matchesCategory && matchesSearch;
   });
 
-  const pageTitle = category
-    ? products.find((p) => p.category && slugify(p.category) === category)?.category
+  const pageTitle = selectedCategories.length > 0
+    ? selectedCategories.map(catSlug => 
+        products.find(p => p.category && slugify(p.category) === catSlug)?.category
+      ).filter(Boolean).join(', ') || 'Produtos'
     : "Produtos";
 
   return (

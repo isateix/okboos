@@ -34,35 +34,40 @@ export default function Header() {
   const [currentLang, setCurrentLang] = useState(languages[0]);
 
   const categories = [
-    "Ofertas do Dia",
-    "Mais Avaliados",
-    "Dia das Crianças",
-    "Mais Vantagens",
-    "Echo e Fire TV",
-    "Faça Login",
-    "Ganhe Benefícios",
-    "Cozinha",
-    "Escritório",
-    "Roupas Femininas",
-    "Calçados",
-    "Acessórios",
-    "Material de Construção",
-    "Embalagens",
-    "Descartáveis",
-    "Casa",
-    "Eletrônicos",
-    "Saúde",
-    "Brinquedos",
-    "Esportes",
-    "Livros",
-    "Automotivo",
-    "Bebês",
+    "Materiais de embalagem",
+    "Materiais de escritório",
+    "Roupas, sapatos e chapéus",
+    "Utensílios de cozinha e mesa",
+    "Perfumes e beleza",
+    "Eletrodomésticos",
+    "Materiais de proteção do trabalho",
+    "Ferragens e materiais de construção",
   ];
 
-  const performSearch = (term: string, category: string) => {
+  const categoryMap: { [key: string]: string[] } = {
+    "Materiais de embalagem": ["Embalagens"],
+    "Materiais de escritório": ["Escritório"],
+    "Roupas, sapatos e chapéus": ["Roupas Femininas", "Calçados", "Acessórios", "Mais Avaliados"], // Added 'Mais Avaliados' as a general clothing/accessories category
+    "Utensílios de cozinha e mesa": ["Cozinha"],
+    "Perfumes e beleza": [], // No direct match, will return no products unless products.ts is updated
+    "Eletrodomésticos": ["Echo e Fire TV", "Mais Vantagens"], // Mapped to closest available
+    "Materiais de proteção do trabalho": ["Saúde"], // Mapped to closest available
+    "Ferragens e materiais de construção": ["Material de Construção"],
+  };
+
+  const performSearch = (term: string, displayCategory: string) => {
     const query = encodeURIComponent(term.trim());
-    const slugifiedCategory = category !== "Todos" ? slugify(category) : "";
-    const categoryQuery = slugifiedCategory ? `&category=${encodeURIComponent(slugifiedCategory)}` : "";
+    let productCategories: string[] = [];
+
+    if (displayCategory === "Todos") {
+      productCategories = []; // No category filter
+    } else {
+      productCategories = categoryMap[displayCategory] || [];
+    }
+
+    const slugifiedProductCategories = productCategories.map(cat => slugify(cat));
+    const categoryQuery = slugifiedProductCategories.length > 0 ? `&category=${encodeURIComponent(slugifiedProductCategories.join(','))}` : "";
+
     if (query || categoryQuery) {
       router.push(`/produtos?search=${query}${categoryQuery}`);
     } else {
@@ -97,7 +102,7 @@ export default function Header() {
               {currentCategory} <ChevronDown size={16} />
             </button>
             {showCategories && (
-              <ul className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+              <ul className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-50">
                 {categories.map((cat) => (
                   <li
                     key={cat}
