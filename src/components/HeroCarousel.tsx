@@ -23,6 +23,46 @@ const slides = [
     type: "flex",
   },
   // ... demais slides
+  {
+    id: 3,
+    title: "Moda Masculina",
+    description: "Ternos e sapatos sociais para homens de negócios.",
+    bg: "bg-gray-800",
+    video: "https://www.w3schools.com/html/mov_bbb.mp4",
+    type: "flex",
+  },
+  {
+    id: 4,
+    title: "Material de Escritório",
+    description: "Tudo para o seu escritório.",
+    bg: "bg-blue-800",
+    video: "https://www.w3schools.com/html/mov_bbb.mp4",
+    type: "flex",
+  },
+  {
+    id: 5,
+    title: "Cozinha Equipada",
+    description: "Equipamentos para a sua cozinha.",
+    bg: "bg-green-800",
+    video: "https://www.w3schools.com/html/mov_bbb.mp4",
+    type: "flex",
+  },
+  {
+    id: 6,
+    title: "Calçados Modernos",
+    description: "Chinelos e sandálias para todos os gostos.",
+    bg: "bg-yellow-800",
+    video: "https://www.w3schools.com/html/mov_bbb.mp4",
+    type: "flex",
+  },
+  {
+    id: 7,
+    title: "Roupas Femininas",
+    description: "Vestidos e saltos para todas as ocasiões.",
+    bg: "bg-pink-800",
+    video: "https://www.w3schools.com/html/mov_bbb.mp4",
+    type: "flex",
+  },
 ];
 
 export default function HeroCarousel() {

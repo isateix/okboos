@@ -1,6 +1,8 @@
 import "./globals.css";
 import { CartProvider } from "../context/CartContext";
 import { LanguageProvider } from "../context/LanguageContext";
+import { UserProvider } from "../context/UserContext";
+import { AuthProvider } from "../context/AuthContext";
 import { Rufina } from "next/font/google";
 import ClientLayout from "./client-layout"; // componente cliente
 
@@ -21,9 +23,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt">
       <body className={`${rufina.className} bg-[#f6eee9] text-gray-900`}>
         <LanguageProvider>
-          <CartProvider>
-            <ClientLayout>{children}</ClientLayout>
-          </CartProvider>
+          <UserProvider>
+            <AuthProvider>
+              <CartProvider>
+                <ClientLayout>{children}</ClientLayout>
+              </CartProvider>
+            </AuthProvider>
+          </UserProvider>
         </LanguageProvider>
       </body>
     </html>

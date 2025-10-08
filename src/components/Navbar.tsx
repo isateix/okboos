@@ -5,8 +5,11 @@ import Image from "next/image";
 import { MapPin, ChevronDown, ShoppingCart, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useCart } from "../context/CartContext";
+
 export default function Header() {
   const router = useRouter();
+  const { cart, total } = useCart();
 
   // Estados
   const [showCategories, setShowCategories] = useState(false);
@@ -21,7 +24,6 @@ export default function Header() {
     confirmarSenha: "",
   });
   const [erro, setErro] = useState("");
-  const [cartCount] = useState(0);
   const [showEntregaModal, setShowEntregaModal] = useState(false);
   const [cep, setCep] = useState("");
 
@@ -131,10 +133,12 @@ export default function Header() {
       {/* ================== NAV DESKTOP ================== */}
       <div className="hidden md:flex bg-white px-8 py-3 items-center gap-6 border-b">
         {/* LOGO */}
-        <div className="flex flex-col items-center">
-          <span className="text-2xl font-bold">OkBoss</span>
-          <span className="text-sm text-gray-600">Comércio e Serviços</span>
-        </div>
+        <Link href="/" legacyBehavior>
+          <a className="flex flex-col items-center">
+            <span className="text-2xl font-bold">OkBoss</span>
+            <span className="text-sm text-gray-600">Comércio e Serviços</span>
+          </a>
+        </Link>
 
         {/* ENTREGA */}
         <div className="relative">
@@ -216,18 +220,21 @@ export default function Header() {
           <ShoppingCart size={28} />
           <span
             className={`absolute -top-1 right-0 text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center ${
-              cartCount > 0 ? "bg-red-600 text-white" : "bg-gray-400 text-white"
+              cart.length > 0 ? "bg-red-600 text-white" : "bg-gray-400 text-white"
             }`}
           >
-            {cartCount}
+            {cart.length}
           </span>
           <span className="hidden md:inline">Carrinho</span>
+          <span className="hidden md:inline font-bold">{total.toLocaleString("pt-AO", { style: "currency", currency: "AOA" })}</span>
         </div>
       </div>
 
       {/* ================== NAV MOBILE ================== */}
       <div className="md:hidden bg-white px-4 py-3 flex items-center justify-between border-b">
-        <span className="text-xl font-bold">OkBoss</span>
+        <Link href="/" legacyBehavior>
+          <a className="text-xl font-bold">OkBoss</a>
+        </Link>
         <div className="flex items-center gap-3 ml-auto">
           {/* Idioma */}
           <div className="relative">
@@ -257,10 +264,10 @@ export default function Header() {
             <ShoppingCart size={28} />
             <span
               className={`absolute -top-1 -right-2 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${
-                cartCount > 0 ? "bg-red-600 text-white" : "bg-gray-400 text-white"
+                cart.length > 0 ? "bg-red-600 text-white" : "bg-gray-400 text-white"
               }`}
             >
-              {cartCount}
+              {cart.length}
             </span>
           </div>
         </div>

@@ -12,15 +12,16 @@ interface Props {
 export default function ProductCard({ product }: Props) {
   const { addToCart } = useCart();
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "");
-  const [quantity, setQuantity] = useState(product.quantity ?? 10);
+  const [stock, setStock] = useState(product.quantity ?? 10);
+  const [quantityToAdd, setQuantityToAdd] = useState(1);
   const [favorite, setFavorite] = useState(false);
 
   const rating = 4;
 
   const handleAddToCart = () => {
-    if (quantity <= 0) return alert("Produto esgotado!");
-    addToCart({ ...product, selectedColor, quantityInCart: 1 });
-    setQuantity(quantity - 1);
+    if (stock < quantityToAdd) return alert("Produto esgotado!");
+    addToCart({ ...product, quantidade: quantityToAdd, selectedColor });
+    setStock(stock - quantityToAdd);
   };
 
   return (
@@ -54,7 +55,7 @@ export default function ProductCard({ product }: Props) {
         <p className="text-gray-700 text-sm sm:text-base mb-2">{product.description}</p>
       )}
 
-      <p className="text-gray-600 text-sm mb-1">Estoque: {quantity}</p>
+      <p className="text-gray-600 text-sm mb-1">Estoque: {stock}</p>
 
       <p className="text-lg sm:text-xl font-semibold mb-3 text-gray-800">
         {product.price.toLocaleString("pt-AO")} Kz
@@ -87,6 +88,12 @@ export default function ProductCard({ product }: Props) {
           })}
         </div>
       )}
+
+      <div className="flex items-center gap-4 mb-4">
+        <button onClick={() => setQuantityToAdd(q => Math.max(1, q - 1))} className="bg-gray-200 px-3 py-1 rounded-lg">-</button>
+        <span>{quantityToAdd}</span>
+        <button onClick={() => setQuantityToAdd(q => q + 1)} className="bg-gray-200 px-3 py-1 rounded-lg">+</button>
+      </div>
 
       <button
         onClick={handleAddToCart}

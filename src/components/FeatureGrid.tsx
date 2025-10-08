@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { motion } from "framer-motion";
+
 const features = [
   {
     id: 1,
@@ -83,14 +86,26 @@ const features = [
   },
 ];
 
+const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, "-") // Replace spaces with -
+    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+    .replace(/\-\-+/g, "-") // Replace multiple - with single -
+    .replace(/^-+/, "") // Trim - from start of text
+    .replace(/-+$/, ""); // Trim - from end of text
+};
+
 export default function FeatureGrid() {
   return (
     <section className="w-full -mt-40 px-6 py-12 relative z-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {features.map((item) => (
-          <div
+          <motion.div
             key={item.id}
             className="bg-white rounded-lg p-6 flex flex-col text-left h-[480px]"
+            whileHover={{ scale: 1.05 }}
           >
             {/* Título */}
             <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -110,10 +125,12 @@ export default function FeatureGrid() {
             </div>
 
             {/* Link "Ver mais" */}
-            <button className="mt-4 text-blue-600 hover:text-orange-600 text-sm font-semibold text-left">
-              Ver mais
-            </button>
-          </div>
+            <Link href={`/produtos?category=${slugify(item.title)}`} legacyBehavior>
+              <a className="mt-4 text-blue-600 hover:text-orange-600 text-sm font-semibold text-left">
+                Ver mais
+              </a>
+            </Link>
+          </motion.div>
         ))}
       </div>
     </section>
