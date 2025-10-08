@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { Product } from "../data/products";
-import { useCart } from "../context/CartContext";
 import { Star, Heart } from "lucide-react";
 import Link from 'next/link';
 
@@ -11,20 +10,9 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
-  const { addToCart } = useCart();
-  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "");
-  const [stock, setStock] = useState(product.quantity ?? 10);
-  const [quantityToAdd, setQuantityToAdd] = useState(1);
   const [favorite, setFavorite] = useState(false);
 
   const rating = 4;
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent the link from being triggered
-    if (stock < quantityToAdd) return alert("Produto esgotado!");
-    addToCart({ ...product, quantidade: quantityToAdd, selectedColor });
-    setStock(stock - quantityToAdd);
-  };
 
   return (
     <Link href={`/produtos/${product.id}`}>
@@ -58,8 +46,6 @@ export default function ProductCard({ product }: Props) {
           <p className="text-gray-700 text-sm sm:text-base mb-2">{product.description}</p>
         )}
 
-        <p className="text-gray-600 text-sm mb-1">Estoque: {stock}</p>
-
         <p className="text-lg sm:text-xl font-semibold mb-3 text-gray-800">
           {product.originalPrice && product.originalPrice > product.price && (
             <span className="text-gray-500 line-through mr-2">
@@ -76,45 +62,14 @@ export default function ProductCard({ product }: Props) {
           )}
         </p>
 
-        {product.colors && (
-          <div className="flex gap-2 mb-3">
-            {product.colors.map((c) => {
-              const colorStyle =
-                c.toLowerCase() === "preto"
-                  ? "#000"
-                  : c.toLowerCase() === "branco"
-                  ? "#fff"
-                  : c.toLowerCase() === "azul"
-                  ? "#3b82f6"
-                  : c.toLowerCase() === "marrom"
-                  ? "#8b4513"
-                  : c.toLowerCase();
+        {/* Removed color selection from ProductCard */}
 
-              return (
-                <button
-                  key={c}
-                  onClick={(e) => { e.stopPropagation(); setSelectedColor(c); }}
-                  className={`w-6 h-6 rounded-full border-2 transition ${
-                    selectedColor === c ? "border-black" : "border-gray-300"
-                  }`}
-                  style={{ backgroundColor: colorStyle }}
-                />
-              );
-            })}
-          </div>
-        )}
-
-        <div className="flex items-center gap-4 mb-4">
-          <button onClick={(e) => { e.stopPropagation(); setQuantityToAdd(q => Math.max(1, q - 1)); }} className="bg-gray-200 px-3 py-1 rounded-lg">-</button>
-          <span>{quantityToAdd}</span>
-          <button onClick={(e) => { e.stopPropagation(); setQuantityToAdd(q => q + 1); }} className="bg-gray-200 px-3 py-1 rounded-lg">+</button>
-        </div>
+        {/* Removed quantity controls from ProductCard */}
 
         <button
-          onClick={handleAddToCart}
           className="bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg shadow-md hover:bg-blue-700 transition text-sm sm:text-base w-full sm:w-auto"
         >
-          Adicionar ao Carrinho
+          Ver Mais Detalhes
         </button>
       </div>
     </Link>
