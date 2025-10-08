@@ -10,17 +10,22 @@ interface OrderDetails extends Order {
 }
 
 const OrderDetailsPage = () => {
-  const { id } = useParams();
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [deliveryDetails, setDeliveryDetails] = useState('');
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     if (id) {
       const fetchOrder = async () => {
-        const response = await fetch(`/api/orders/${id}`);
+        const response = await fetch(`/api/admin/orders/${id}`); // Use admin API
         if (response.ok) {
           const data = await response.json();
           setOrder(data);
+          if (data.estimatedDelivery) {
+            setDeliveryDetails(data.estimatedDelivery);
+          }
+        } else {
+          setMessage({ type: 'error', text: 'Failed to fetch order details.' });
         }
       };
       fetchOrder();
@@ -28,11 +33,49 @@ const OrderDetailsPage = () => {
   }, [id]);
 
   const handleApproveOrder = async () => {
-    // Approve order logic here
+    if (!order) return;
+    try {
+      const response = await fetch(`/api/admin/orders/${id}/approve`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deliveryDetails }),
+      });
+
+      if (response.ok) {
+        const updatedOrder = await response.json();
+        setOrder(updatedOrder);
+        setMessage({ type: 'success', text: 'Order approved successfully!' });
+      } else {
+        const errorData = await response.json();
+        setMessage({ type: 'error', text: errorData.message || 'Failed to approve order.' });
+      }
+    } catch (error) {
+      console.error('Error approving order:', error);
+      setMessage({ type: 'error', text: 'An unexpected error occurred.' });
+    }
   };
 
   const handleDeliveryDetailsSubmit = async () => {
-    // Submit delivery details logic here
+    if (!order) return;
+    try {
+      const response = await fetch(`/api/admin/orders/${id}/delivery`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estimatedDelivery: deliveryDetails }),
+      });
+
+      if (response.ok) {
+        const updatedOrder = await response.json();
+        setOrder(updatedOrder);
+        setMessage({ type: 'success', text: 'Delivery details updated successfully!' });
+      } else {
+        const errorData = await response.json();
+        setMessage({ type: 'error', text: errorData.message || 'Failed to update delivery details.' });
+      }
+    } catch (error) {
+      console.error('Error updating delivery details:', error);
+      setMessage({ type: 'error', text: 'An unexpected error occurred.' });
+    }
   };
 
   if (!order) {
@@ -42,6 +85,11 @@ const OrderDetailsPage = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Order Details</h1>
+      {message && (
+        <div className={`p-3 mb-4 rounded ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+          {message.text}
+        </div>
+      )}
       <div>
         <p><strong>Order ID:</strong> {order.id}</p>
         <p><strong>Customer:</strong> {order.guestName || 'Registered User'}</p>
@@ -70,14 +118,13 @@ const OrderDetailsPage = () => {
         )}
         <div className="mt-4">
           <h2 className="text-xl font-semibold mb-2">Actions</h2>
-          {order.status === 'PENDING_APPROVAL' && (
+          {order.status === 'PENDING_APPROVAL' || (order.status === 'PENDING_PAYMENT' && order.paymentMethod === 'BANK_TRANSFER') ? (
             <button onClick={handleApproveOrder} className="bg-green-500 text-white px-4 py-2 rounded mr-2">Approve Order</button>
-          )}
-          {order.status === 'PENDING_PAYMENT' && order.paymentMethod === 'BANK_TRANSFER' && (
-             <button onClick={handleApproveOrder} className="bg-green-500 text-white px-4 py-2 rounded mr-2">Approve Order</button>
+          ) : (
+            <p className="text-gray-600">Order is {order.status}. No approval needed.</p>
           )}
           <div className="mt-2">
-            <textarea value={deliveryDetails} onChange={(e) => setDeliveryDetails(e.target.value)} placeholder="Enter delivery details (date, time, location)" className="w-full p-2 border rounded"></textarea>
+            <textarea value={deliveryDetails} onChange={(e) => setDeliveryDetails(e.target.value)} placeholder="Enter estimated delivery details (e.g., '2-3 business days')" className="w-full p-2 border rounded"></textarea>
             <button onClick={handleDeliveryDetailsSubmit} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Submit Delivery Details</button>
           </div>
         </div>

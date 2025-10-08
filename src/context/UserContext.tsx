@@ -26,23 +26,43 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { clearCart } = useCart(); // Access clearCart from CartContext
 
   useEffect(() => {
-    const fetchSession = async () => {
+    const loadUserFromLocalStorage = () => {
       try {
-        const session = await getAuthSession();
-        if (session && session.user) {
-          setUser(session.user);
+        const mockAuthToken = localStorage.getItem('mockAuthToken');
+        if (mockAuthToken) {
+          const parsedUser: User = JSON.parse(mockAuthToken);
+          setUser(parsedUser);
+          console.log("UserContext: User loaded from localStorage", parsedUser);
+          console.log("UserContext: isAdmin status from localStorage", parsedUser.isAdmin);
+        } else {
+          setUser(null);
         }
       } catch (error) {
-        console.error("Error fetching auth session:", error);
+        console.error("Error parsing mockAuthToken from localStorage:", error);
+        localStorage.removeItem('mockAuthToken'); // Clear invalid token
+        setUser(null);
       } finally {
         setLoading(false);
       }
     };
-    fetchSession();
+
+    // Listen for changes to localStorage (e.g., from login/logout in other tabs)
+    const handleStorageChange = () => {
+      loadUserFromLocalStorage();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    loadUserFromLocalStorage(); // Initial load
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const login = (userData: User) => {
     setUser(userData);
+    // The localStorage.setItem is handled in login/page.tsx
+    // This useEffect will pick up the change via the 'storage' event listener
   };
 
   const logout = () => {

@@ -52,7 +52,11 @@ export default function LoginPage() {
 
       login(data.user);
       localStorage.setItem('mockAuthToken', JSON.stringify(data.user)); // Store token
-      router.push("/"); // Redirect to home or previous page
+      if (data.user.isAdmin) {
+        router.push("/admin/orders"); // Redirect admin to admin orders page
+      } else {
+        router.push("/"); // Redirect regular user to home page
+      }
     } catch (err) {
       console.error(err);
       setErro("Erro no servidor. Tente novamente mais tarde.");

@@ -11,7 +11,17 @@ export async function GET(req: Request) {
   }
 
   try {
+    const { searchParams } = new URL(req.url);
+    const statusParam = searchParams.get('status');
+
+    let whereClause: any = {};
+    if (statusParam) {
+      const statuses = statusParam.split(',').map(s => s.trim().toUpperCase());
+      whereClause.status = { in: statuses };
+    }
+
     const orders = await prisma.order.findMany({
+      where: whereClause,
       include: {
         user: { select: { id: true, name: true, email: true } },
         items: true,

@@ -173,6 +173,16 @@ export default function Header() {
         {user ? (
           <div className="flex items-center gap-2">
             <span className="font-semibold">Olá, {user.name}</span>
+            {console.log("Navbar: user.isAdmin", user.isAdmin)}
+            {!!user.isAdmin ? (
+              <Link href="/admin/orders" className="font-semibold px-3 py-2 rounded-md hover:bg-gray-200">
+                Pedidos para Aprovação
+              </Link>
+            ) : (
+              <Link href="/meus-pedidos" className="font-semibold px-3 py-2 rounded-md hover:bg-gray-200">
+                Meus Pedidos
+              </Link>
+            )}
             <button
               onClick={logout}
               className="font-semibold px-3 py-2 rounded-md hover:bg-gray-200"
