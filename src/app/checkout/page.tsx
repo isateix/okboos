@@ -104,8 +104,8 @@ const CheckoutPage = () => {
 
       if (response.ok) {
         const order = await response.json();
-        setShowSuccessModal(true);
         clearCart();
+        router.push('/meus-pedidos');
       } else {
         console.error('Failed to create order');
         alert('Falha ao finalizar o pedido.');
@@ -114,11 +114,6 @@ const CheckoutPage = () => {
       console.error('Error creating order:', error);
       alert('Erro ao finalizar o pedido.');
     }
-  };
-
-  const handleCloseSuccessModal = () => {
-    setShowSuccessModal(false);
-    router.push('/meus-pedidos');
   };
 
 
@@ -193,13 +188,6 @@ const CheckoutPage = () => {
           </div>
         </div>
       </form>
-
-      {showSuccessModal && (
-        <SuccessModal
-          message="Seu pedido foi enviado com sucesso e receberá a aprovação!"
-          onClose={handleCloseSuccessModal}
-        />
-      )}
     </div>
   );
 };

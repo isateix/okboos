@@ -93,7 +93,7 @@ export default function Header() {
       <div className="hidden md:flex bg-white px-8 py-3 items-center gap-6 border-b">
         {/* LOGO */}
         <Link href="/" className="flex flex-col items-center">
-          <span className="text-2xl font-bold">OkBoss</span>
+          <span className="text-2xl font-bold"><span className="text-orange-600">Ok</span>Boss</span>
           <span className="text-sm text-gray-600">Comércio e Serviços</span>
         </Link>
 
