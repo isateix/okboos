@@ -12,6 +12,7 @@ import SuccessModal from '../../../components/SuccessModal'; // Import SuccessMo
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.id as string;
+  console.log("ProductDetailPage: productId from useParams:", productId);
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState<Product | null>(null);
@@ -24,6 +25,7 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     const foundProduct = products.find(p => p.id === productId);
+    console.log("ProductDetailPage: foundProduct:", foundProduct);
     if (foundProduct) {
       setProduct(foundProduct);
       setStock(foundProduct.quantity ?? 10);
