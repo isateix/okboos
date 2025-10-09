@@ -1,33 +1,45 @@
 import { NextResponse } from "next/server";
-import { getServerAuthSession } from 'src/lib/auth'; // Corrected path
-import prisma from "../../../../lib/prisma";
+import prisma from "@/lib/prisma";
 
 export async function GET(req: Request) {
-  console.log("API meus-pedidos: Request headers:", req.headers);
-  const session = await getServerAuthSession(req as any); // Cast req to any for now
-  console.log("API meus-pedidos: Session object:", session);
-
-  if (!session || !session.user || !session.user.id) {
-    console.log("Não autenticado ou userId não disponível na API de meus-pedidos");
-    return NextResponse.json({ message: 'Não autenticado' }, { status: 401 });
-  }
-
   try {
-    const userId = session.user.id;
+    // 🔒 Pegamos o header Authorization: "Bearer {id}"
+    const authHeader = req.headers.get("authorization");
 
-    console.log("📦 Buscando pedidos do usuário:", userId);
+    if (!authHeader) {
+      console.log("⚠️ Nenhum cabeçalho de autorização encontrado");
+      return NextResponse.json({ message: "Não autenticado" }, { status: 401 });
+    }
 
-    // 3️⃣ Buscar os pedidos desse usuário
+    // Extrai o conteúdo do Bearer
+    const rawToken = authHeader.replace("Bearer ", "").trim();
+
+    // Tenta converter o token em objeto (JSON)
+    let user;
+    try {
+      user = JSON.parse(rawToken);
+    } catch {
+      console.log("⚠️ Token inválido, não é JSON válido");
+      return NextResponse.json({ message: "Token inválido" }, { status: 401 });
+    }
+
+    if (!user?.id) {
+      console.log("⚠️ ID do usuário ausente");
+      return NextResponse.json({ message: "Usuário inválido" }, { status: 401 });
+    }
+
+    console.log("📦 Buscando pedidos do usuário ID:", user.id);
+
+    // 🔎 Busca pedidos reais desse usuário
     const orders = await prisma.order.findMany({
-      where: { userId },
+      where: { userId: user.id },
       include: {
-        items: true, // se tiver relação com itens do pedido
-        shippingAddress: true, // se existir
+        items: true,
+        shippingAddress: true,
       },
       orderBy: { createdAt: "desc" },
     });
 
-    // 4️⃣ Retornar os pedidos
     return NextResponse.json(orders, { status: 200 });
   } catch (error) {
     console.error("🔥 Erro ao buscar pedidos:", error);

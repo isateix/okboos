@@ -122,7 +122,19 @@ export async function getServerAuthSession(req: NextRequest): Promise<Session | 
 
 
 
+  console.log("getServerAuthSession: Authorization header:", authorizationHeader);
+
+
+
+
+
+
+
   if (!authorizationHeader) {
+
+
+
+    console.log("getServerAuthSession: No Authorization header, returning null.");
 
 
 
@@ -138,7 +150,11 @@ export async function getServerAuthSession(req: NextRequest): Promise<Session | 
 
 
 
-    const token = authorizationHeader.split(' ')[1]; // Assuming "Bearer TOKEN"
+  const token = authorizationHeader.split(' ')[1]; // Assuming "Bearer TOKEN"
+
+
+
+  console.log("getServerAuthSession: Token after split:", token);
 
 
 
@@ -146,7 +162,19 @@ export async function getServerAuthSession(req: NextRequest): Promise<Session | 
 
 
 
-    console.log("getServerAuthSession: Raw token before parsing:", token);
+  if (!token) {
+
+
+
+    console.log("getServerAuthSession: No token found after split, returning null.");
+
+
+
+    return null;
+
+
+
+  }
 
 
 
@@ -154,55 +182,15 @@ export async function getServerAuthSession(req: NextRequest): Promise<Session | 
 
 
 
-    if (!token) {
+  try {
 
 
 
+    const user = JSON.parse(token) as UserSession;
 
 
 
-
-      console.log("getServerAuthSession: No token found after split, returning null.");
-
-
-
-
-
-
-
-      return null;
-
-
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-    try {
-
-
-
-
-
-
-
-      const user = JSON.parse(token) as UserSession;
+    console.log("getServerAuthSession: Parsed user object:", user);
 
 
 

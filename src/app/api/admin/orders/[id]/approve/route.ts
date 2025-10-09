@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../../../lib/prisma";
+import prisma from "@/lib/prisma";
 import { getServerAuthSession } from 'src/lib/auth';
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
@@ -12,11 +12,15 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   const orderId = parseInt(params.id, 10);
   const { deliveryDetails } = await req.json();
 
+  console.log("API Approve Order: orderId:", orderId);
+  console.log("API Approve Order: deliveryDetails:", deliveryDetails);
+
   if (isNaN(orderId)) {
     return NextResponse.json({ message: 'ID do pedido inválido' }, { status: 400 });
   }
 
   try {
+    console.log("API Approve Order: Attempting Prisma update for orderId:", orderId);
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
       data: {
@@ -29,6 +33,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         shippingAddress: true,
       },
     });
+    console.log("API Approve Order: Prisma update successful. Updated order:", updatedOrder.id);
     return NextResponse.json(updatedOrder, { status: 200 });
   } catch (error) {
     console.error('Error approving order:', error);

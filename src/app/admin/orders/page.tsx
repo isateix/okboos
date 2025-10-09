@@ -15,7 +15,20 @@ const AdminOrdersPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`/api/admin/orders?status=${filterStatus}`);
+        const mockAuthToken = localStorage.getItem('mockAuthToken');
+        const headers: HeadersInit = {
+          'Content-Type': 'application/json',
+        };
+
+        if (mockAuthToken) {
+          headers['Authorization'] = `Bearer ${mockAuthToken}`;
+        }
+
+        console.log("AdminOrdersPage: Sending Authorization header:", headers['Authorization']);
+
+        const response = await fetch(`/api/admin/orders?status=${filterStatus}`, {
+          headers: headers,
+        });
         if (response.ok) {
           const data = await response.json();
           setOrders(data);

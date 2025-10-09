@@ -5,8 +5,10 @@ import { getServerAuthSession } from 'src/lib/auth';
 
 export async function GET(req: Request) {
   const session = await getServerAuthSession(req as any);
+  console.log("API Admin Orders: Session object:", session);
 
   if (!session || !session.user || !session.user.isAdmin) {
+    console.log("API Admin Orders: Authorization failed. isAdmin:", session?.user?.isAdmin);
     return NextResponse.json({ message: 'Não autorizado' }, { status: 403 });
   }
 

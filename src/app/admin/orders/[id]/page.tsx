@@ -10,6 +10,8 @@ interface OrderDetails extends Order {
 }
 
 const OrderDetailsPage = () => {
+  const { id } = useParams();
+  console.log("Client-side Order ID from useParams:", id);
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [deliveryDetails, setDeliveryDetails] = useState('');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -17,7 +19,20 @@ const OrderDetailsPage = () => {
   useEffect(() => {
     if (id) {
       const fetchOrder = async () => {
-        const response = await fetch(`/api/admin/orders/${id}`); // Use admin API
+        const mockAuthToken = localStorage.getItem('mockAuthToken');
+        const headers: HeadersInit = {
+          'Content-Type': 'application/json',
+        };
+
+        if (mockAuthToken) {
+          headers['Authorization'] = `Bearer ${mockAuthToken}`;
+        }
+
+        console.log("AdminOrderDetailsPage: Sending Authorization header:", headers['Authorization']);
+
+        const response = await fetch(`/api/admin/orders/${id}`, {
+          headers: headers,
+        });
         if (response.ok) {
           const data = await response.json();
           setOrder(data);
@@ -25,7 +40,9 @@ const OrderDetailsPage = () => {
             setDeliveryDetails(data.estimatedDelivery);
           }
         } else {
-          setMessage({ type: 'error', text: 'Failed to fetch order details.' });
+          const errorData = await response.json();
+          console.error('Failed to fetch order details:', response.status, errorData);
+          setMessage({ type: 'error', text: errorData.message || 'Failed to fetch order details.' });
         }
       };
       fetchOrder();
@@ -35,9 +52,20 @@ const OrderDetailsPage = () => {
   const handleApproveOrder = async () => {
     if (!order) return;
     try {
+      const mockAuthToken = localStorage.getItem('mockAuthToken');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      if (mockAuthToken) {
+        headers['Authorization'] = `Bearer ${mockAuthToken}`;
+      }
+
+      console.log("AdminOrderDetailsPage: Approving with Authorization header:", headers['Authorization']);
+
       const response = await fetch(`/api/admin/orders/${id}/approve`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: headers,
         body: JSON.stringify({ deliveryDetails }),
       });
 
@@ -58,9 +86,20 @@ const OrderDetailsPage = () => {
   const handleDeliveryDetailsSubmit = async () => {
     if (!order) return;
     try {
+      const mockAuthToken = localStorage.getItem('mockAuthToken');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      if (mockAuthToken) {
+        headers['Authorization'] = `Bearer ${mockAuthToken}`;
+      }
+
+      console.log("AdminOrderDetailsPage: Submitting delivery details with Authorization header:", headers['Authorization']);
+
       const response = await fetch(`/api/admin/orders/${id}/delivery`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: headers,
         body: JSON.stringify({ estimatedDelivery: deliveryDetails }),
       });
 
