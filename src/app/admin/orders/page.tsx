@@ -83,20 +83,20 @@ const AdminOrdersPage = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="py-2 px-4 border-b">Order ID</th>
-                <th className="py-2 px-4 border-b">Customer</th>
+                <th className="py-2 px-4 border-b">ID do Pedido</th>
+                <th className="py-2 px-4 border-b">Cliente</th>
                 <th className="py-2 px-4 border-b">Total</th>
                 <th className="py-2 px-4 border-b">Status</th>
-                <th className="py-2 px-4 border-b">Payment Method</th>
-                <th className="py-2 px-4 border-b">Date</th>
-                <th className="py-2 px-4 border-b">Actions</th>
+                <th className="py-2 px-4 border-b">Método de Pagamento</th>
+                <th className="py-2 px-4 border-b">Data</th>
+                <th className="py-2 px-4 border-b">Ações</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order) => (
                 <tr key={order.id}>
                   <td className="py-2 px-4 border-b">{order.id}</td>
-                  <td className="py-2 px-4 border-b">{order.guestName || 'Registered User'}</td>
+                  <td className="py-2 px-4 border-b">{order.user?.name || order.guestName || 'Usuário Convidado'}</td>
                   <td className="py-2 px-4 border-b">{order.total} AOA</td>
                   <td className="py-2 px-4 border-b">{order.status}</td>
                   <td className="py-2 px-4 border-b">{order.paymentMethod}</td>
