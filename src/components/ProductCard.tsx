@@ -67,7 +67,7 @@ export default function ProductCard({ product }: Props) {
         {/* Removed quantity controls from ProductCard */}
 
         <button
-          className="bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg shadow-md hover:bg-blue-700 transition text-sm sm:text-base w-full sm:w-auto"
+          className="bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg shadow-md hover:bg-blue-700 transition text-sm sm:text-base w-full sm:w-auto cursor-pointer"
         >
           Ver Mais Detalhes
         </button>

@@ -124,7 +124,7 @@ export default function Sobre() {
 {/* Seção de imagens - todas iguais */}
 <section className="grid md:grid-cols-3 gap-6 py-12">
   <Image
-    src="/images/6.jpg"
+    src="/images/casa.jpg"
     alt="Importação"
     width={600}
     height={400}
@@ -132,7 +132,7 @@ export default function Sobre() {
   />
 
   <Image
-    src="/images/5.jpg"
+    src="/images/entrega.jpg"
     alt="Entrega"
     width={600}
     height={400}
