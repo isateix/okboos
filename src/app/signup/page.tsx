@@ -1,11 +1,11 @@
 "use client";
 
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Loader2 } from "lucide-react"; // Import Loader2 icon
+
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import Link from "next/link";
+import SuccessModal from "../../components/SuccessModal"; // Import SuccessModal
 
 export default function SignupPage() {
   const router = useRouter();
@@ -17,6 +17,8 @@ export default function SignupPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // State for modal visibility
+  const [successMessage, setSuccessMessage] = useState(""); // State for modal message
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -59,14 +61,21 @@ export default function SignupPage() {
       }
 
       // Sucesso
-      alert("Conta criada com sucesso! Faça login para continuar.");
-      router.push("/login");
+      setSuccessMessage("Conta criada com sucesso! Faça login para continuar.");
+      setShowSuccessModal(true);
+      // router.push("/login"); // Redirect after modal closes
     } catch (err) {
       console.error(err);
       setError("Erro no servidor. Tente novamente mais tarde.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+    setSuccessMessage("");
+    router.push("/login"); // Redirect after modal closes
   };
 
   return (
@@ -128,7 +137,7 @@ export default function SignupPage() {
 
             <button
               type="submit"
-              className="bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
               {loading ? (
@@ -147,6 +156,13 @@ export default function SignupPage() {
           </p>
         </div>
       </div>
+
+      {showSuccessModal && (
+        <SuccessModal
+          message={successMessage}
+          onClose={handleCloseSuccessModal}
+        />
+      )}
     </div>
   );
 }

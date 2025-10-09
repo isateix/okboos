@@ -66,13 +66,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div className="flex items-center justify-center min-h-screen bg-[#f6eee9] px-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-2">
-            Ok<span className="text-blue-600">Boss</span>
+          <h1 className="text-5xl font-extrabold text-[#5c3b3b] mb-2">
+            Ok<span className="text-orange-600">Boss</span>
           </h1>
-          <p className="text-gray-600 mt-2 text-lg">Bem-vindo de volta!</p>
+          <p className="text-gray-700 mt-2 text-lg">Bem-vindo de volta!</p>
         </div>
 
         <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -87,7 +87,7 @@ export default function LoginPage() {
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               disabled={loading}
             />
             <input
@@ -96,13 +96,13 @@ export default function LoginPage() {
               placeholder="Senha"
               value={formData.senha}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               disabled={loading}
             />
             {erro && <p className="text-red-500 text-sm mb-3 text-center">{erro}</p>}
             <button
               type="submit"
-              className="bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
               {loading ? (
@@ -113,9 +113,9 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-gray-600 text-base">
+          <p className="mt-6 text-center text-gray-700 text-base">
             Não tem uma conta?{" "}
-            <Link href="/signup" className="text-blue-600 hover:underline font-medium">
+            <Link href="/signup" className="text-orange-600 hover:underline font-medium">
               Criar conta
             </Link>
           </p>
