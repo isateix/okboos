@@ -67,7 +67,7 @@ export default function ContatoPage() {
             name="nome"
             type="text"
             placeholder="Seu Nome Completo"
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             value={formData.nome}
             onChange={handleChange}
             required
@@ -76,7 +76,7 @@ export default function ContatoPage() {
             name="email"
             type="email"
             placeholder="Seu Melhor E-mail"
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             value={formData.email}
             onChange={handleChange}
             required
@@ -85,7 +85,7 @@ export default function ContatoPage() {
             name="telefone"
             type="tel"
             placeholder="Telefone (Opcional)"
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             value={formData.telefone}
             onChange={handleChange}
           />
@@ -93,7 +93,7 @@ export default function ContatoPage() {
             name="assunto"
             type="text"
             placeholder="Assunto da Mensagem"
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             value={formData.assunto}
             onChange={handleChange}
             required
@@ -101,14 +101,14 @@ export default function ContatoPage() {
           <textarea
             name="mensagem"
             placeholder="Sua Mensagem"
-            className="p-3 border border-gray-300 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className="p-3 border border-gray-300 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
             value={formData.mensagem}
             onChange={handleChange}
             required
           ></textarea>
           <button
             type="submit"
-            className="bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-orange-600 text-white p-3 rounded-lg font-semibold hover:bg-orange-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={loading}
           >
             {loading ? 'Enviando...' : 'Enviar Mensagem'}

@@ -147,7 +147,7 @@ export default function ProductDetailPage() {
 
           <button
             onClick={handleAddToCart}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-md mt-auto"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-md mt-auto cursor-pointer"
           >
             Adicionar {quantityToAdd} ao Carrinho
           </button>

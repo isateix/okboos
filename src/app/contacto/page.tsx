@@ -112,7 +112,7 @@ export default function Contacto() {
     {/* Imagem */}
     <div className="flex-1 flex justify-center">
       <Image
-        src="/images/7.png"
+        src="/images/entrega.png"
         alt="Imagem de contacto"
         width={400}
         height={400}

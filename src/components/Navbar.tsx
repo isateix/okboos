@@ -59,14 +59,21 @@ export default function Header() {
     const query = encodeURIComponent(term.trim());
     let productCategories: string[] = [];
 
+    console.log("Navbar: performSearch - displayCategory:", displayCategory);
+
     if (displayCategory === "Todos") {
       productCategories = []; // No category filter
     } else {
       productCategories = categoryMap[displayCategory] || [];
     }
 
+    console.log("Navbar: performSearch - productCategories from map:", productCategories);
+
     const slugifiedProductCategories = productCategories.map(cat => slugify(cat));
+    console.log("Navbar: performSearch - slugifiedProductCategories:", slugifiedProductCategories);
+
     const categoryQuery = slugifiedProductCategories.length > 0 ? `&category=${encodeURIComponent(slugifiedProductCategories.join(','))}` : "";
+    console.log("Navbar: performSearch - categoryQuery:", categoryQuery);
 
     if (query || categoryQuery) {
       router.push(`/produtos?search=${query}${categoryQuery}`);
@@ -86,7 +93,7 @@ export default function Header() {
       <div className="hidden md:flex bg-white px-8 py-3 items-center gap-6 border-b">
         {/* LOGO */}
         <Link href="/" className="flex flex-col items-center">
-          <span className="text-2xl font-bold">OkBoss</span>
+          <span className="text-2xl font-bold"><span className="text-orange-600">Ok</span>Boss</span>
           <span className="text-sm text-gray-600">Comércio e Serviços</span>
         </Link>
 

@@ -20,6 +20,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   // Carregar do localStorage ao iniciar
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("carrinho") || "[]");
+    console.log("CartContext: Loading cart from localStorage:", savedCart);
     setCart(savedCart);
   }, []);
 
@@ -32,12 +33,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (produto: ProdutoCarrinho) => {
     setCart(prev => {
+      console.log("CartContext: addToCart - previous cart state:", prev);
+      console.log("CartContext: addToCart - product to add:", produto);
       const index = prev.findIndex(p => p.id === produto.id && p.selectedColor === produto.selectedColor);
+      console.log("CartContext: addToCart - index found:", index);
       if (index >= 0) {
         const newCart = [...prev];
         newCart[index].quantidade += produto.quantidade;
+        console.log("CartContext: addToCart - new cart state (updated existing):", newCart);
         return newCart;
       } else {
+        console.log("CartContext: addToCart - new cart state (added new):", [...prev, produto]);
         return [...prev, produto];
       }
     });
