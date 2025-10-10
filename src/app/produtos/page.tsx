@@ -9,7 +9,7 @@ interface Props {
 export default function ProdutosPage({ searchParams }: Props) {
   const search = searchParams?.search?.toLowerCase() || "";
   let categoryParams = searchParams?.category?.toLowerCase() || "";
-  let selectedCategories: string[] = [];
+  let selectedCategories: string[] = []; 
 
   if (categoryParams && categoryParams !== 'undefined') {
     selectedCategories = categoryParams.split(',').map(cat => cat.trim());
