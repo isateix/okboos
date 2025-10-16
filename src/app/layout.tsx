@@ -1,36 +1,25 @@
+// src/app/layout.tsx
 import "./globals.css";
-import { CartProvider } from "../context/CartContext";
 import { LanguageProvider } from "../context/LanguageContext";
+import { CartProvider } from "../context/CartContext";
 import { UserProvider } from "../context/UserContext";
 import { AuthProvider } from "../context/AuthContext";
-import { Rufina } from "next/font/google";
-import ClientLayout from "./client-layout";
-
-const rufina = Rufina({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  display: "swap",
-  variable: "--font-rufina",
-});
-
-export const metadata = {
-  title: "ShopConnect",
-  description: "Aplicação de e-commerce em Next.js",
-};
+import Header from "../components/Header";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt">
-      <body className={`${rufina.className} bg-[#f6eee9] text-gray-900`}>
-        <AuthProvider>
-          <CartProvider>
-            <UserProvider>
-              <LanguageProvider>
-                <ClientLayout>{children}</ClientLayout>
-              </LanguageProvider>
-            </UserProvider>
-          </CartProvider>
-        </AuthProvider>
+      <body className="bg-white text-gray-900">
+        <LanguageProvider>
+          <AuthProvider>
+            <CartProvider>
+              <UserProvider>
+                <Header />
+                <main className="min-h-screen">{children}</main>
+              </UserProvider>
+            </CartProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
