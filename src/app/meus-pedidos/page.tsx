@@ -88,13 +88,10 @@ const MeusPedidosPage = () => {
 
           setOrders(data);
 
-        } catch (err: any) {
-
-          console.error('Error fetching orders:', err);
-
-          setError(err.message || 'Erro ao carregar seus pedidos.');
-
-        } finally {
+        } catch (err: unknown) {
+  console.error('Error fetching orders:', err);
+  setError(err instanceof Error ? err.message : 'Erro ao carregar seus pedidos.');
+} finally {
 
           setLoading(false);
 

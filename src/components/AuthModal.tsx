@@ -17,9 +17,9 @@ export default function AuthModal() {
   });
   const [erro, setErro] = useState("");
 
-  const handleChange = (e: any) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFormData({ ...formData, [e.target.name]: e.target.value });
+};
 
   const handleLogin = async () => {
     if (!formData.email || !formData.senha) {

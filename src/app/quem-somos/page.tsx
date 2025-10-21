@@ -1,53 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Footer from "../../components/Footer";
 
 export default function Sobre() {
   return (
     <>
-      {/* NAV exclusiva da página Quem Somos */}
-      <nav className="w-full bg-[#232f3e] text-white px-6 md:px-16 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex flex-col items-start">
-          <span className="text-2xl font-bold text-orange-600">OkBoss</span>
-          <span className="text-sm text-gray-300">Comércio e Serviços</span>
-        </div>
-
-        {/* Links + pesquisa */}
-        <div className="flex items-center gap-8">
-          <a href="/" className="hover:text-orange-500 transition">
-            Início
-          </a>
-          <a href="/produtos" className="hover:text-orange-500 transition">
-            Produtos
-          </a>
-
-          {/* Aba de pesquisa */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Pesquisar..."
-              className="text-sm pl-10 pr-3 py-2 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-md"
-            />
-            {/* Ícone de lupa */}
-            <svg
-              className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z"
-              />
-            </svg>
-          </div>
-        </div>
-      </nav>
-
-      {/* Conteúdo principal */}
+      {/* ✅ Mantém apenas o conteúdo principal (sem a NAV local) */}
       <main className="pt-12 px-6 md:px-16">
         {/* Seção Quem Somos */}
         <section className="flex flex-col md:flex-row items-center md:items-start gap-8 py-12">
@@ -61,7 +20,7 @@ export default function Sobre() {
               física, especializada em importar produtos da China para Angola.
             </p>
             <p>
-              Estamos localizados na cidade do Século Novo, São Paulo, e
+              Estamos localizados na cidade do Século Novo São Paulo,
               oferecemos uma ampla variedade de produtos com qualidade garantida
               e preços acessíveis.
             </p>
@@ -87,6 +46,7 @@ export default function Sobre() {
               OkBoss e orientam cada decisão que tomamos.
             </p>
           </div>
+
           <div className="bg-gray-200 p-6 rounded-lg shadow text-center aspect-square flex flex-col justify-center">
             <h3 className="text-xl font-semibold mb-2 text-orange-600">
               Objetivos
@@ -99,6 +59,7 @@ export default function Sobre() {
               expectativas e fortalecer nossa marca no mercado.
             </p>
           </div>
+
           <div className="bg-gray-200 p-6 rounded-lg shadow text-center aspect-square flex flex-col justify-center">
             <h3 className="text-xl font-semibold mb-2 text-orange-600">
               Princípios
@@ -121,34 +82,37 @@ export default function Sobre() {
             </p>
           </div>
         </section>
-{/* Seção de imagens - todas iguais */}
-<section className="grid md:grid-cols-3 gap-6 py-12">
-  <Image
-    src="/images/casa.jpg"
-    alt="Importação"
-    width={600}
-    height={400}
-    className="rounded-lg shadow"
-  />
 
-  <Image
-    src="/images/entrega.jpg"
-    alt="Entrega"
-    width={600}
-    height={400}
-    className="rounded-lg shadow"
-  />
+        {/* Seção de imagens */}
+        <section className="grid md:grid-cols-3 gap-6 py-12">
+          <Image
+            src="/images/casa.jpg"
+            alt="Importação"
+            width={600}
+            height={400}
+            className="rounded-lg shadow"
+          />
 
-  <Image
-    src="/images/8.jpg"
-    alt="Nossa Loja"
-    width={600}
-    height={400}
-    className="rounded-lg shadow"
-  />
-</section>
+          <Image
+            src="/images/entrega.jpg"
+            alt="Entrega"
+            width={600}
+            height={400}
+            className="rounded-lg shadow"
+          />
 
+          <Image
+            src="/images/8.jpg"
+            alt="Nossa Loja"
+            width={600}
+            height={400}
+            className="rounded-lg shadow"
+          />
+        </section>
       </main>
+
+      {/* ✅ Footer global */}
+      <Footer />
     </>
   );
 }

@@ -1,229 +1,74 @@
 // src/lib/auth.ts
-// This is a mock authentication utility for demonstration purposes.
-// In a real application, this would integrate with a proper authentication system (e.g., NextAuth.js).
+// Simulação de autenticação — apenas para demonstração.
+// Em um projeto real, use algo como NextAuth.js ou JWT.
 
-import { NextRequest } from 'next/server';
-
-
+import { NextRequest } from "next/server";
 
 interface UserSession {
-
   id: number;
-
   name: string;
-
   email: string;
-
   isAdmin: boolean;
-
 }
-
-
 
 interface Session {
-
   user: UserSession;
-
   expires: string;
-
 }
 
-
-
+// Autenticação no lado do cliente (usando localStorage)
 export async function getAuthSession(): Promise<Session | null> {
-
-
-
-  if (typeof window === 'undefined') {
-
-
-
+  if (typeof window === "undefined") {
     return null;
-
-
-
   }
 
-
-
-
-
-
-
-  const mockAuthToken = localStorage.getItem('mockAuthToken');
-
-
+  const mockAuthToken = localStorage.getItem("mockAuthToken");
 
   if (mockAuthToken) {
-
-
-
     try {
-
-
-
       const user = JSON.parse(mockAuthToken) as UserSession;
-
-
-
       return {
-
-
-
-        user: user,
-
-
-
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
-
-
-
+        user,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(), // 24h
       };
-
-
-
     } catch (e) {
-
-
-
-      console.error("Error parsing mockAuthToken from localStorage:", e);
-
-
-
-      localStorage.removeItem('mockAuthToken');
-
-
-
+      console.error("Erro ao analisar mockAuthToken do localStorage:", e);
+      localStorage.removeItem("mockAuthToken");
       return null;
-
-
-
     }
-
-
-
   }
-
-
 
   return null;
-
-
-
 }
 
-
-
-export async function getServerAuthSession(req: NextRequest): Promise<Session | null> {
-
-
-
-  const authorizationHeader = req.headers.get('authorization');
-
-
-
+// Autenticação no lado do servidor (para rotas API)
+export async function getServerAuthSession(req: Request | NextRequest): Promise<Session | null> {
+  const authorizationHeader = req.headers.get("authorization");
   console.log("getServerAuthSession: Authorization header:", authorizationHeader);
 
-
-
-
-
-
-
   if (!authorizationHeader) {
-
-
-
-    console.log("getServerAuthSession: No Authorization header, returning null.");
-
-
-
+    console.log("getServerAuthSession: Nenhum cabeçalho de autorização, retornando null.");
     return null;
-
-
-
   }
 
-
-
-
-
-
-
-  const token = authorizationHeader.split(' ')[1]; // Assuming "Bearer TOKEN"
-
-
-
-  console.log("getServerAuthSession: Token after split:", token);
-
-
-
-
-
-
+  const token = authorizationHeader.split(" ")[1]; // Formato: "Bearer TOKEN"
+  console.log("getServerAuthSession: Token extraído:", token);
 
   if (!token) {
-
-
-
-    console.log("getServerAuthSession: No token found after split, returning null.");
-
-
-
+    console.log("getServerAuthSession: Nenhum token encontrado, retornando null.");
     return null;
-
-
-
   }
-
-
-
-
-
-
 
   try {
-
-
-
     const user = JSON.parse(token) as UserSession;
-
-
-
-    console.log("getServerAuthSession: Parsed user object:", user);
-
-
+    console.log("getServerAuthSession: Usuário autenticado:", user);
 
     return {
-
-
-
-      user: user,
-
-
-
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
-
-
-
+      user,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(), // 24h
     };
-
-
-
   } catch (e) {
-
-
-
-    console.error("Error parsing token from Authorization header:", e);
-
-
-
+    console.error("Erro ao analisar token do cabeçalho Authorization:", e);
     return null;
-
-
-
   }
-
-
-
 }

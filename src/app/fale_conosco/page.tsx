@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -22,12 +23,10 @@ export default function ContatoPage() {
     setLoading(true);
     setMessage(null);
 
-    // Simulate API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Simulate success or failure
-      const success = Math.random() > 0.1; // 90% success rate
+      const success = Math.random() > 0.1;
 
       if (success) {
         setMessage({ type: 'success', text: 'Sua mensagem foi enviada com sucesso! Em breve entraremos em contato.' });
@@ -41,8 +40,12 @@ export default function ContatoPage() {
       } else {
         throw new Error('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente.');
       }
-    } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Ocorreu um erro desconhecido.' });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setMessage({ type: 'error', text: error.message });
+      } else {
+        setMessage({ type: 'error', text: 'Ocorreu um erro desconhecido.' });
+      }
     } finally {
       setLoading(false);
     }

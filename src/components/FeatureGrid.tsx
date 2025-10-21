@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import Image from "next/image"; // ✅ import necessário
 import Spinner from "./Spinner";
 
 const slugify = (text: string) => {
@@ -90,9 +91,11 @@ export default function FeatureGrid() {
                   key={index}
                   className="w-full h-[140px] bg-gradient-to-br from-purple-100 via-purple-200 to-purple-300 rounded-lg flex items-center justify-center shadow-inner"
                 >
-                  <img
+                  <Image
                     src={img}
                     alt={`${item.title} ${index + 1}`}
+                    width={160}
+                    height={140}
                     className="w-[90%] h-[90%] object-contain rounded-md"
                   />
                 </div>

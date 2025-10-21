@@ -2,18 +2,30 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Order } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
-const AdminOrdersPage = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [filterStatus, setFilterStatus] = useState<string>('PENDING_APPROVAL,PENDING_PAYMENT'); // Default filter
-  const [loading, setLoading] = useState(true);
+// ✅ Usa o tipo completo do Prisma para Order (com campos opcionais seguros)
+type AdminOrder = Prisma.OrderGetPayload<{
+  include: {
+    user: {
+      select: { name: true };
+    };
+  };
+}> & {
+  guestName?: string;
+};
+
+const AdminOrdersPage: React.FC = () => {
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
+  const [filterStatus, setFilterStatus] = useState<string>('PENDING_APPROVAL,PENDING_PAYMENT');
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       setError(null);
+
       try {
         const mockAuthToken = localStorage.getItem('mockAuthToken');
         const headers: HeadersInit = {
@@ -24,26 +36,24 @@ const AdminOrdersPage = () => {
           headers['Authorization'] = `Bearer ${mockAuthToken}`;
         }
 
-        console.log("AdminOrdersPage: Sending Authorization header:", headers['Authorization']);
+        const response = await fetch(`/api/admin/orders?status=${filterStatus}`, { headers });
 
-        const response = await fetch(`/api/admin/orders?status=${filterStatus}`, {
-          headers: headers,
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setOrders(data);
-        } else {
-          const errorData = await response.json();
-          console.error('Failed to fetch admin orders:', response.status, errorData);
+        if (!response.ok) {
+          const errorData: { message?: string } = await response.json();
           setError(errorData.message || 'Falha ao buscar pedidos de administrador.');
+          return;
         }
-      } catch (err: any) {
-        console.error('Error fetching admin orders:', err);
+
+        const data: AdminOrder[] = await response.json();
+        setOrders(data);
+      } catch (err) {
+        console.error('Erro ao buscar pedidos:', err);
         setError('Erro ao conectar com o servidor. Tente novamente.');
       } finally {
         setLoading(false);
       }
     };
+
     fetchOrders();
   }, [filterStatus]);
 
@@ -72,7 +82,7 @@ const AdminOrdersPage = () => {
           <option value="APPROVED">Aprovados</option>
           <option value="SHIPPED">Enviados</option>
           <option value="DELIVERED">Entregues</option>
-          <option value="CANCELLED">Cancelados</option>
+          <option value="CANCELED">Cancelados</option>
         </select>
       </div>
 
@@ -96,14 +106,21 @@ const AdminOrdersPage = () => {
               {orders.map((order) => (
                 <tr key={order.id}>
                   <td className="py-2 px-4 border-b">{order.id}</td>
-                  <td className="py-2 px-4 border-b">{order.user?.name || order.guestName || 'Usuário Convidado'}</td>
+                  <td className="py-2 px-4 border-b">
+                    {order.user?.name || order.guestName || 'Usuário Convidado'}
+                  </td>
                   <td className="py-2 px-4 border-b">{order.total} AOA</td>
                   <td className="py-2 px-4 border-b">{order.status}</td>
                   <td className="py-2 px-4 border-b">{order.paymentMethod}</td>
-                  <td className="py-2 px-4 border-b">{new Date(order.createdAt).toLocaleDateString()}</td>
                   <td className="py-2 px-4 border-b">
-                    <Link href={`/admin/orders/${order.id}`} className="text-blue-500 hover:underline">
-                      View
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    <Link
+                      href={`/admin/orders/${order.id}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Ver
                     </Link>
                   </td>
                 </tr>

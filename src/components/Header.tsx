@@ -7,14 +7,14 @@ import { ChevronDown, ShoppingCart, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { useUser } from "../context/UserContext";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext"; // Mantido, caso outros componentes usem
 import { slugify } from "../lib/utils/slugify";
 
 export default function Header() {
   const router = useRouter();
   const { cart } = useCart();
   const { user, logout } = useUser();
-  const { openAuthModal } = useAuth();
+  // 🔹 Linha removida: const { openAuthModal } = useAuth();
 
   const [showLang, setShowLang] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
