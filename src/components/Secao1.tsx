@@ -1,140 +1,184 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { products } from "../data/products";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useLanguage } from "../context/LanguageContext";
 
-const cards = products.map(p => ({ id: p.id, title: p.name, img: p.image }));
+interface ImageSet {
+  top: string;
+  bottom: string[];
+}
 
-const Secao1: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [cardsPerView, setCardsPerView] = useState(7);
-  const [hoveredProductId, setHoveredProductId] = useState<string | null>(null);
+const allImageSets: ImageSet[][] = [
+  // Card 1
+  [
+    {
+      top: "/images/601.jpg",
+      bottom: ["/images/600.png", "/images/602.png", "/images/603.png"],
+    },
+    {
+      top: "/images/604.jpg",
+      bottom: ["/images/605.png", "/images/608.png", "/images/607.png"],
+    },
+    {
+      top: "/images/611.jpg",
+      bottom: ["/images/609.png", "/images/610.png", "/images/612.png"],
+    },
+    {
+      top: "/images/613.jpg",
+      bottom: ["/images/614.png", "/images/615.png", "/images/616.png"],
+    },
+  ],
+  // Card 2
+  [
+    {
+      top: "/images/620.jpg",
+      bottom: ["/images/617.png", "/images/618.png", "/images/619.png"],
+    },
+    {
+      top: "/images/621.jpg",
+      bottom: ["/images/622.png", "/images/623.png", "/images/624.png"],
+    },
+    {
+      top: "/images/627.jpg",
+      bottom: ["/images/625.png", "/images/626.png", "/images/628.png"],
+    },
+    {
+      top: "/images/632.jpg",
+      bottom: ["/images/629.png", "/images/630.png", "/images/631.png"],
+    },
+  ],
+  // Card 3
+  [
+    {
+      top: "/images/639.jpg",
+      bottom: ["/images/638.png", "/images/640.png", "/images/641.png"],
+    },
+    {
+      top: "/images/634.jpg",
+      bottom: ["/images/633.png", "/images/635.png", "/images/637.png"],
+    },
+    {
+      top: "/images/645.jpg",
+      bottom: ["/images/642.png", "/images/643.png", "/images/644.png"],
+    },
+    {
+      top: "/images/647.jpg",
+      bottom: ["/images/646.png", "/images/649.png", "/images/648.png"],
+    },
+  ],
+];
 
-  const handleMouseEnter = (productId: string) => setHoveredProductId(productId);
-  const handleMouseLeave = () => setHoveredProductId(null);
+const MultiCardShowcase: React.FC = () => {
+  const [indexes, setIndexes] = useState([0, 0, 0]);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const { t } = useLanguage();
 
+  const handleNext = (cardIndex: number) => {
+    setIndexes((prev) => {
+      const newIndexes = [...prev];
+      newIndexes[cardIndex] = (newIndexes[cardIndex] + 1) % allImageSets[cardIndex].length;
+      return newIndexes;
+    });
+  };
+
+  const handlePrev = (cardIndex: number) => {
+    setIndexes((prev) => {
+      const newIndexes = [...prev];
+      newIndexes[cardIndex] =
+        (newIndexes[cardIndex] - 1 + allImageSets[cardIndex].length) %
+        allImageSets[cardIndex].length;
+      return newIndexes;
+    });
+  };
+
+  // Troca automática de imagens
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1280) setCardsPerView(7);
-      else if (window.innerWidth >= 1024) setCardsPerView(6);
-      else if (window.innerWidth >= 768) setCardsPerView(4);
-      else setCardsPerView(2);
-
-      setCurrentIndex(prev =>
-        Math.min(prev, Math.max(0, Math.ceil(cards.length / cardsPerView) - 1))
-      );
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [cards.length, cardsPerView]);
-
-  const nextSlide = () => {
-    setCurrentIndex(prev =>
-      Math.min(prev + 1, cards.length - cardsPerView)
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex(prev => Math.max(prev - 1, 0));
-  };
-
-  const getSimilarProducts = (productId: string) => {
-    const product = products.find(p => p.id === productId);
-    if (!product || !product.category) return [];
-    return products
-      .filter(p => p.category === product.category && p.id !== productId)
-      .slice(0, 3);
-  };
+    if (hovered === null) return;
+    const interval = setInterval(() => handleNext(hovered), 15000);
+    return () => clearInterval(interval);
+  }, [hovered]);
 
   return (
-    <section className="-mt-16 pb-10 bg-purple-50">
-      <div className="relative px-4 overflow-hidden">
+    <section className="w-full bg-gray-100 py-16 px-6 md:px-16">
+      {/* Texto de destaque */}
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+          {t("multiCard.title")}
+        </h2>
+        <p className="text-lg text-orange-600 mt-3 font-semibold">
+          {t("multiCard.subtitle")}
+        </p>
+      </div>
 
-        {/* Botão anterior */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-purple-500 text-white p-3 rounded-full shadow-lg hover:bg-purple-600 hover:scale-110 transition-all disabled:opacity-50"
-          disabled={currentIndex === 0}
-        >
-          ‹
-        </button>
-
-        {/* Carrossel animado */}
-        <motion.div
-          className="flex gap-3"
-          animate={{ x: `-${currentIndex * (100 / cardsPerView)}%` }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
-          {cards.map(card => {
-            const similarProducts =
-              hoveredProductId === card.id
-                ? getSimilarProducts(card.id)
-                : [];
-            return (
-              <div
-                key={card.id}
-                className="flex-shrink-0 flex flex-col items-center relative"
-                style={{
-                  flex: `0 0 calc(${100 / cardsPerView}% - 0.75rem)`,
-                }}
-                onMouseEnter={() => handleMouseEnter(card.id)}
-                onMouseLeave={handleMouseLeave}
+      {/* Cards */}
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {allImageSets.map((sets, cardIndex) => {
+          const current = sets[indexes[cardIndex]];
+          return (
+            <div
+              key={cardIndex}
+              className="relative bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-500 hover:shadow-2xl"
+              onMouseEnter={() => setHovered(cardIndex)}
+              onMouseLeave={() => setHovered(null)}
+            >
+              {/* Botões */}
+              <button
+                onClick={() => handlePrev(cardIndex)}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow hover:bg-gray-200 z-20"
               >
-                <div className="w-full aspect-square bg-purple-200 rounded-xl flex items-center justify-center p-2 hover:bg-purple-300 transition-all duration-300">
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={card.img}
-                      alt={card.title}
-                      fill
-                      className="object-contain rounded-md"
+                <FaChevronLeft className="text-gray-700 w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleNext(cardIndex)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow hover:bg-gray-200 z-20"
+              >
+                <FaChevronRight className="text-gray-700 w-4 h-4" />
+              </button>
+
+              {/* Imagens */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={indexes[cardIndex]}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -40 }}
+                  transition={{ duration: 0.6 }}
+                  className="flex flex-col h-full"
+                >
+                  {/* Imagem principal */}
+                  <div className="w-full h-[220px] sm:h-[240px] overflow-hidden">
+                    <img
+                      src={current.top}
+                      alt={`Imagem principal ${cardIndex + 1}`}
+                      className="w-full h-full object-cover"
                     />
                   </div>
-                </div>
 
-                <p className="mt-2 text-purple-900 font-medium text-sm text-center">
-                  {card.title}
-                </p>
-
-                {/* Caixinha de produtos similares */}
-                {hoveredProductId === card.id && similarProducts.length > 0 && (
-                  <div className="absolute top-0 left-full ml-2 w-52 bg-white border border-purple-200 p-2 rounded-md shadow-lg z-20">
-                    <p className="font-semibold text-purple-700 text-sm mb-1">
-                      Produtos semelhantes:
-                    </p>
-                    {similarProducts.map(p => (
-                      <div key={p.id} className="flex items-center mb-1 hover:bg-purple-50 p-1 rounded-md">
-                        <Image
-                          src={p.image}
-                          alt={p.name}
-                          width={32}
-                          height={32}
-                          className="object-contain mr-2 rounded"
+                  {/* 3 Imagens inferiores */}
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 p-3 sm:p-4 bg-white flex-1">
+                    {current.bottom.map((img, i) => (
+                      <div
+                        key={i}
+                        className="w-full h-[100px] sm:h-[120px] overflow-hidden rounded-xl border border-gray-200 bg-white hover:shadow-md transition-all duration-300"
+                      >
+                        <img
+                          src={img}
+                          alt={`Imagem secundária ${i + 1}`}
+                          className="w-full h-full object-contain"
                         />
-                        <span className="text-xs text-gray-800">{p.name}</span>
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </motion.div>
-
-        {/* Botão seguinte */}
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-purple-500 text-white p-3 rounded-full shadow-lg hover:bg-purple-600 hover:scale-110 transition-all disabled:opacity-50"
-          disabled={currentIndex >= cards.length - cardsPerView}
-        >
-          ›
-        </button>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
 };
 
-export default Secao1;
+export default MultiCardShowcase;

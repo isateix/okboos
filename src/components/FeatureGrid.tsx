@@ -1,116 +1,83 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import Image from "next/image"; // ✅ import necessário
+import { useState, useEffect, useCallback } from "react";
+import { FaShoppingCart, FaShieldAlt, FaCogs, FaStar } from "react-icons/fa";
 import Spinner from "./Spinner";
+import { useLanguage } from "../context/LanguageContext";
 
-const slugify = (text: string) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w\-]+/g, "")
-    .replace(/\-\-+/g, "-")
-    .replace(/^-+/, "")
-    .replace(/-+$/, "");
-};
-
-const features = [
-  {
-    id: 1,
-    title: "Bicicletas infantis",
-    images: ["/images/500.png","/images/501.png","/images/502.png","/images/503.png"],
-  },
-  {
-    id: 2,
-    title: "Espelhos",
-    images: ["/images/504.png","/images/505.png","/images/506.png","/images/507.png"],
-  },
-  {
-    id: 3,
-    title: "Ofertas do Dia",
-    images: ["/images/509.png","/images/510.png","/images/511.png","/images/512.png"],
-  },
-  {
-    id: 4,
-    title: "Faça Login",
-    images: ["/images/513.png","/images/514.png","/images/515.png","/images/516.png"],
-  },
-];
+const featureIcons = [FaShoppingCart, FaShieldAlt, FaCogs, FaStar];
+const featureKeys = ["feature1", "feature2", "feature3", "feature4"];
 
 export default function FeatureGrid() {
+  const { t } = useLanguage();
   const [visibleFeatures, setVisibleFeatures] = useState(4);
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadMoreFeatures = () => {
+  const loadMoreFeatures = useCallback(() => {
     setIsLoading(true);
     setTimeout(() => {
-      setVisibleFeatures((prev) => prev + 4);
+      setVisibleFeatures((prev) => Math.min(prev + 4, featureKeys.length));
       setIsLoading(false);
     }, 500);
-  };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop >=
-          document.documentElement.offsetHeight - 100 &&
-        !isLoading
+        window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 100 &&
+        !isLoading &&
+        visibleFeatures < featureKeys.length
       ) {
-        if (visibleFeatures < features.length) {
-          loadMoreFeatures();
-        }
+        loadMoreFeatures();
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoading, visibleFeatures]);
+    const debouncedScroll = debounce(handleScroll, 200);
+    window.addEventListener("scroll", debouncedScroll);
+    return () => window.removeEventListener("scroll", debouncedScroll);
+  }, [isLoading, visibleFeatures, loadMoreFeatures]);
+
+  function debounce(fn: () => void, delay: number) {
+    let timer: NodeJS.Timeout;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(), delay);
+    };
+  }
 
   return (
-    <section className="w-full mt-6 md:mt-12 px-6 py-12 relative z-10">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {features.slice(0, visibleFeatures).map((item) => (
-          <motion.div
-            key={item.id}
-            className="bg-white rounded-xl p-4 flex flex-col text-left shadow-md h-[420px] overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            {/* Título */}
-            <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
-
-            {/* Grade de 4 imagens */}
-            <div className="grid grid-cols-2 gap-3 flex-grow">
-              {item.images.map((img, index) => (
-                <div
-                  key={index}
-                  className="w-full h-[140px] bg-gradient-to-br from-purple-100 via-purple-200 to-purple-300 rounded-lg flex items-center justify-center shadow-inner"
-                >
-                  <Image
-                    src={img}
-                    alt={`${item.title} ${index + 1}`}
-                    width={160}
-                    height={140}
-                    className="w-[90%] h-[90%] object-contain rounded-md"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Link "Ver mais" */}
-            <Link
-              href={`/produtos?category=${slugify(item.title)}`}
-              className="mt-4 text-purple-700 hover:text-orange-600 text-sm font-semibold text-left"
+    <section
+      className="w-full px-4 sm:px-6 py-12 md:py-20 relative z-20 -mt-8 md:-mt-12"
+      style={{ backgroundColor: "#6f4e37" }}
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-[1440px] mx-auto">
+        {featureKeys.slice(0, visibleFeatures).map((key, index) => {
+          const IconComponent = featureIcons[index];
+          return (
+            <motion.div
+              key={key}
+              className="bg-[#805e46] rounded-xl p-6 md:p-8 flex flex-col text-left shadow-2xl min-h-[300px] md:min-h-[460px] break-words"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              whileHover={window.innerWidth >= 768 ? { scale: 1.05 } : {}}
             >
-              Ver mais
-            </Link>
-          </motion.div>
-        ))}
+              <div
+                className="w-12 h-12 md:w-14 md:h-14 bg-[#d2b48c] rounded-full flex items-center justify-center mb-3 md:mb-5"
+                aria-label={t(`${key}_title`)}
+              >
+                <IconComponent className="text-white w-6 h-6 md:w-7 md:h-7" />
+              </div>
+
+              <h3 className="text-base md:text-xl font-bold text-white mb-2 md:mb-3">
+                {t(`${key}_title`)}
+              </h3>
+              <p className="text-white text-sm md:text-base">{t(`${key}_description`)}</p>
+            </motion.div>
+          );
+        })}
       </div>
 
       {isLoading && (

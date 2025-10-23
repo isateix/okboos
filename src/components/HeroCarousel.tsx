@@ -1,94 +1,44 @@
-'use client';
+"use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Carousel, CarouselItem } from "../components/ui/carousel";
-
-const slides = [
-  {
-    id: 1,
-    title: "ROLLOS DE TPA E DE FACTURAÇÃO",
-    description: "Compre agora e receba na sua porta!",
-    extra: "Entrega grátis garantida!",
-    bg: "#7a2a9e",
-    images: ["/images/rolos-de-papel.jpg"],
-    icon: "/images/556.png",
-  },
-  {
-    id: 2,
-    title: "FITAS ADESIVAS",
-    description: "Todos os tamanhos disponíveis",
-    extra: "Frete grátis em todos os pedidos!",
-    bg: "#ff7f50",
-    images: ["/images/fitapp.jpg"],
-    icon: "/images/556.png",
-  },
-  {
-    id: 3,
-    title: "TIJELAS PLÁSTICAS",
-    description: "Com tampas retangulares e redondas",
-    extra: "Frete grátis + descontos exclusivos!",
-    bg: "#2E7D32",
-    images: ["/images/tijelas.jpg"],
-    icon: "/images/556.png",
-  },
-  {
-    id: 4,
-    title: "CROCS COLORIDOS",
-    description: "Conforto e estilo em todas as cores",
-    extra: "Descontos até 50% + entrega grátis!",
-    bg: "#F48FB1",
-    images: ["/images/crocs.jpg"],
-    icon: "/images/556.png",
-  },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 export default function HeroCarousel() {
-  const router = useRouter();
+  const { t } = useLanguage();
 
   return (
-    <section className="relative w-full pt-[90px] h-[480px] md:h-[450px] overflow-hidden">
-      <Carousel autoPlay interval={6000}>
-        {slides.map((slide) => (
-          <CarouselItem key={slide.id}>
-            <div
-              className="relative w-full h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-12"
-              style={{ backgroundColor: slide.bg }}
-            >
-              {/* TEXTO */}
-              <div className="max-w-[90%] md:max-w-[45%] text-white z-20">
-                <h2 className="text-3xl md:text-5xl font-extrabold mb-2">{slide.title}</h2>
-                <p className="text-lg md:text-xl mb-3">{slide.description}</p>
-                <p className="text-base italic mb-4">{slide.extra}</p>
+    <section className="relative w-full h-[480px] md:h-[550px] overflow-hidden flex items-center">
+      {/* Imagem de fundo maior */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/te.jpg"
+          alt={t("hero_image_alt") || "Hero Image"}
+          fill
+          className="object-cover scale-110"
+          priority
+        />
+      </div>
 
-                <div className="flex items-center gap-2 bg-green-500 px-4 py-2 rounded-full w-fit shadow-lg mb-4">
-                  <Image src={slide.icon} alt="Frete Grátis" width={28} height={28} />
-                  <span className="text-white font-bold">ENTREGA GRÁTIS</span>
-                </div>
+      {/* Fundo degradê bonito por cima da imagem */}
+      <div
+        className="absolute inset-0 z-10"
+        style={{
+          background: "linear-gradient(90deg, rgba(58,46,37,0.85) 0%, rgba(255,255,255,0) 100%)",
+        }}
+      ></div>
 
-                <button
-                  onClick={() => router.push("/shop")}
-                  className="bg-white text-black font-bold px-5 py-2 rounded-full hover:bg-gray-200 transition"
-                >
-                  COMPRAR AGORA
-                </button>
-              </div>
-
-              {/* IMAGEM */}
-              <div className="relative flex justify-center items-center md:w-[50%] h-[300px]">
-                <Image
-                  src={slide.images[0]}
-                  alt={slide.title}
-                  width={500}
-                  height={400}
-                  className="object-contain rounded-xl shadow-xl"
-                  priority
-                />
-              </div>
-            </div>
-          </CarouselItem>
-        ))}
-      </Carousel>
+      {/* Conteúdo acima do degradê */}
+      <div className="relative z-20 w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-12 h-full">
+        {/* Texto à esquerda */}
+        <div className="flex-1 max-w-3xl text-white">
+          <h1 className="text-3xl md:text-5xl font-bold">
+            {t("hero_title") || "A plataforma de e-commerce OkBoss líder no comércio Angolano"}
+          </h1>
+          <p className="mt-4 text-lg md:text-xl">
+            {t("hero_subtitle") || "Conecte seu negócio a fornecedores de confiança e explore milhões de produtos."}
+          </p>
+        </div>
+      </div>
     </section>
   );
 }
