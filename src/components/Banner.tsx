@@ -88,10 +88,14 @@ export default function Banner() {
         <button
           onClick={handleNext}
           className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 p-2 rounded-full hover:bg-orange-500 transition"
+          onClick={handleNext}
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 p-2 rounded-full hover:bg-orange-500 transition"
         >
+          <MdArrowForwardIos className="w-5 h-5 text-gray-700 hover:text-white" />
           <MdArrowForwardIos className="w-5 h-5 text-gray-700 hover:text-white" />
         </button>
       </div>
     </div>
   );
 }
+
