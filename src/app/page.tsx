@@ -1,3 +1,4 @@
+"use client";
 import HeroCarousel from "../components/HeroCarousel";
 import FeatureGrid from "../components/FeatureGrid";
 import Banner from "../components/Banner";

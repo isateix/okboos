@@ -26,6 +26,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { clearCart } = useCart(); // Access clearCart from CartContext
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
     const loadUserFromLocalStorage = () => {
       try {
         const mockAuthToken = localStorage.getItem('mockAuthToken');
@@ -57,6 +58,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
+  }
   }, []);
 
   const login = (userData: User) => {

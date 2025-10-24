@@ -23,6 +23,7 @@ export default function FeatureGrid() {
   }, []);
 
   useEffect(() => {
+    if (typeof window !== 'undefined'){
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
@@ -37,6 +38,7 @@ export default function FeatureGrid() {
     const debouncedScroll = debounce(handleScroll, 200);
     window.addEventListener("scroll", debouncedScroll);
     return () => window.removeEventListener("scroll", debouncedScroll);
+  }
   }, [isLoading, visibleFeatures, loadMoreFeatures]);
 
   function debounce(fn: () => void, delay: number) {
@@ -62,7 +64,7 @@ export default function FeatureGrid() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              whileHover={window.innerWidth >= 768 ? { scale: 1.05 } : {}}
+              whileHover={ { scale: 1.05 }}
             >
               <div
                 className="w-12 h-12 md:w-14 md:h-14 bg-[#d2b48c] rounded-full flex items-center justify-center mb-3 md:mb-5"
