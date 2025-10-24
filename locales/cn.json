@@ -194,7 +194,41 @@
 
 "hero_title": "OkBoss 电商平台，安哥拉贸易领先者",
 "hero_subtitle": "将您的业务连接到可信赖的供应商，探索数百万种产品。",
-"hero_image_alt": "Hero 特色图片"
+"hero_image_alt": "Hero 特色图片",
+
+"sobre_quem_somos_titulo": "关于我们",
+  "sobre_quem_somos_texto1": "OkBoss是一家线上和实体店，专门从中国进口商品到安哥拉。",
+  "sobre_quem_somos_texto2": "我们位于Século Novo São Paulo市，提供种类丰富、质量有保证且价格实惠的产品。",
+  "sobre_quem_somos_texto3": "我们的重点是客户满意，确保便利、多样化和创新，并以道德、责任和承诺的态度工作。",
+  "sobre_valores_titulo": "价值观",
+  "sobre_valores_texto": "承诺、道德、透明度以及对客户满意度的全心关注。我们始终以尊重、诚信和责任行事，无论是客户、合作伙伴还是员工。我们的价值观体现了OkBoss的本质，并指导我们做出的每一个决定。",
+  "sobre_objetivos_titulo": "目标",
+  "sobre_objetivos_texto": "为客户提供高质量的产品、高效的交付和可靠的体验。我们的目标是成为安哥拉进口和商业领域的标杆，将公平的价格、创新和卓越服务结合在一起。我们每天都努力超越期望，加强我们的品牌。",
+  "sobre_principios_titulo": "原则",
+  "sobre_principios_texto": "在OkBoss，我们受到全球领导力实践的启发。就像大型公司一样，我们相信每个人都有责任展现领导力，并将客户置于决策中心。我们重视客户至上、主人翁精神、创新和追求最高标准。我们鼓励好奇心和持续学习，培养领导者并倡导节俭——以更少做更多。我们的原则还包括胸怀大志、主动进取，并始终以道德和社会责任为基础提供一致的成果。",
+  "sobre_img1_alt": "进口",
+  "sobre_img2_alt": "配送",
+  "sobre_img3_alt": "我们的商店",
+
+  "contacto_titulo": "问我任何问题！",
+  "contacto_texto": "有疑问或建议吗？请填写下面的表格，我们会尽快与您联系。",
+  "contacto_nome_placeholder": "您的名字",
+  "contacto_email_placeholder": "您的邮箱",
+  "contacto_mensagem_placeholder": "写下您的留言...",
+  "contacto_botao_enviar": "发送",
+  "contacto_botao_enviando": "发送中...",
+  "contacto_botao_enviado": "已发送",
+  "contacto_img_alt": "联系图片",
+
+  "privacidade_titulo": "隐私政策",
+  "privacidade_paragrafo1_parte1": "您的隐私对我们非常重要。本隐私政策说明了",
+  "privacidade_paragrafo1_parte2": "如何收集、使用和保护您在使用我们的网站和服务时提供的个人信息。",
+  "privacidade_paragrafo2": "我们可能会收集您的姓名、电子邮件、电话号码和交易详情等信息，当您进行购买或与我们联系时。我们还可能收集您使用网站的方式，例如访问的页面和浏览时间。",
+  "privacidade_paragrafo3": "收集的信息用于改进我们的服务、处理请求、回应咨询并发送更新，所有这些都需获得您的同意。",
+  "privacidade_paragrafo4": "承诺通过适当的安全措施保护您的个人数据。虽然没有任何数字方法是 100% 安全的，但我们采取严格的预防措施来确保您的保护。",
+  "privacidade_paragrafo5": "除非法律要求或为了与可信赖的合作伙伴改进我们的服务，否则我们不会与第三方共享您的信息。",
+  "privacidade_paragrafo6": "您有权访问、更正或删除您的个人数据。要行使这些权利，请通过以下电子邮件与我们联系：",
+  "privacidade_paragrafo7": "本政策可能会定期更新。我们建议您定期查看，以了解我们如何保护您的数据。"
 
 
 }

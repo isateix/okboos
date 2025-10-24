@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { User, Search, Menu, X } from "lucide-react";
+import { User, Search, Menu, X, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { useUser } from "../context/UserContext";
@@ -11,16 +11,22 @@ import {
   FaLeaf, FaLaptop, FaTshirt, FaHome, FaFootballBall,
   FaTools, FaCar, FaGift, FaLightbulb, FaRegClock
 } from "react-icons/fa";
+import { products, Product } from "../data/products";
+
+
 
 export default function Header() {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, logout } = useUser();
+  const { cart } = useCart();
   const { locale, setLocale, t } = useLanguage();
+const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchOpenMobile, setSearchOpenMobile] = useState(false);
   const [categoriesPanelOpen, setCategoriesPanelOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,11 +91,9 @@ export default function Header() {
     <header className="w-full sticky top-0 z-50 bg-white shadow-md">
       {/* 🧭 DESKTOP HEADER */}
       <div className="hidden md:flex flex-col">
-        {/* Linha 1: logo, pesquisa, idioma, login */}
         <div className="flex items-center justify-between px-8 py-3">
           <Link href="/" className="text-2xl font-bold text-[#ff5000]">OkBoss.com</Link>
 
-          {/* Pesquisa */}
           <form onSubmit={handleSearchSubmit} className="flex flex-1 max-w-2xl mx-4">
             <input
               type="text"
@@ -103,51 +107,64 @@ export default function Header() {
             </button>
           </form>
 
-          {/* Idioma + Login */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center border border-gray-300 rounded-md p-1">
-              🌐
-              <select
-                value={locale}
-                onChange={(e) => setLocale(e.target.value as "pt" | "en" | "cn")}
-                className="ml-1 bg-white border-none outline-none"
-              >
-                <option value="pt">Português</option>
-                <option value="en">English</option>
-                <option value="cn">中文</option>
-              </select>
+            {/* Carrinho */}
+            <div className="relative cursor-pointer" onClick={() => router.push("/carrinho")}>
+              <ShoppingCart size={24} />
+              {cart?.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {cart.length}
+                </span>
+              )}
             </div>
 
-            {user ? (
-              <div className="flex items-center gap-3">
-                <span className="text-gray-700 font-medium">👋 {user.name || user.email}</span>
-                <button
-                  onClick={async () => {
-                    await fetch("/api/auth/signout", { method: "POST" });
-                    router.push("/login"); // redireciona para login após logout
-                  }}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition"
+            {/* Idioma + Login */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center border border-gray-300 rounded-md p-1">
+                🌐
+                <select
+                  value={locale}
+                  onChange={(e) => setLocale(e.target.value as "pt" | "en" | "cn")}
+                  className="ml-1 bg-white border-none outline-none"
                 >
-                  {t("logout") || "Sair"}
-                </button>
+                  <option value="pt">Português</option>
+                  <option value="en">English</option>
+                  <option value="cn">中文</option>
+                </select>
               </div>
-            ) : (
-              <>
-                <button
-                  onClick={() => router.push("/login")}
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-full"
-                >
-                  <User size={18} />
-                  <span>{t("login")}</span>
-                </button>
-                <button
-                  onClick={() => router.push("/criar-conta")}
-                  className="px-4 py-2 bg-[#ff5000] text-white rounded-full hover:bg-[#e04b00]"
-                >
-                  {t("signup")}
-                </button>
-              </>
-            )}
+
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-700 font-medium">👋 {user.name || user.email}</span>
+                  <button
+                    onClick={async () => {
+                      await fetch("/api/auth/signout", { method: "POST" });
+                      logout();
+                      router.push("/");
+                    }}
+                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition"
+                  >
+                    {t("logout") || "Sair"}
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={() => router.push("/login")}
+                    className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-full"
+                  >
+                    <User size={18} />
+                    <span>{t("login")}</span>
+                  </button>
+                  <button
+                    onClick={() => router.push("/criar-conta")}
+                    className="px-4 py-2 bg-[#ff5000] text-white rounded-full hover:bg-[#e04b00]"
+                  >
+                    {t("signup")}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -174,6 +191,16 @@ export default function Header() {
             <button onClick={() => setSearchOpenMobile(!searchOpenMobile)}>
               <Search size={20} />
             </button>
+
+            <div className="relative cursor-pointer" onClick={() => router.push("/carrinho")}>
+              <ShoppingCart size={24} />
+              {cart?.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                  {cart.length}
+                </span>
+              )}
+            </div>
+
             <div className="border border-gray-300 rounded-md p-1">
               🌐
               <select
@@ -189,7 +216,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Campo de pesquisa mobile */}
         {searchOpenMobile && (
           <form onSubmit={handleSearchSubmit} className="flex px-4 py-2">
             <input
@@ -205,7 +231,6 @@ export default function Header() {
           </form>
         )}
 
-        {/* Navegação mobile */}
         <div className="flex items-center justify-between px-4 py-2">
           <button onClick={() => setCategoriesPanelOpen(true)} className="flex items-center gap-2">
             <Menu size={20} /> {t("allCategories")}
@@ -218,7 +243,8 @@ export default function Header() {
                 <button
                   onClick={async () => {
                     await fetch("/api/auth/signout", { method: "POST" });
-                    router.push("/login"); // redireciona para login após logout
+                    logout();
+                    router.push("/");
                   }}
                   className="bg-gray-200 text-gray-800 px-3 py-1 rounded-md hover:bg-gray-300"
                 >
@@ -242,7 +268,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Links principais mobile */}
         <div className="flex gap-4 overflow-x-auto px-4 py-2 text-sm">
           {mainLinks.map(link => (
             <Link key={link.label} href={link.href} className="whitespace-nowrap hover:text-[#ff5000]">
@@ -251,42 +276,73 @@ export default function Header() {
           ))}
         </div>
       </div>
+{/* 🧩 Painel lateral de categorias e produtos */}
+{categoriesPanelOpen && (
+  <div
+    className={`${
+      typeof window !== "undefined" && window.innerWidth >= 768
+        ? "fixed top-[120px] left-0 w-full h-[calc(100vh-120px)]" // desktop (não alterado)
+        : "absolute top-[104px] left-0 w-full h-auto" // mobile colado abaixo da nav 3
+    } bg-white shadow-lg z-[100] flex flex-col md:flex-row transition-transform duration-300`}
+  >
+    {/* Lado esquerdo: lista de categorias */}
+    <div className="w-full md:w-1/5 border-b md:border-b-0 md:border-r border-gray-200 overflow-y-auto">
+      <ul>
+        {categories.map((cat) => {
+          const Icon = cat.icon;
+          return (
+            <li
+              key={cat.label}
+              className={`flex items-center gap-3 px-4 py-2 cursor-pointer ${
+                selectedCategory === cat.label
+                  ? "bg-gray-100 font-semibold"
+                  : "hover:bg-gray-50"
+              }`}
+              onClick={() => {
+                setSelectedCategory(cat.label);
+                if (window.innerWidth < 768) {
+                  setCategoriesPanelOpen(false); // fechar painel mobile ao clicar
+                }
+              }}
+            >
+              <Icon size={18} /> {t(cat.label)}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
 
-      {/* 🧩 Painel lateral de categorias */}
-      <div
-        className={`fixed top-0 left-0 h-full bg-white shadow-lg transition-transform duration-300 z-[100] ${
-          categoriesPanelOpen ? "translate-x-0" : "-translate-x-full"
-        } w-[80%] md:w-[300px] overflow-y-auto`}
-      >
-        <div className="flex items-center justify-between px-4 py-3 border-b">
-          <h2 className="text-lg font-semibold">{t("allCategories")}</h2>
-          <button onClick={() => setCategoriesPanelOpen(false)}><X size={22} /></button>
-        </div>
-
-        <ul>
-          {categories.map(cat => {
-            const Icon = cat.icon;
-            return (
-              <li
-                key={cat.label}
-                className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 cursor-pointer relative"
-                onMouseEnter={() => setHoveredCategory(cat.label)}
-                onMouseLeave={() => setHoveredCategory(null)}
+    {/* Lado direito: produtos filtrados */}
+    {selectedCategory && (
+      <div className="w-full md:w-4/5 p-4 overflow-y-auto h-[calc(100vh-120px)]">
+        <h2 className="text-lg font-semibold mb-4">{selectedCategory}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5">
+          {products
+            .filter((product) => product.category === selectedCategory)
+            .slice(0, 12)
+            .map((product) => (
+              <div
+                key={product.id}
+                className="flex flex-col items-center justify-center cursor-pointer"
               >
-                <Icon size={18} /> {t(cat.label)}
-
-                {hoveredCategory === cat.label && (
-                  <ul className="hidden md:block absolute left-full top-0 bg-white shadow-lg border w-56">
-                    <li className="px-4 py-2 hover:bg-gray-100">{t("Subcategoria 1")}</li>
-                    <li className="px-4 py-2 hover:bg-gray-100">{t("Subcategoria 2")}</li>
-                    <li className="px-4 py-2 hover:bg-gray-100">{t("Subcategoria 3")}</li>
-                  </ul>
-                )}
-              </li>
-            );
-          })}
-        </ul>
+                <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 bg-gray-200 flex items-center justify-center overflow-hidden hover:shadow-lg transition">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="mt-2 text-xs sm:text-sm md:text-base text-center font-medium">
+                  {product.name}
+                </span>
+              </div>
+            ))}
+        </div>
       </div>
+    )}
+  </div>
+)}
+
     </header>
   );
 }

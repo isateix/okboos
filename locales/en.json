@@ -195,6 +195,40 @@
 
 "hero_title": "OkBoss e-commerce platform, leading in Angolan trade",
 "hero_subtitle": "Connect your business to trusted suppliers and explore millions of products.",
-"hero_image_alt": "Hero spotlight image"
+"hero_image_alt": "Hero spotlight image",
+
+"sobre_quem_somos_titulo": "Who We Are",
+  "sobre_quem_somos_texto1": "OkBoss is an online and physical store specialized in importing products from China to Angola.",
+  "sobre_quem_somos_texto2": "We are located in the city of Século Novo São Paulo, offering a wide variety of products with guaranteed quality and affordable prices.",
+  "sobre_quem_somos_texto3": "Our focus is customer satisfaction, ensuring convenience, diversity, and innovation, while working with ethics, responsibility, and commitment.",
+  "sobre_valores_titulo": "Values",
+  "sobre_valores_texto": "Commitment, ethics, transparency, and total focus on customer satisfaction. We always strive to act with respect, integrity, and responsibility in all relationships, whether with clients, partners, or collaborators. Our values reflect the essence of OkBoss and guide every decision we make.",
+  "sobre_objetivos_titulo": "Objectives",
+  "sobre_objetivos_texto": "Ensure quality products, efficient delivery, and reliable experiences for our customers. Our goal is to be a reference in import and commerce in Angola, combining fair pricing, innovation, and excellent service. We work daily to exceed expectations and strengthen our brand in the market.",
+  "sobre_principios_titulo": "Principles",
+  "sobre_principios_texto": "At OkBoss, we are inspired by global leadership practices. Like major companies, we believe everyone is responsible for demonstrating leadership and putting the customer at the center of decisions. We value customer obsession, ownership mindset, innovation, and pursuit of the highest standards. We encourage curiosity and continuous learning, develop leaders, and promote frugality — doing more with less. Our principles also include thinking big, taking initiative, and consistently delivering results with ethical and social commitment.",
+  "sobre_img1_alt": "Import",
+  "sobre_img2_alt": "Delivery",
+  "sobre_img3_alt": "Our Store",
+
+  "contacto_titulo": "Ask me anything!",
+  "contacto_texto": "Have questions or suggestions? Fill out the form below and we’ll get in touch with you.",
+  "contacto_nome_placeholder": "Your name",
+  "contacto_email_placeholder": "Your email",
+  "contacto_mensagem_placeholder": "Write your message...",
+  "contacto_botao_enviar": "Send",
+  "contacto_botao_enviando": "Sending...",
+  "contacto_botao_enviado": "Sent",
+  "contacto_img_alt": "Contact image",
+
+  "privacidade_titulo": "Privacy Policy",
+  "privacidade_paragrafo1_parte1": "Your privacy is important to us. This Privacy Policy explains how",
+  "privacidade_paragrafo1_parte2": "collects, uses, and protects the personal information you provide when using our website and services.",
+  "privacidade_paragrafo2": "We may collect information such as your name, email address, phone number, and transaction details when you make purchases or contact us. We may also collect information about how you use the site, such as pages visited and browsing time.",
+  "privacidade_paragrafo3": "The information collected is used to improve our services, process requests, respond to inquiries, and send updates, always with your consent.",
+  "privacidade_paragrafo4": "is committed to protecting your personal data with appropriate security measures. No digital method is 100% secure, but we take strict precautions to ensure your protection.",
+  "privacidade_paragrafo5": "We do not share your information with third parties, except when required by law or to improve our services with trusted partners.",
+  "privacidade_paragrafo6": "You have the right to access, correct, or delete your personal data. To exercise these rights, contact us at:",
+  "privacidade_paragrafo7": "This Policy may be updated periodically. We recommend reviewing it regularly to stay informed about how we protect your data."
 
 }

@@ -3,9 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Footer from "../../components/Footer";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function Contacto() {
-  const [status, setStatus] = useState<null | "success">(null);
+  const { t } = useLanguage();
+
+  const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [formValues, setFormValues] = useState({
@@ -14,11 +17,11 @@ export default function Contacto() {
     mensagem: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setStatus(null);
@@ -50,17 +53,17 @@ export default function Contacto() {
           {/* Formulário */}
           <div className="flex-1 p-8 flex flex-col items-center bg-white/80 backdrop-blur-md rounded-lg shadow">
             <h3 className="text-3xl font-bold text-orange-600 mb-4 text-center">
-              Pergunta-me alguma coisa!
+              {t("contacto_titulo")}
             </h3>
             <p className="text-center text-gray-700 mb-6">
-              Tens dúvidas ou sugestões? Preenche o formulário abaixo que entraremos em contacto contigo.
+              {t("contacto_texto")}
             </p>
 
             <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 flex-1">
               <input
                 type="text"
                 name="nome"
-                placeholder="O seu nome"
+                placeholder={t("contacto_nome_placeholder")}
                 required
                 value={formValues.nome}
                 onChange={handleChange}
@@ -69,7 +72,7 @@ export default function Contacto() {
               <input
                 type="email"
                 name="email"
-                placeholder="O seu email"
+                placeholder={t("contacto_email_placeholder")}
                 required
                 value={formValues.email}
                 onChange={handleChange}
@@ -77,7 +80,7 @@ export default function Contacto() {
               />
               <textarea
                 name="mensagem"
-                placeholder="Escreva a sua mensagem..."
+                placeholder={t("contacto_mensagem_placeholder")}
                 required
                 value={formValues.mensagem}
                 onChange={handleChange}
@@ -89,7 +92,11 @@ export default function Contacto() {
                 disabled={loading || status === "success"}
                 className="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-500 transition w-auto self-center mt-4"
               >
-                {loading ? "Enviando..." : status === "success" ? "Enviado" : "Enviar"}
+                {loading
+                  ? t("contacto_botao_enviando")
+                  : status === "success"
+                  ? t("contacto_botao_enviado")
+                  : t("contacto_botao_enviar")}
               </button>
             </form>
           </div>
@@ -98,7 +105,7 @@ export default function Contacto() {
           <div className="flex-1 flex justify-center">
             <Image
               src="/images/call.png"
-              alt="Imagem de contacto"
+              alt={t("contacto_img_alt")}
               width={400}
               height={400}
               className="rounded-lg shadow object-contain"

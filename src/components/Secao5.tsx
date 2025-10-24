@@ -31,10 +31,10 @@ export default function Secao5() {
           imagem: "/images/te2.jpg",
         },
         {
-          nome: "Luís Pereira e Ana Martins",
-          cargo: "Fundadores da FitLife Angola",
+          nome: "Ana Martins",
+          cargo: "Fundadora da FitLife Angola",
           texto:
-            "A OkBoss ajudou-nos a encontrar equipamentos de ginásio com ótimo custo-benefício. Hoje conseguimos atender mais clientes e expandir nossa marca em Angola.",
+            "A OkBoss ajudou-me a encontrar equipamentos de ginásio com ótimo custo-benefício. Hoje consigo atender mais clientes e expandir a minha marca em Angola.",
           imagem: "/images/te3.jpg",
         },
       ],
@@ -61,10 +61,10 @@ export default function Secao5() {
           imagem: "/images/te2.jpg",
         },
         {
-          nome: "Luís Pereira & Ana Martins",
-          cargo: "Founders of FitLife Angola",
+          nome: "Ana Martins",
+          cargo: "Founder of FitLife Angola",
           texto:
-            "OkBoss helped us find gym equipment with excellent cost-effectiveness. Today we serve more clients and have expanded our brand in Angola.",
+            "OkBoss helped me find gym equipment with excellent cost-effectiveness. Today I serve more clients and have expanded my brand in Angola.",
           imagem: "/images/te3.jpg",
         },
       ],
@@ -90,10 +90,10 @@ export default function Secao5() {
           imagem: "/images/te2.jpg",
         },
         {
-          nome: "路易斯·佩雷拉 与 安娜·马丁斯",
-          cargo: "FitLife 安哥拉联合创始人",
+          nome: "安娜·马丁斯",
+          cargo: "FitLife 安哥拉创始人",
           texto:
-            "OkBoss 帮助我们找到性价比极高的健身设备。如今我们能够服务更多客户，并在安哥拉扩大了品牌影响力。",
+            "OkBoss 帮助我找到性价比极高的健身设备。如今我们能够服务更多客户，并在安哥拉扩大了品牌影响力。",
           imagem: "/images/te3.jpg",
         },
       ],
@@ -113,7 +113,7 @@ export default function Secao5() {
 
   return (
     <section className="py-28 bg-gray-100 text-center flex flex-col items-center px-6 md:px-16">
-      {/* Texto principal do banner */}
+      {/* Texto principal */}
       <div className="max-w-4xl mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
           {titulo}
@@ -123,7 +123,7 @@ export default function Secao5() {
         </p>
       </div>
 
-      {/* Banner interno de testemunhos */}
+      {/* Banner de testemunhos */}
       <div className="relative bg-white rounded-3xl shadow-xl w-full max-w-5xl py-14 px-8 md:px-16 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
@@ -132,9 +132,9 @@ export default function Secao5() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col md:flex-row items-center justify-center gap-10"
+            className="flex flex-col md:flex-row items-center justify-center gap-10 text-center md:text-left"
           >
-            {/* Imagem da pessoa */}
+            {/* Imagem */}
             <div className="relative w-[200px] h-[200px] md:w-[240px] md:h-[240px] rounded-full overflow-hidden shadow-md flex-shrink-0">
               <Image
                 src={testemunhos[index].imagem}
@@ -144,8 +144,8 @@ export default function Secao5() {
               />
             </div>
 
-            {/* Texto do testemunho */}
-            <div className="max-w-2xl text-left">
+            {/* Texto */}
+            <div className="max-w-2xl">
               <h3 className="text-2xl font-semibold text-gray-900">
                 {testemunhos[index].nome}
               </h3>
