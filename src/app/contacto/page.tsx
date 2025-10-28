@@ -7,8 +7,7 @@ import { useLanguage } from "../../context/LanguageContext";
 
 export default function Contacto() {
   const { t } = useLanguage();
-
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState<"success" | "error" | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [formValues, setFormValues] = useState({
@@ -17,30 +16,29 @@ export default function Contacto() {
     mensagem: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setStatus(null);
 
-    const formData = new FormData();
-    formData.append("nome", formValues.nome);
-    formData.append("email", formValues.email);
-    formData.append("mensagem", formValues.mensagem);
-
     try {
-      await fetch("/api/send-email", {
+      const res = await fetch("/api/send-email", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formValues),
       });
+
+      if (!res.ok) throw new Error("Erro ao enviar mensagem");
 
       setStatus("success");
       setFormValues({ nome: "", email: "", mensagem: "" });
     } catch (err) {
       console.error(err);
+      setStatus("error");
     } finally {
       setLoading(false);
     }
@@ -55,9 +53,7 @@ export default function Contacto() {
             <h3 className="text-3xl font-bold text-orange-600 mb-4 text-center">
               {t("contacto_titulo")}
             </h3>
-            <p className="text-center text-gray-700 mb-6">
-              {t("contacto_texto")}
-            </p>
+            <p className="text-center text-gray-700 mb-6">{t("contacto_texto")}</p>
 
             <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 flex-1">
               <input
@@ -113,7 +109,6 @@ export default function Contacto() {
           </div>
         </section>
       </main>
-
       <Footer />
     </>
   );

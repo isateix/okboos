@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { User, Search, Menu, X, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ import { products, Product } from "../data/products";
 
 
 
+
 export default function Header() {
   const router = useRouter();
   const { user, logout } = useUser();
@@ -25,9 +26,36 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchOpenMobile, setSearchOpenMobile] = useState(false);
   const [categoriesPanelOpen, setCategoriesPanelOpen] = useState(false);
+  const [productsPanelOpen, setProductsPanelOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
-  
+  const [showTermsModal, setShowTermsModal] = useState(false);
+const [showSupplierForm, setShowSupplierForm] = useState(false);
+const [showFeaturedBanner, setShowFeaturedBanner] = useState(false);
+const [showProtectionsBanner, setShowProtectionsBanner] = useState(false);
+const [showBuyerCenter, setShowBuyerCenter] = useState(false);
+const [showSupportCenter, setShowSupportCenter] = useState(false);
 
+
+  useEffect(() => {
+  if (typeof window === "undefined") return;
+
+  const handleInteraction = (event: MouseEvent) => {
+    if (window.innerWidth >= 768) {
+      const target = event.target as HTMLElement;
+      const clickedInsidePanel = target.closest(".categories-panel");
+      const clickedButton = target.closest(".open-categories-btn");
+
+      // só fecha se não for no painel nem no botão
+      if (!clickedInsidePanel && !clickedButton) {
+        setCategoriesPanelOpen(false);
+        setProductsPanelOpen(false);
+      }
+    }
+  };
+
+  window.addEventListener("click", handleInteraction);
+  return () => window.removeEventListener("click", handleInteraction);
+}, []);
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim())
@@ -37,18 +65,14 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = [
     { label: t("categories.Meio Ambiente"), icon: FaLeaf },
-    { label: t("categories.Serviços Empresariais"), icon: FaLaptop },
     { label: t("categories.Aparelhos Eletrônicos"), icon: FaLaptop },
-    { label: t("categories.Vestuário"), icon: FaTshirt },
     { label: t("categories.Casa e Jardim"), icon: FaHome },
     { label: t("categories.Esportes e Entretenimento"), icon: FaFootballBall },
-    { label: t("categories.Equipamento comercial & maquinaria"), icon: FaTools },
     { label: t("categories.Peças e Acessórios para Veículo"), icon: FaCar },
     { label: t("categories.Beleza e cuidados pessoais"), icon: FaGift },
     { label: t("categories.Máquinas e Indústrias"), icon: FaTools },
     { label: t("categories.Móveis"), icon: FaHome },
     { label: t("categories.Mãe, crianças e brinquedos"), icon: FaTshirt },
-    { label: t("categories.Construções e Imóveis"), icon: FaHome },
     { label: t("categories.Acessórios automóveis"), icon: FaCar },
     { label: t("categories.Eletrodomésticos"), icon: FaLaptop },
     { label: t("categories.Bagagem e Bolsas"), icon: FaGift },
@@ -59,20 +83,12 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     { label: t("categories.Saúde"), icon: FaRegClock },
     { label: t("categories.Máquinas para construção"), icon: FaTools },
     { label: t("categories.Energia Renovável"), icon: FaLightbulb },
-    { label: t("categories.Equipamento e Material Elétrico"), icon: FaTools },
     { label: t("categories.Material de Escritório e Escolar"), icon: FaLaptop },
-    { label: t("categories.Componentes Eletrônicos"), icon: FaLaptop },
     { label: t("categories.Acessórios e Telecomunicações"), icon: FaLaptop },
     { label: t("categories.Materiais e Aparelhos Médicos"), icon: FaRegClock },
-    { label: t("categories.Produtos Químicos"), icon: FaRegClock },
-    { label: t("categories.Instrumento de teste e Equipamentos"), icon: FaRegClock },
     { label: t("categories.Comida e Bebida"), icon: FaGift },
-    { label: t("categories.Serviços de Fabricação"), icon: FaLaptop },
-    { label: t("categories.Transmissão de Energia"), icon: FaLightbulb },
     { label: t("categories.Proteção, Borracha e Plásticos"), icon: FaRegClock },
-    { label: t("categories.Mercado de serviços logísticos do comprador"), icon: FaLaptop },
-    { label: t("categories.Minerais e Metalurgia"), icon: FaTools },
-    { label: t("categories.Manuseio de materiais"), icon: FaTools },
+    { label: t("categories.Roupa"), icon: FaTshirt },
     { label: t("categories.Tecido e Matérias-primas Têxteis"), icon: FaTshirt },
     { label: t("categories.Suprimentos para animais de estimação"), icon: FaLeaf },
     { label: t("categories.Segurança"), icon: FaRegClock },
@@ -84,15 +100,21 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     { label: "orderProtections", href: "/protecoes" },
     { label: "buyersCenter", href: "/central-compradores" },
     { label: "support", href: "/atendimento" },
-    { label: "becomeSupplier", href: "/fornecedores" },
+    { label: "becomeSupplier", href: "/fornecedor" },
   ];
+  
 
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-md">
       {/* 🧭 DESKTOP HEADER */}
       <div className="hidden md:flex flex-col">
         <div className="flex items-center justify-between px-8 py-3">
-          <Link href="/" className="text-2xl font-bold text-[#ff5000]">OkBoss.com</Link>
+       <div
+  onClick={() => router.push("/")}
+  className="text-2xl font-bold text-[#ff5000] cursor-pointer hover:text-[#e14a00] transition relative z-[300]"
+>
+  OkBoss.com
+</div>
 
           <form onSubmit={handleSearchSubmit} className="flex flex-1 max-w-2xl mx-4">
             <input
@@ -157,36 +179,67 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
                     <span>{t("login")}</span>
                   </button>
                   <button
-                    onClick={() => router.push("/criar-conta")}
-                    className="px-4 py-2 bg-[#ff5000] text-white rounded-full hover:bg-[#e04b00]"
-                  >
-                    {t("signup")}
-                  </button>
+  onClick={() => router.push("/signup")}
+  className="px-4 py-2 bg-[#ff5000] text-white rounded-full hover:bg-[#e04b00]"
+>
+  {t("signup")}
+</button>
                 </>
               )}
             </div>
           </div>
         </div>
+{/* Linha 2: Navegação */}
+<div className="flex items-center gap-6 px-8 py-2 text-sm font-semibold text-gray-700">
+  {/* Botão de categorias */}
+  <button
+    onClick={() => setCategoriesPanelOpen(true)}
+    className="open-categories-btn flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100"
+  >
+    <Menu size={20} /> {t("allCategories")}
+  </button>
 
-        {/* Linha 2: Navegação */}
-        <div className="flex items-center gap-6 px-8 py-2 text-sm font-semibold text-gray-700">
-          <button
-            onClick={() => setCategoriesPanelOpen(true)}
-            className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100"
-          >
-            <Menu size={20} /> {t("allCategories")}
-          </button>
-          {mainLinks.map(link => (
-            <Link key={link.label} href={link.href} className="hover:text-[#ff5000]">{t(link.label)}</Link>
-          ))}
-        </div>
-      </div>
+  {/* Links principais com tradução */}
+ <button
+  onClick={() => setShowFeaturedBanner(true)}
+  className="hover:text-[#ff5000]"
+>
+  {t("featuredSelections")}
+</button>
+  <button
+  onClick={() => setShowProtectionsBanner(true)}
+  className="hover:text-[#ff5000]"
+>
+  {t("orderProtections")}
+</button>
+
+  <button
+  onClick={() => setShowBuyerCenter(true)}
+  className="hover:text-[#ff5000]"
+>
+  Central dos Compradores
+</button>
+
+  <button onClick={() => setShowSupportCenter(true)}>
+  Atendimento ao Cliente
+</button>
+
+  <Link href="/fornecedor" className="hover:text-[#ff5000]">
+    {t("becomeSupplier")}
+  </Link>
+</div>
+</div>
 
       {/* 📱 MOBILE HEADER */}
       <div className="md:hidden flex flex-col">
         {/* Topo: logo, pesquisa, idioma */}
         <div className="flex items-center justify-between px-4 py-2">
-          <Link href="/" className="text-xl font-bold text-[#ff5000]">OkBoss.com</Link>
+         <div
+  onClick={() => router.push("/")}
+  className="text-xl font-bold text-[#ff5000] cursor-pointer hover:text-[#e14a00] transition relative z-[300]"
+>
+  OkBoss.com
+</div>
           <div className="flex items-center gap-3">
             <button onClick={() => setSearchOpenMobile(!searchOpenMobile)}>
               <Search size={20} />
@@ -257,32 +310,31 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
                   <User size={20} className="text-gray-600" />
                   <span>{t("login")}</span>
                 </button>
-                <button
-                  onClick={() => router.push("/criar-conta")}
-                  className="bg-[#ff5000] text-white px-3 py-1 rounded-md"
-                >
-                  {t("signup")}
-                </button>
+               <button
+  onClick={() => router.push("/signup")}
+  className="bg-[#ff5000] text-white px-3 py-1 rounded-md"
+>
+  {t("signup")}
+</button>
               </>
             )}
           </div>
         </div>
-
-        <div className="flex gap-4 overflow-x-auto px-4 py-2 text-sm">
-          {mainLinks.map(link => (
-            <Link key={link.label} href={link.href} className="whitespace-nowrap hover:text-[#ff5000]">
-              {t(link.label)}
-            </Link>
-          ))}
-        </div>
+<div className="flex gap-4 overflow-x-auto px-4 py-2 text-sm">
+  {mainLinks.map(link => (
+    <Link key={link.label} href={link.href} className="whitespace-nowrap hover:text-[#ff5000]">
+      {t(link.label)}
+    </Link>
+  ))}
+</div>
       </div>
 {/* 🧩 Painel lateral de categorias e produtos */}
 {categoriesPanelOpen && (
   <div
-    className={`${
+    className={`categories-panel ${
       typeof window !== "undefined" && window.innerWidth >= 768
-        ? "fixed top-[120px] left-0 w-full h-[calc(100vh-120px)]" // desktop (não alterado)
-        : "absolute top-[104px] left-0 w-full h-auto" // mobile colado abaixo da nav 3
+        ? "fixed top-[120px] left-0 w-full h-[calc(100vh-120px)]"
+        : "absolute top-[104px] left-0 w-full h-auto"
     } bg-white shadow-lg z-[100] flex flex-col md:flex-row transition-transform duration-300`}
   >
     {/* Lado esquerdo: lista de categorias */}
@@ -294,14 +346,13 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
             <li
               key={cat.label}
               className={`flex items-center gap-3 px-4 py-2 cursor-pointer ${
-                selectedCategory === cat.label
-                  ? "bg-gray-100 font-semibold"
-                  : "hover:bg-gray-50"
+                selectedCategory === cat.label ? "bg-gray-100 font-semibold" : "hover:bg-gray-50"
               }`}
               onClick={() => {
                 setSelectedCategory(cat.label);
                 if (window.innerWidth < 768) {
-                  setCategoriesPanelOpen(false); // fechar painel mobile ao clicar
+                  setCategoriesPanelOpen(false);
+                  setProductsPanelOpen(true);
                 }
               }}
             >
@@ -312,29 +363,20 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
       </ul>
     </div>
 
-    {/* Lado direito: produtos filtrados */}
-    {selectedCategory && (
+    {/* Lado direito: produtos filtrados (desktop) */}
+    {selectedCategory && window.innerWidth >= 768 && (
       <div className="w-full md:w-4/5 p-4 overflow-y-auto h-[calc(100vh-120px)]">
         <h2 className="text-lg font-semibold mb-4">{selectedCategory}</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5 justify-items-center">
           {products
             .filter((product) => product.category === selectedCategory)
             .slice(0, 12)
             .map((product) => (
-              <div
-                key={product.id}
-                className="flex flex-col items-center justify-center cursor-pointer"
-              >
-                <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 bg-gray-200 flex items-center justify-center overflow-hidden hover:shadow-lg transition">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
+              <div key={product.id} className="flex flex-col items-center justify-start cursor-pointer w-40">
+                <div className="w-40 h-40 bg-gray-200 flex items-center justify-center overflow-hidden hover:shadow-lg transition">
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 </div>
-                <span className="mt-2 text-xs sm:text-sm md:text-base text-center font-medium">
-                  {product.name}
-                </span>
+                <span className="mt-2 text-sm text-center font-medium">{product.name}</span>
               </div>
             ))}
         </div>
@@ -343,6 +385,336 @@ const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   </div>
 )}
 
-    </header>
+{/* 🧩 Painel de produtos MOBILE (abre sobreposto) */}
+{productsPanelOpen && selectedCategory && (
+  <div className="fixed top-[104px] left-0 w-full h-[calc(100vh-104px)] bg-white z-[90] overflow-y-auto shadow-lg p-4 transition-transform duration-300">
+    <button
+      className="mb-4 text-sm text-gray-500"
+      onClick={() => {
+        setProductsPanelOpen(false);
+        setCategoriesPanelOpen(true); // volta para o painel de categorias
+      }}
+    >
+      ← {t("backToCategories")}
+    </button>
+    <h2 className="text-lg font-semibold mb-4">{selectedCategory}</h2>
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 justify-items-center">
+      {products
+        .filter((product) => product.category === selectedCategory)
+        .slice(0, 12)
+        .map((product) => (
+          <div key={product.id} className="flex flex-col items-center justify-start cursor-pointer w-32 sm:w-36">
+            <div className="w-32 sm:w-36 h-32 sm:h-36 bg-gray-200 flex items-center justify-center overflow-hidden hover:shadow-lg transition">
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+            </div>
+            <span className="mt-2 text-xs sm:text-sm text-center font-medium">{product.name}</span>
+          </div>
+        ))}
+    </div>
+  </div>
+)}
+{showFeaturedBanner && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
+    <div className="relative w-full md:w-3/4 h-[50vh] flex flex-col items-center justify-center backdrop-blur-lg rounded-2xl bg-white/10 border border-white/20 shadow-2xl">
+      {/* Botão Fechar */}
+      <button
+        onClick={() => setShowFeaturedBanner(false)}
+        className="absolute top-4 right-6 text-white text-3xl hover:text-[#ff5000] transition"
+      >
+        ✕
+      </button>
+
+      {/* Título */}
+      <h2 className="text-3xl font-bold text-white mb-8 drop-shadow-md">
+        Seleções em Destaque
+      </h2>
+
+      {/* Botões com ícones */}
+      <div className="flex flex-col md:flex-row gap-6 text-white text-center">
+        <a
+          href="/melhores-classificados"
+          className="flex flex-col items-center justify-center px-8 py-6 bg-[#ff5000]/90 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105"
+        >
+          <span className="text-5xl mb-2">⭐</span>
+          <span className="text-lg font-semibold">Melhores Classificados</span>
+        </a>
+
+        <a
+          href="/novidades"
+          className="flex flex-col items-center justify-center px-8 py-6 bg-[#ff5000]/90 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105"
+        >
+          <span className="text-5xl mb-2">🆕</span>
+          <span className="text-lg font-semibold">Novidades</span>
+        </a>
+
+        <a
+          href="/melhores-ofertas"
+          className="flex flex-col items-center justify-center px-8 py-6 bg-[#ff5000]/90 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105"
+        >
+          <span className="text-5xl mb-2">💸</span>
+          <span className="text-lg font-semibold">Melhores Ofertas</span>
+        </a>
+      </div>
+    </div>
+  </div>
+)}
+{showProtectionsBanner && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
+    <div className="relative w-full md:w-3/4 lg:w-2/3 h-auto py-12 flex flex-col items-center justify-center backdrop-blur-lg rounded-2xl bg-white/10 border border-white/20 shadow-2xl text-white">
+
+      {/* Botão Fechar */}
+      <button
+        onClick={() => setShowProtectionsBanner(false)}
+        className="absolute top-4 right-6 text-white text-3xl hover:text-[#ff5000] transition"
+      >
+        ✕
+      </button>
+
+      {/* Título */}
+      <p className="text-lg text-gray-200 mb-10 text-center max-w-xl">
+        Desfrute de proteção desde o pagamento até a entrega
+      </p>
+
+      {/* Opções de proteção */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+        {/* 1️⃣ Pagamentos Seguros */}
+        <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+          <span className="text-5xl mb-3">💳</span>
+          <h3 className="text-xl font-semibold mb-1">Pagamentos seguros e fáceis</h3>
+          <p className="text-sm text-white/90 max-w-xs">
+            Seus pagamentos são protegidos por sistemas confiáveis e seguros.
+          </p>
+        </div>
+
+        {/* 2️⃣ Política de Reembolso */}
+        <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+          <span className="text-5xl mb-3">💰</span>
+          <h3 className="text-xl font-semibold mb-1">Política de reembolso</h3>
+          <p className="text-sm text-white/90 max-w-xs">
+            Receba seu dinheiro de volta caso algo saia diferente do combinado.
+          </p>
+        </div>
+
+        {/* 3️⃣ Transporte e Logística */}
+        <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+          <span className="text-5xl mb-3">🚚</span>
+          <h3 className="text-xl font-semibold mb-1">Serviços de transporte e logística</h3>
+          <p className="text-sm text-white/90 max-w-xs">
+            Opções confiáveis para envio e rastreamento internacional.
+          </p>
+        </div>
+
+        {/* 4️⃣ Proteções pós-venda */}
+        <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+          <span className="text-5xl mb-3">🛡️</span>
+          <h3 className="text-xl font-semibold mb-1">Proteções pós-venda</h3>
+          <p className="text-sm text-white/90 max-w-xs">
+            Assistência após a entrega para garantir total satisfação.
+          </p>
+        </div>
+      </div>
+
+      {/* Botão Saiba mais */}
+      <a
+        href="/pagamentos-e-protecoes"
+        className="mt-8 inline-flex items-center gap-2 bg-white text-[#ff5000] font-semibold px-6 py-2 rounded-full hover:bg-[#ff5000] hover:text-white transition"
+      >
+        Saber Mais
+      </a>
+
+    </div>
+  </div>
+)}
+
+{showBuyerCenter && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
+    <div className="relative w-full md:w-3/4 lg:w-2/3 py-10 px-6 flex flex-col items-center justify-center backdrop-blur-lg rounded-2xl bg-white/10 border border-white/20 shadow-2xl text-white">
+
+      {/* Botão Fechar (ajustado para não ficar atrás da navbar) */}
+<button 
+  onClick={() => setShowBuyerCenter(false)}
+  className="absolute top-12 right-8 text-white text-3xl hover:text-[#ff5000] transition"
+>
+  ✕
+</button>
+
+      {/* Cabeçalho */}
+
+      <p className="text-lg text-gray-200 mb-10 text-center max-w-xl">
+        Comece a explorar e aproveite todos os recursos disponíveis.
+      </p>
+
+ {/* Seções resumidas e adaptadas */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+
+  {/* 1️⃣ Sobre */}
+  <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+    <span className="text-5xl mb-3">📘</span>
+    <h3 className="text-xl font-semibold mb-2">Sobre nós</h3>
+    <ul className="text-sm text-white/90 space-y-1">
+      <li>
+        <a href="/sobre#sobre-nos" className="hover:underline">
+          O que é o site
+        </a>
+      </li>
+      <li>
+        <a href="/sobre#sobre-nos" className="hover:underline">
+          Por que escolher-nos
+        </a>
+      </li>
+      <li>
+        <a href="/sobre#sobre-nos" className="hover:underline">
+          Planos e assinaturas
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  {/* 2️⃣ Compras e Serviços */}
+  <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+    <span className="text-5xl mb-3">🛍️</span>
+    <h3 className="text-xl font-semibold mb-2">Compras e Serviços</h3>
+    <ul className="text-sm text-white/90 space-y-1">
+      <li>
+        <a href="/sobre#compras-servicos" className="hover:underline">
+          Como comprar
+        </a>
+      </li>
+      <li>
+        <a href="/sobre#compras-servicos" className="hover:underline">
+          Serviços disponíveis
+        </a>
+      </li>
+      <li>
+        <a href="/sobre#compras-servicos" className="hover:underline">
+          Proteções ao comprador
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  {/* 3️⃣ Finanças e Garantias */}
+  <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+    <span className="text-5xl mb-3">💳</span>
+    <h3 className="text-xl font-semibold mb-2">Finanças e Garantias</h3>
+    <ul className="text-sm text-white/90 space-y-1">
+      <li>
+        <a href="/sobre#financas-garantias" className="hover:underline">
+          Crédito fácil
+        </a>
+      </li>
+      <li>
+        <a href="/sobre#financas-garantias" className="hover:underline">
+          Serviço de inspeção
+        </a>
+      </li>
+      <li>
+        <a href="/sobre#financas-garantias" className="hover:underline">
+          Conformidade fiscal
+        </a>
+      </li>
+    </ul>
+  </div>
+
+{/* 4️⃣ Recursos e Ajuda */}
+<div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+  <span className="text-5xl mb-3">📞</span>
+  <h3 className="text-xl font-semibold mb-2">Suporte e Conteúdo</h3>
+  <ul className="text-sm text-white/90 space-y-1">
+    {/* Link para o blog na página Sobre */}
+    <li>
+      <a href="/sobre" className="hover:underline">
+        Blog e dicas
+      </a>
+    </li>
+
+    {/* Histórias de sucesso */}
+  <li>
+    <Link
+      href="/"
+      onClick={(e) => {
+        e.preventDefault();
+        const el = document.getElementById("secao5");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }}
+      className="hover:underline"
+    >
+      Histórias de sucesso
+    </Link>
+  </li>
+
+    {/* Link para atendimento de clientes */}
+    <li>
+      <a href="/contacto" className="hover:underline">
+        Atendimento
+      </a>
+    </li>
+  </ul>
+</div>
+</div>
+
+    </div>
+  </div>
+)}
+{showSupportCenter && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
+    <div className="relative w-full md:w-3/4 lg:w-2/3 py-10 px-6 flex flex-col items-center justify-center backdrop-blur-lg rounded-2xl bg-white/10 border border-white/20 shadow-2xl text-white">
+
+      {/* Botão Fechar */}
+      <button
+        onClick={() => setShowSupportCenter(false)}
+        className="absolute top-6 right-8 text-white text-3xl hover:text-[#ff5000] transition"
+      >
+        ✕
+      </button>
+
+      {/* Cabeçalho */}
+      <h2 className="text-3xl font-bold mb-3 drop-shadow-md">Atendimento ao Cliente</h2>
+      <p className="text-lg text-gray-200 mb-10 text-center max-w-xl">
+        Escolha a forma de atendimento ideal para você.
+      </p>
+
+      {/* Opções de Atendimento */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+
+        {/* 1️⃣ Para Clientes */}
+        <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+          <span className="text-5xl mb-3">👥</span>
+          <h3 className="text-xl font-semibold mb-2">Para Clientes</h3>
+          <p className="text-sm text-white/90 mb-4">
+            Entre em contacto com nossa equipe para dúvidas, sugestões ou suporte.
+          </p>
+          <a
+            href="/contacto"
+            className="bg-white text-[#ff5000] px-6 py-2 rounded-full font-semibold hover:bg-[#ff5000] hover:text-white transition"
+          >
+            Aceder
+          </a>
+        </div>
+
+        {/* 2️⃣ Para Fornecedores */}
+        <div className="flex flex-col items-center justify-center bg-[#ff5000]/90 px-8 py-6 rounded-xl shadow-lg hover:bg-[#e04b00] transition transform hover:scale-105">
+          <span className="text-5xl mb-3">🏢</span>
+          <h3 className="text-xl font-semibold mb-2">Para Fornecedores</h3>
+          <p className="text-sm text-white/90 mb-4">
+            Precisa de ajuda com pedidos, entregas ou suporte comercial? Fale conosco.
+          </p>
+          <a
+            href="/fornecedor/atendimento-fornecedor"
+            className="bg-white text-[#ff5000] px-6 py-2 rounded-full font-semibold hover:bg-[#ff5000] hover:text-white transition"
+          >
+            Aceder
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+)}
+
+</header>
+
   );
 }

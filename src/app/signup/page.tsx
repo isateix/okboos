@@ -1,42 +1,47 @@
 "use client";
 
-import { Loader2 } from "lucide-react"; // Import Loader2 icon
-
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Link from "next/link";
-import SuccessModal from "../../components/SuccessModal"; // Import SuccessModal
+import SuccessModal from "../../components/SuccessModal";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function SignupPage() {
   const router = useRouter();
+  const { t } = useLanguage(); // 🟢 Usa o contexto de linguagem
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // State for modal visibility
-  const [successMessage, setSuccessMessage] = useState(""); // State for modal message
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
+  // 🔄 Atualiza campos
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ✅ Enviar formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      setError("Por favor, preencha todos os campos.");
+      setError(t("signup_error_campos"));
       setLoading(false);
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError("As senhas não coincidem.");
+      setError(t("signup_error_senhas"));
       setLoading(false);
       return;
     }
@@ -55,18 +60,17 @@ export default function SignupPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Erro ao criar conta.");
+        setError(data.error || t("signup_error_criar"));
         setLoading(false);
         return;
       }
 
-      // Sucesso
-      setSuccessMessage("Conta criada com sucesso! Faça login para continuar.");
+      // 🟢 Sucesso
+      setSuccessMessage(t("signup_sucesso"));
       setShowSuccessModal(true);
-      // router.push("/login"); // Redirect after modal closes
     } catch (err) {
       console.error(err);
-      setError("Erro no servidor. Tente novamente mais tarde.");
+      setError(t("signup_error_servidor"));
     } finally {
       setLoading(false);
     }
@@ -75,31 +79,31 @@ export default function SignupPage() {
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
     setSuccessMessage("");
-    router.push("/login"); // Redirect after modal closes
+    router.push("/login");
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#f6eee9] px-4">
       <div className="w-full max-w-md space-y-6">
-        {/* Logo / Nome */}
+        {/* 🔸 Logo */}
         <div className="text-center">
           <h1 className="text-5xl font-serif font-bold text-[#5c3b3b]">
             Ok <span className="text-[#d9a7a0]">Boss</span>
           </h1>
-          <p className="text-gray-600 mt-2">Cria a tua conta</p>
+          <p className="text-gray-600 mt-2">{t("signup_subtitulo")}</p>
         </div>
 
-        {/* Caixa de Signup */}
+        {/* 🔸 Caixa de cadastro */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-            Criar Conta
+            {t("signup_titulo")}
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <input
               type="text"
               name="name"
-              placeholder="Nome completo"
+              placeholder={t("signup_nome")}
               value={formData.name}
               onChange={handleChange}
               className="border rounded-lg px-4 py-3 text-lg"
@@ -108,7 +112,7 @@ export default function SignupPage() {
             <input
               type="email"
               name="email"
-              placeholder="Email"
+              placeholder={t("signup_email")}
               value={formData.email}
               onChange={handleChange}
               className="border rounded-lg px-4 py-3 text-lg"
@@ -117,7 +121,7 @@ export default function SignupPage() {
             <input
               type="password"
               name="password"
-              placeholder="Senha"
+              placeholder={t("signup_senha")}
               value={formData.password}
               onChange={handleChange}
               className="border rounded-lg px-4 py-3 text-lg"
@@ -126,7 +130,7 @@ export default function SignupPage() {
             <input
               type="password"
               name="confirmPassword"
-              placeholder="Confirmar senha"
+              placeholder={t("signup_confirmar_senha")}
               value={formData.confirmPassword}
               onChange={handleChange}
               className="border rounded-lg px-4 py-3 text-lg"
@@ -143,15 +147,15 @@ export default function SignupPage() {
               {loading ? (
                 <Loader2 className="animate-spin mr-2" size={24} />
               ) : (
-                "Criar Conta"
+                t("signup_botao")
               )}
             </button>
           </form>
 
           <p className="mt-6 text-center text-gray-600">
-            Já tens conta?{" "}
+            {t("signup_ja_tem_conta")}{" "}
             <Link href="/login" className="text-blue-600 hover:underline">
-              Entrar
+              {t("signup_entrar")}
             </Link>
           </p>
         </div>

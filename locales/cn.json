@@ -22,7 +22,6 @@
   "featuredSelections": "精选",
   "orderProtections": "订单保护",
   "buyersCenter": "买家中心",
-  "appExtension": "应用和扩展",
   "becomeSupplier": "成为供应商",
   "categories": [
     "为您推荐",
@@ -228,7 +227,36 @@
   "privacidade_paragrafo4": "承诺通过适当的安全措施保护您的个人数据。虽然没有任何数字方法是 100% 安全的，但我们采取严格的预防措施来确保您的保护。",
   "privacidade_paragrafo5": "除非法律要求或为了与可信赖的合作伙伴改进我们的服务，否则我们不会与第三方共享您的信息。",
   "privacidade_paragrafo6": "您有权访问、更正或删除您的个人数据。要行使这些权利，请通过以下电子邮件与我们联系：",
-  "privacidade_paragrafo7": "本政策可能会定期更新。我们建议您定期查看，以了解我们如何保护您的数据。"
+  "privacidade_paragrafo7": "本政策可能会定期更新。我们建议您定期查看，以了解我们如何保护您的数据。",
+
+  "signup_titulo": "创建账户",
+  "signup_subtitulo": "创建您的账户",
+  "signup_nome": "全名",
+  "signup_email": "电子邮件",
+  "signup_senha": "密码",
+  "signup_confirmar_senha": "确认密码",
+  "signup_botao": "注册",
+  "signup_ja_tem_conta": "已经有账户？",
+  "signup_entrar": "登录",
+  "signup_error_campos": "请填写所有字段。",
+  "signup_error_senhas": "密码不匹配。",
+  "signup_error_criar": "创建账户时出错。",
+  "signup_error_servidor": "服务器错误。请稍后再试。",
+  "signup_sucesso": "账户创建成功！请登录继续。",
+
+  "modal_sucesso_titulo": "成功！",
+  "modal_fechar": "关闭",
+
+  "login_bemvindo": "欢迎回来！",
+  "login_titulo": "登录您的帐户",
+  "login_email_placeholder": "电子邮件",
+  "login_senha_placeholder": "密码",
+  "login_botao_entrar": "登录",
+  "login_nao_tem_conta": "还没有帐户？",
+  "login_criar_conta": "创建帐户",
+  "login_erro_campos": "请填写所有字段！",
+  "login_erro_autenticacao": "登录失败，请检查凭证。",
+  "login_erro_servidor": "服务器错误，请稍后再试。"
 
 
 }

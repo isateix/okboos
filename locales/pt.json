@@ -22,7 +22,6 @@
   "featuredSelections": "Seleções em destaque",
   "orderProtections": "Proteções para pedidos",
   "buyersCenter": "Central dos Compradores",
-  "appExtension": "Aplicativo e extensão",
   "becomeSupplier": "Torne-se um(a) fornecedor(a)",
   "categories": [
     "Categorias para você",
@@ -228,7 +227,36 @@
   "privacidade_paragrafo4": "compromete-se a proteger os seus dados pessoais com medidas de segurança adequadas. Nenhum método digital é 100% seguro, mas tomamos precauções rigorosas para garantir a sua proteção.",
   "privacidade_paragrafo5": "Não partilhamos as suas informações com terceiros, exceto quando necessário para cumprir a lei ou melhorar os nossos serviços com parceiros de confiança.",
   "privacidade_paragrafo6": "Você tem o direito de aceder, corrigir ou eliminar os seus dados pessoais. Para exercer estes direitos, entre em contacto connosco através do e-mail:",
-  "privacidade_paragrafo7": "Esta Política pode ser atualizada periodicamente. Recomendamos que a consulte regularmente para se manter informado sobre como protegemos os seus dados."
+  "privacidade_paragrafo7": "Esta Política pode ser atualizada periodicamente. Recomendamos que a consulte regularmente para se manter informado sobre como protegemos os seus dados.",
+
+  "signup_titulo": "Criar Conta",
+  "signup_subtitulo": "Cria a tua conta",
+  "signup_nome": "Nome completo",
+  "signup_email": "Email",
+  "signup_senha": "Senha",
+  "signup_confirmar_senha": "Confirmar senha",
+  "signup_botao": "Criar Conta",
+  "signup_ja_tem_conta": "Já tens conta?",
+  "signup_entrar": "Entrar",
+  "signup_error_campos": "Por favor, preencha todos os campos.",
+  "signup_error_senhas": "As senhas não coincidem.",
+  "signup_error_criar": "Erro ao criar conta.",
+  "signup_error_servidor": "Erro no servidor. Tente novamente mais tarde.",
+  "signup_sucesso": "Conta criada com sucesso! Faça login para continuar.",
+
+  "modal_sucesso_titulo": "Sucesso!",
+  "modal_fechar": "Fechar",
+
+  "login_bemvindo": "Bem-vindo de volta!",
+  "login_titulo": "Entrar na sua conta",
+  "login_email_placeholder": "Email",
+  "login_senha_placeholder": "Senha",
+  "login_botao_entrar": "Entrar",
+  "login_nao_tem_conta": "Não tem uma conta?",
+  "login_criar_conta": "Criar conta",
+  "login_erro_campos": "Preencha todos os campos!",
+  "login_erro_autenticacao": "Erro ao iniciar sessão. Verifique as credenciais.",
+  "login_erro_servidor": "Erro no servidor. Tente novamente mais tarde."
 
 
  

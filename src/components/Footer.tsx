@@ -62,7 +62,7 @@ const Footer = () => {
             <h2 className="font-semibold text-lg text-gray-900 mb-5">{t("contactUs")}</h2>
             <div className="text-base space-y-2 text-gray-700">
               <p>+244 939 814 478</p>
-              <p>geralokboss@gmail.com</p>
+              <p>okbossgeral@gmail.com</p>
             </div>
 
             {/* Redes sociais */}

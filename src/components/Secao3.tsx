@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck, Factory } from "lucide-react";
+import { ShieldCheck, Factory, ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import Link from "next/link";
 
 const Secao3 = () => {
   const { t } = useLanguage();
@@ -51,9 +52,15 @@ const Secao3 = () => {
             <p className="text-base sm:text-lg leading-relaxed mb-6 md:mb-8 text-gray-100">
               {t("secao3_card1_text")}
             </p>
-            <button className="text-orange-400 font-semibold text-base sm:text-lg hover:underline">
-              {t("secao3_button")} →
-            </button>
+
+            <div className="flex justify-center md:justify-start">
+              <Link
+                href="/qualidade"
+                className="inline-flex items-center gap-2 bg-orange-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-500 transition-all"
+              >
+                {t("secao3_button")} <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </motion.div>
 
           {/* Card 2 */}
@@ -72,9 +79,15 @@ const Secao3 = () => {
             <p className="text-base sm:text-lg leading-relaxed mb-6 md:mb-8 text-gray-100">
               {t("secao3_card2_text")}
             </p>
-            <button className="text-orange-400 font-semibold text-base sm:text-lg hover:underline">
-              {t("secao3_button")} →
-            </button>
+
+            <div className="flex justify-center md:justify-start">
+              <Link
+                href="/seguranca"
+                className="inline-flex items-center gap-2 bg-orange-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-500 transition-all"
+              >
+                {t("secao3_button")} <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>

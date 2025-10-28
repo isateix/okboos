@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import Link from "next/link";
 
 export default function Secao7() {
   const { t } = useLanguage();
@@ -74,9 +75,14 @@ export default function Secao7() {
         <h3 className="text-2xl font-bold text-gray-900 mb-3">
           {t("secao7_subtitle")}
         </h3>
-        <button className="flex items-center gap-2 mx-auto text-orange-600 font-semibold hover:underline">
-          {t("secao7_button")} <ArrowRight className="w-5 h-5" />
-        </button>
+       <div className="flex justify-center mt-4">
+  <Link
+    href="/sobre"
+    className="inline-flex items-center gap-2 text-orange-600 font-semibold hover:underline"
+  >
+    {t("secao7_button")} <ArrowRight className="w-5 h-5" />
+  </Link>
+</div>
       </div>
     </section>
   );

@@ -22,7 +22,6 @@
   "featuredSelections": "Featured Selections",
   "orderProtections": "Order Protections",
   "buyersCenter": "Buyers Center",
-  "appExtension": "App & Extension",
   "becomeSupplier": "Become a Supplier",
   "categories": [
     "Categories for You",
@@ -229,6 +228,35 @@
   "privacidade_paragrafo4": "is committed to protecting your personal data with appropriate security measures. No digital method is 100% secure, but we take strict precautions to ensure your protection.",
   "privacidade_paragrafo5": "We do not share your information with third parties, except when required by law or to improve our services with trusted partners.",
   "privacidade_paragrafo6": "You have the right to access, correct, or delete your personal data. To exercise these rights, contact us at:",
-  "privacidade_paragrafo7": "This Policy may be updated periodically. We recommend reviewing it regularly to stay informed about how we protect your data."
+  "privacidade_paragrafo7": "This Policy may be updated periodically. We recommend reviewing it regularly to stay informed about how we protect your data.",
+
+  "signup_titulo": "Create Account",
+  "signup_subtitulo": "Create your account",
+  "signup_nome": "Full name",
+  "signup_email": "Email",
+  "signup_senha": "Password",
+  "signup_confirmar_senha": "Confirm password",
+  "signup_botao": "Sign Up",
+  "signup_ja_tem_conta": "Already have an account?",
+  "signup_entrar": "Login",
+  "signup_error_campos": "Please fill in all fields.",
+  "signup_error_senhas": "Passwords do not match.",
+  "signup_error_criar": "Error creating account.",
+  "signup_error_servidor": "Server error. Please try again later.",
+  "signup_sucesso": "Account created successfully! Please log in to continue.",
+
+   "modal_sucesso_titulo": "Success!",
+  "modal_fechar": "Close",
+
+  "login_bemvindo": "Welcome back!",
+  "login_titulo": "Sign in to your account",
+  "login_email_placeholder": "Email",
+  "login_senha_placeholder": "Password",
+  "login_botao_entrar": "Sign In",
+  "login_nao_tem_conta": "Don't have an account?",
+  "login_criar_conta": "Create account",
+  "login_erro_campos": "Please fill in all fields!",
+  "login_erro_autenticacao": "Login failed. Please check your credentials.",
+  "login_erro_servidor": "Server error. Please try again later."
 
 }
