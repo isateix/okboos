@@ -5,7 +5,8 @@ import { LanguageProvider } from "../context/LanguageContext";
 import { CartProvider } from "../context/CartContext";
 import { UserProvider } from "../context/UserContext";
 import { AuthProvider } from "../context/AuthContext";
-import Header from "../components/Header";
+import { WishlistProvider } from "../context/WishlistContext";
+import Navbar from "../components/Navbar";
 import { usePathname } from "next/navigation";
 
 export default function RootLayout({
@@ -15,9 +16,9 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
 
-  // 🔸 Define as páginas onde o Header NÃO deve aparecer (LandingPage, Login, etc.)
-  const hideHeaderOn = ["/", "/login", "/register"];
-  const shouldHideHeader = hideHeaderOn.includes(pathname);
+  // Páginas onde NÃO queremos mostrar a Navbar
+  const hideNavbarOn = ["/", "/login", "/register"];
+  const shouldHideNavbar = hideNavbarOn.includes(pathname);
 
   return (
     <html lang="pt">
@@ -25,12 +26,13 @@ export default function RootLayout({
         <LanguageProvider>
           <AuthProvider>
             <CartProvider>
-              <UserProvider>
-                {/* Renderiza Header apenas se não for a LandingPage */}
-                {!shouldHideHeader && <Header />}
-
-                <main className="min-h-screen">{children}</main>
-              </UserProvider>
+              <WishlistProvider>
+                <UserProvider>
+                  {/* Navbar aparece em todas as páginas, exceto as listadas */}
+                  {!shouldHideNavbar && <Navbar />}
+                  <main className="min-h-screen">{children}</main>
+                </UserProvider>
+              </WishlistProvider>
             </CartProvider>
           </AuthProvider>
         </LanguageProvider>
