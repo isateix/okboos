@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   try {
     const address = await prisma.address.create({
       data: {
-        userId: session.user.id,
+        userId: Number(session.user.id), // ⚡ importante converter para número
         street,
         city,
         state,
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ address }, { status: 201 });
   } catch (err) {
-    console.error(err);
+    console.error("Erro ao criar endereço:", err);
     return NextResponse.json({ error: "Erro ao salvar endereço" }, { status: 500 });
   }
 }

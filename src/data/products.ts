@@ -9,20 +9,20 @@ export type Product = {
   category?: string;
   originalPrice?: number;
   discountPercentage?: number;
-  colors?: string[]; // 👈 adiciona isto
+  colors?: string[];
 };
 
 export const products: Product[] = [
-  // Produtos antigos (1 a 76)
-  { id: "1", name: "Moedor Pimenta e Sal VD 19CM ED509860", price: 25, image: "/images/produtos/1.jpg" },
+  // Produtos 1 a 76 (originais)
+  { id: "1", name: "Moedor Pimenta e Sal VD 19CM ED509860", price: 25, originalPrice: 35, discountPercentage: 28, category: "Ofertas do Dia", image: "/images/produtos/1.jpg" },
   { id: "2", name: "Pote Hermético 2L", price: 30, image: "/images/produtos/2.jpg" },
-  { id: "3", name: "Kit 6 Assadeiras Antiaderente", price: 45, image: "/images/produtos/3.png" },
+  { id: "3", name: "Kit 6 Assadeiras Antiaderente", price: 45, originalPrice: 60, discountPercentage: 25, category: "Ofertas do Dia", image: "/images/produtos/3.png" },
   { id: "4", name: "Escorredor de Macarrão Inox 24cm", price: 20, image: "/images/produtos/4.jpg" },
   { id: "5", name: "Conjunto De Medidores De Xícara 6 PC Coloridas", price: 18, image: "/images/produtos/5.png" },
   { id: "6", name: "Ralador De Legumes Multiuso", price: 22, image: "/images/produtos/6.jpg" },
   { id: "7", name: "Espátula Silicone E Bamboo", price: 12, image: "/images/produtos/7.jpg" },
   { id: "8", name: "Kit Colheres de Pau Personalizadas + Suporte", price: 15, image: "/images/produtos/8.jpg" },
-  { id: "9", name: "Cafeteira Elétrica em Vidro AROA", price: 60, image: "/images/produtos/9.jpg" },
+  { id: "9", name: "Cafeteira Elétrica em Vidro AROA", price: 60, originalPrice: 80, discountPercentage: 25, category: "Ofertas do Dia", image: "/images/produtos/9.jpg" },
   { id: "10", name: "Jogo de Facas Tramontina Century", price: 80, image: "/images/produtos/10.png" },
   { id: "11", name: "Torradeira Dupla Xiaomi Toaster 780W", price: 55, image: "/images/produtos/11.jpg" },
   { id: "12", name: "Fornos Modernos", price: 200, image: "/images/produtos/12.jpg" },
@@ -73,7 +73,6 @@ export const products: Product[] = [
   { id: "57", name: "Bola", price: 80, image: "/images/produtos/57.png" },
   { id: "58", name: "Casa de Boneca", price: 600, image: "/images/produtos/58.png" },
   { id: "59", name: "Patins", price: 700, image: "/images/produtos/59.png" },
-  // 🥿 Calçados
   { id: "60", name: "Tênis Infantil", price: 850, image: "/images/produtos/60.png" },
   { id: "61", name: "Sapatilhas Femininas", price: 750, image: "/images/produtos/61.png" },
   { id: "62", name: "Sapatos Masculinos", price: 950, image: "/images/produtos/62.png" },
@@ -86,86 +85,96 @@ export const products: Product[] = [
   { id: "69", name: "Chuteiras", price: 1200, image: "/images/produtos/69.png" },
   { id: "70", name: "Botas de Trabalho", price: 1300, image: "/images/produtos/70.png" },
   { id: "71", name: "Sandálias de Praia", price: 700, image: "/images/produtos/71.png" },
-  { id: "72", name: "Smart TV LG OLED 55 Polegadas 4K", price: 2500, image: "/images/produtos/72.png" },
+  { id: "72", name: "Smart TV LG OLED 55 Polegadas 4K", price: 2500, originalPrice: 3000, discountPercentage: 17, category: "Ofertas do Dia", image: "/images/produtos/72.png" },
   { id: "73", name: "Tablet Samsung Galaxy Tab S9", price: 1500, image: "/images/produtos/73.png" },
   { id: "74", name: "Câmera Digital Canon EOS Rebel T7", price: 1800, image: "/images/produtos/74.png" },
-  { id: "75", name: "Smartwatch Apple Watch Series 9", price: 1200, image: "/images/produtos/75.png" },
+  { id: "75", name: "Smartwatch Apple Watch Series 9", price: 1200, originalPrice: 1500, discountPercentage: 20, category: "Ofertas do Dia", image: "/images/produtos/75.png" },
   { id: "76", name: "Câmera de Segurança Inteligente Xiaomi Mi 360", price: 1000, image: "/images/produtos/76.png" },
+ // Produtos novos organizados (cozinha, eletrodomésticos, eletrônicos, beleza, acessórios, brinquedos)  
+  // Produtos novos com ofertas
+  { id: "77", name: "Brinquedo Educativo de Blocos de Montar", price: 80, originalPrice: 100, discountPercentage: 20, image: "/images/produtos/78.png", category: "brinquedos" },
+  { id: "78", name: "Carrinho de Bebê Dobrável com Cinto de Segurança", price: 250, image: "/images/produtos/79.png", category: "brinquedos" },
+  { id: "79", name: "Cadeirinha para Automóvel Infantil", price: 270, originalPrice: 300, discountPercentage: 10, image: "/images/produtos/80.png", category: "brinquedos" },
+  { id: "80", name: "Tapete Infantil Antiderrapante com Estampas Coloridas", price: 150, image: "/images/produtos/81.png", category: "brinquedos" },
+  { id: "81", name: "Berço Portátil Dobrável com Mosquiteiro", price: 380, originalPrice: 400, discountPercentage: 5, image: "/images/produtos/82.png", category: "brinquedos" },
+  { id: "82", name: "Carrinho de Controle Remoto Off-Road", price: 320, originalPrice: 350, discountPercentage: 8, image: "/images/produtos/83.png", category: "brinquedos" },
+  { id: "83", name: "Cadeira de Alimentação Infantil Reclinável", price: 200, image: "/images/produtos/84.png", category: "brinquedos" },
+  { id: "84", name: "Mesa de Atividades com Luzes e Sons", price: 180, image: "/images/produtos/85.png", category: "brinquedos" },
+  { id: "85", name: "Piscina de Bolinhas Infantil", price: 220, image: "/images/produtos/86.png", category: "brinquedos" },
 
-  // Produtos novos organizados (cozinha, eletrodomésticos, eletrônicos, beleza, acessórios, brinquedos)  
-  { id: "78", name: "Brinquedo Educativo de Blocos de Montar", price: 100, image: "/images/produtos/78.png", category: "brinquedos" },
-  { id: "79", name: "Carrinho de Bebê Dobrável com Cinto de Segurança", price: 250, image: "/images/produtos/79.png", category: "brinquedos" },
-  { id: "80", name: "Cadeirinha para Automóvel Infantil", price: 300, image: "/images/produtos/80.png", category: "brinquedos" },
-  { id: "81", name: "Tapete Infantil Antiderrapante com Estampas Coloridas", price: 150, image: "/images/produtos/81.png", category: "brinquedos" },
-  { id: "82", name: "Berço Portátil Dobrável com Mosquiteiro", price: 400, image: "/images/produtos/82.png", category: "brinquedos" },
-  { id: "83", name: "Carrinho de Controle Remoto Off-Road", price: 350, image: "/images/produtos/83.png", category: "brinquedos" },
-  { id: "84", name: "Cadeira de Alimentação Infantil Reclinável", price: 200, image: "/images/produtos/84.png", category: "brinquedos" },
-  { id: "85", name: "Mesa de Atividades com Luzes e Sons", price: 180, image: "/images/produtos/85.png", category: "brinquedos" },
-  { id: "86", name: "Piscina de Bolinhas Infantil", price: 220, image: "/images/produtos/86.png", category: "brinquedos" },
+
 // Cozinha
-{ id: "87", name: "Cantil de Água", price: 25, image: "/images/produtos/98.png", category: "cozinha" },
-{ id: "88", name: "Copo de vidro para água", price: 15, image: "/images/produtos/99.png", category: "cozinha" },
-{ id: "89", name: "Conjunto de 3 tijelas", price: 20, image: "/images/produtos/116.png", category: "cozinha" },
-{ id: "90", name: "Copo de água", price: 10, image: "/images/produtos/117.png", category: "cozinha" },
-{ id: "91", name: "Catil de água", price: 35, image: "/images/produtos/123.png", category: "cozinha" },
-{ id: "92", name: "Cantil de água", price: 40, image: "/images/produtos/124.png", category: "cozinha" },
+{ id: "86", name: "Cantil de Água", price: 25, image: "/images/produtos/98.png", category: "cozinha" },
+{ id: "87", name: "Copo de vidro para água", price: 15, image: "/images/produtos/99.png", category: "cozinha" },
+{ id: "88", name: "Conjunto de 3 tijelas", price: 20, image: "/images/produtos/116.png", category: "cozinha" },
+{ id: "89", name: "Copo de água", price: 10, image: "/images/produtos/117.png", category: "cozinha" },
+{ id: "90", name: "Catil de água", price: 35, image: "/images/produtos/123.png", category: "cozinha" },
+{ id: "91", name: "Cantil de água", price: 40, image: "/images/produtos/124.png", category: "cozinha" },
 
 // Eletrodomésticos
-{ id: "93", name: "Fogão de duas bocas", price: 250, image: "/images/produtos/96.png", category: "eletrodomesticos" },
-{ id: "94", name: "Fogão de 3 bocas", price: 300, image: "/images/produtos/97.png", category: "eletrodomesticos" },
-{ id: "95", name: "Ar Condicionado Split 9000 BTUs Frio/Quente", price: 700, image: "/images/produtos/110.png", category: "eletrodomesticos" },
-{ id: "96", name: "Forno Elétrico 45L com Função Grill e Temporizador", price: 450, image: "/images/produtos/103.png", category: "eletrodomesticos" },
-{ id: "97", name: "Aspirador de Pó Portátil 1200W com Filtro HEPA", price: 350, image: "/images/produtos/111.png", category: "eletrodomesticos" },
-{ id: "98", name: "Batedeira Planetária 600W com 3 Tigelas", price: 200, image: "/images/produtos/112.png", category: "eletrodomesticos" },
-{ id: "99", name: "Cafeteira Elétrica 1.5L com Filtro Permanente", price: 150, image: "/images/produtos/113.png", category: "eletrodomesticos" },
-{ id: "100", name: "Ventoinha de Mesa Oscilante 40cm 3 Velocidades", price: 80, image: "/images/produtos/114.png", category: "eletrodomesticos" },
-{ id: "101", name: "Ventoinha de Mesa Oscilante 40cm 3 Velocidades", price: 80, image: "/images/produtos/115.png", category: "eletrodomesticos" },
-{ id: "102", name: "Bluetooth com LED", price: 120, image: "/images/produtos/142.png", category: "eletrodomesticos" },
-{ id: "103", name: "Máquina de Costurar Portátil", price: 220, image: "/images/produtos/143.png", category: "eletrodomesticos" },
+{ id: "92", name: "Fogão de duas bocas", price: 230, originalPrice: 250, discountPercentage: 8, image: "/images/produtos/96.png", category: "eletrodomesticos" },
+  { id: "93", name: "Fogão de 3 bocas", price: 300, image: "/images/produtos/97.png", category: "eletrodomesticos" },
+  { id: "94", name: "Ar Condicionado Split 9000 BTUs Frio/Quente", price: 700, image: "/images/produtos/110.png", category: "eletrodomesticos" },
+  { id: "95", name: "Forno Elétrico 45L com Função Grill e Temporizador", price: 400, originalPrice: 450, discountPercentage: 11, image: "/images/produtos/103.png", category: "eletrodomesticos" },
+  { id: "96", name: "Aspirador de Pó Portátil 1200W com Filtro HEPA", price: 350, image: "/images/produtos/111.png", category: "eletrodomesticos" },
+
+{ id: "97", name: "Batedeira Planetária 600W com 3 Tigelas", price: 200, image: "/images/produtos/112.png", category: "eletrodomesticos" },
+{ id: "98", name: "Cafeteira Elétrica 1.5L com Filtro Permanente", price: 150, image: "/images/produtos/113.png", category: "eletrodomesticos" },
+{ id: "99", name: "Ventoinha de Mesa Oscilante 40cm 3 Velocidades", price: 80, image: "/images/produtos/114.png", category: "eletrodomesticos" },
+{ id: "100", name: "Ventoinha de Mesa Oscilante 40cm 3 Velocidades", price: 80, image: "/images/produtos/115.png", category: "eletrodomesticos" },
+{ id: "101", name: "Bluetooth com LED", price: 120, image: "/images/produtos/142.png", category: "eletrodomesticos" },
+{ id: "102", name: "Máquina de Costurar Portátil", price: 220, image: "/images/produtos/143.png", category: "eletrodomesticos" },
 
 // Eletrônicos
-{ id: "104", name: "Fone de Ouvido Bluetooth Sony WH-1000XM5", price: 500, image: "/images/produtos/90.png", category: "eletronicos" },
-{ id: "105", name: "Notebook Apple MacBook Air M3", price: 4500, image: "/images/produtos/91.png", category: "eletronicos" },
-{ id: "106", name: "Caixa de Som JBL Charge 5", price: 700, image: "/images/produtos/92.png", category: "eletronicos" },
-{ id: "107", name: "Console PlayStation 5 Slim", price: 2500, image: "/images/produtos/93.png", category: "eletronicos" },
+{ id: "103", name: "Fone de Ouvido Bluetooth Sony WH-1000XM5", price: 500, image: "/images/produtos/90.png", category: "eletronicos" },
+{ id: "104", name: "Notebook Apple MacBook Air M3", price: 4500, image: "/images/produtos/91.png", category: "eletronicos" },
+{ id: "105", name: "Caixa de Som JBL Charge 5", price: 700, image: "/images/produtos/92.png", category: "eletronicos" },
+{ id: "106", name: "Console PlayStation 5 Slim", price: 2500, image: "/images/produtos/93.png", category: "eletronicos" },
 
-// Beleza & Cuidados
-{ id: "108", name: "Batom", price: 50, image: "/images/produtos/95.png", category: "beleza" },
-{ id: "109", name: "Escova Elétrica", price: 180, image: "/images/produtos/105.png", category: "beleza" },
-{ id: "110", name: "Chapinha", price: 150, image: "/images/produtos/106.png", category: "beleza" },
-{ id: "111", name: "Pepper", price: 90, image: "/images/produtos/107.png", category: "beleza" },
-{ id: "112", name: "Secador de Cabelo", price: 200, image: "/images/produtos/108.png", category: "beleza" },
-{ id: "113", name: "Batedeira", price: 250, image: "/images/produtos/109.png", category: "beleza" },
+// Beleza
+{ id: "107", name: "Batom", price: 50, image: "/images/produtos/95.png", category: "beleza" },
+{ id: "108", name: "Escova Elétrica", price: 180, image: "/images/produtos/105.png", category: "beleza" },
+{ id: "109", name: "Chapinha", price: 150, image: "/images/produtos/106.png", category: "beleza" },
+{ id: "110", name: "Pepper", price: 90, image: "/images/produtos/107.png", category: "beleza" },
+{ id: "111", name: "Secador de Cabelo", price: 200, image: "/images/produtos/108.png", category: "beleza" },
+{ id: "112", name: "Batedeira", price: 250, image: "/images/produtos/109.png", category: "beleza" },
 
 // Acessórios
-{ id: "114", name: "Acessório Feminino", price: 60, image: "/images/produtos/94.png", category: "acessorios" },
-{ id: "115", name: "Chapéu", price: 40, image: "/images/produtos/118.png", category: "acessorios" },
-{ id: "116", name: "Chapéu", price: 45, image: "/images/produtos/119.png", category: "acessorios" },
-{ id: "117", name: "Pasta", price: 120, image: "/images/produtos/134.png", category: "acessorios" },
-{ id: "118", name: "Pasta", price: 130, image: "/images/produtos/135.png", category: "acessorios" },
-{ id: "119", name: "Conjunto de Mala com Pasta", price: 220, image: "/images/produtos/136.png", category: "acessorios" },
-{ id: "120", name: "Pasta Executiva com Zíper e Alça Ajustável", price: 300, image: "/images/produtos/137.png", category: "acessorios" },
-{ id: "121", name: "Bolsa de Ombro Feminina em Couro Sintético", price: 180, image: "/images/produtos/138.png", category: "acessorios" },
-{ id: "122", name: "Mochila Escolar Infantil com Estampa Colorida", price: 150, image: "/images/produtos/139.png", category: "acessorios" },
-{ id: "123", name: "Bolsa de Praia em Palha com Alça Longa", price: 90, image: "/images/produtos/140.png", category: "acessorios" },
-{ id: "124", name: "Boia", price: 50, image: "/images/produtos/141.png", category: "acessorios" },
-// Acessórios (continuação)
-{ id: "124", name: "Boia", price: 50, image: "/images/produtos/141.png", category: "acessorios" },
-{ id: "125", name: "Brinquedo Educativo de Blocos de Montar", price: 100, image: "/images/produtos/78.png", category: "brinquedos" },
-{ id: "126", name: "Carrinho de Bebê Dobrável com Cinto de Segurança", price: 250, image: "/images/produtos/79.png", category: "brinquedos" },
-{ id: "127", name: "Cadeirinha para Automóvel Infantil", price: 300, image: "/images/produtos/80.png", category: "brinquedos" },
-{ id: "128", name: "Tapete Infantil Antiderrapante com Estampas Coloridas", price: 150, image: "/images/produtos/81.png", category: "brinquedos" },
-{ id: "129", name: "Berço Portátil Dobrável com Mosquiteiro", price: 400, image: "/images/produtos/82.png", category: "brinquedos" },
-{ id: "130", name: "Carrinho de Controle Remoto Off-Road", price: 350, image: "/images/produtos/83.png", category: "brinquedos" },
-{ id: "131", name: "Cadeira de Alimentação Infantil Reclinável", price: 200, image: "/images/produtos/84.png", category: "brinquedos" },
-{ id: "132", name: "Mesa de Atividades com Luzes e Sons", price: 180, image: "/images/produtos/85.png", category: "brinquedos" },
-{ id: "133", name: "Piscina de Bolinhas Infantil", price: 220, image: "/images/produtos/86.png", category: "brinquedos" },
+{ id: "113", name: "Acessório Feminino", price: 60, image: "/images/produtos/94.png", category: "acessorios" },
+{ id: "114", name: "Chapéu", price: 40, image: "/images/produtos/118.png", category: "acessorios" },
+{ id: "115", name: "Chapéu", price: 45, image: "/images/produtos/119.png", category: "acessorios" },
+{ id: "116", name: "Pasta", price: 120, image: "/images/produtos/134.png", category: "acessorios" },
+{ id: "117", name: "Pasta", price: 130, image: "/images/produtos/135.png", category: "acessorios" },
+{ id: "118", name: "Conjunto de Mala com Pasta", price: 220, image: "/images/produtos/136.png", category: "acessorios" },
+{ id: "119", name: "Pasta Executiva com Zíper e Alça Ajustável", price: 300, image: "/images/produtos/137.png", category: "acessorios" },
+{ id: "120", name: "Bolsa de Ombro Feminina em Couro Sintético", price: 180, image: "/images/produtos/138.png", category: "acessorios" },
+{ id: "121", name: "Mochila Escolar Infantil com Estampa Colorida", price: 150, image: "/images/produtos/139.png", category: "acessorios" },
+{ id: "122", name: "Bolsa de Praia em Palha com Alça Longa", price: 90, image: "/images/produtos/140.png", category: "acessorios" },
+{ id: "123", name: "Boia", price: 50, image: "/images/produtos/141.png", category: "acessorios" },
 
-// Cozinha / Eletrodomésticos (repetidos/adicionados)
-{ id: "134", name: "Cantil de Água", price: 25, image: "/images/produtos/98.png", category: "cozinha" },
-{ id: "135", name: "Copo de vidro para água", price: 15, image: "/images/produtos/99.png", category: "cozinha" },
-{ id: "136", name: "Conjunto de 3 tijelas", price: 20, image: "/images/produtos/116.png", category: "cozinha" },
-{ id: "137", name: "Copo de água", price: 10, image: "/images/produtos/117.png", category: "cozinha" },
+// Roupas
+{ id: "124", name: "Camiseta Masculina Algodão", price: 150, image: "/images/produtos/144.png", category: "roupas" },
+{ id: "125", name: "Camiseta Feminina Manga Curta", price: 140, image: "/images/produtos/145.png", category: "roupas" },
+{ id: "126", name: "Calça Jeans Masculina", price: 300, image: "/images/produtos/146.png", category: "roupas" },
+{ id: "127", name: "Calça Legging Feminina", price: 200, image: "/images/produtos/147.png", category: "roupas" },
+{ id: "128", name: "Vestido Casual Feminino", price: 250, image: "/images/produtos/148.png", category: "roupas" },
+{ id: "129", name: "Jaqueta Masculina Impermeável", price: 400, image: "/images/produtos/149.png", category: "roupas" },
+{ id: "130", name: "Moletom Unissex com Capuz", price: 350, image: "/images/produtos/150.png", category: "roupas" },
+
+// IDs finais de eletrodomésticos menores e utilidades
+{ id: "131", name: "Ferro a Vapor", price: 80, image: "/images/produtos/151.png", category: "eletrodomesticos" },
+{ id: "132", name: "Batedeira", price: 150, image: "/images/produtos/152.png", category: "eletrodomesticos" },
+{ id: "133", name: "Secador", price: 160, image: "/images/produtos/153.png", category: "eletrodomesticos" },
+{ id: "134", name: "Chapinha", price: 120, image: "/images/produtos/154.png", category: "eletrodomesticos" },
+{ id: "135", name: "Moedor de Pimenta", price: 25, image: "/images/produtos/155.png", category: "eletrodomesticos" },
+{ id: "136", name: "Bicicleta Infantil", price: 950, image: "/images/produtos/156.png", category: "eletrodomesticos" },
+{ id: "137", name: "Ringlith", price: 300, image: "/images/produtos/157.png", category: "eletrodomesticos" },
+
+
+
+
+
+
 { id: "138", name: "Catil de água", price: 35, image: "/images/produtos/123.png", category: "cozinha" },
 { id: "139", name: "Cantil de água", price: 40, image: "/images/produtos/124.png", category: "cozinha" },
 

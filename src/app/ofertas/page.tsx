@@ -4,13 +4,14 @@ import ProductCard from '../../components/ProductCard';
 import { slugify } from '../../lib/utils/slugify';
 
 export default function OfertasPage() {
-  const dailyDeals: Product[] = products.filter(
-    (product) =>
-      product.category === 'Ofertas do Dia' &&
-      product.originalPrice &&
-      product.discountPercentage &&
-      product.discountPercentage > 0
-  );
+ const dailyDeals: Product[] = Array.isArray(products)
+  ? products.filter(
+      (product) =>
+        product.originalPrice !== undefined &&
+        product.discountPercentage !== undefined &&
+        product.discountPercentage > 0
+    )
+  : [];
 
   // Optionally, pick a featured deal
   const featuredDeal = dailyDeals.length > 0 ? dailyDeals[0] : null;
