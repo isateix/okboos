@@ -1,17 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import { produtos } from "../data/products";
+import { useState, useEffect } from "react";
+import { products, Product } from "../data/products"; // ✅ Caminho corrigido
 
 export default function Secao13() {
   const [startIndex, setStartIndex] = useState(0);
-  const itensPorPagina = 5;
+  const [itensPorPagina, setItensPorPagina] = useState(5);
 
   // ✅ IDs dos produtos (60 a 68)
   const idsSelecionados = ["60", "61", "62", "63", "64", "65", "66", "67", "68"];
-  const produtosFiltrados = produtos.filter((p) =>
+  const produtosFiltrados = products.filter((p) =>
     idsSelecionados.includes(p.id)
   );
+
+  // ✅ Responsividade igual à Secao17
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) setItensPorPagina(1); // 📱 mobile
+      else if (window.innerWidth < 1024) setItensPorPagina(2); // 💻 tablet
+      else setItensPorPagina(5); // 🖥️ desktop
+    };
+
+    handleResize(); // inicial
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const endIndex = startIndex + itensPorPagina;
   const produtosVisiveis = produtosFiltrados.slice(startIndex, endIndex);
@@ -28,7 +41,6 @@ export default function Secao13() {
 
   return (
     <section className="my-16 p-6 bg-transparent w-full relative overflow-hidden">
-      {/* 🟢 Título da seção */}
       <h2 className="text-3xl font-bold mb-10 text-left text-green-700 ml-10">
         Tendências Modernas
       </h2>
@@ -44,13 +56,19 @@ export default function Secao13() {
         </button>
 
         {/* Produtos visíveis */}
-        <div className="flex gap-10 overflow-hidden justify-center w-full">
+        <div
+          className="flex gap-10 justify-center w-full transition-all duration-300"
+          style={{
+            width: `${itensPorPagina * 18}rem`,
+            maxWidth: "100%",
+          }}
+        >
           {produtosVisiveis.map((produto) => (
             <div
               key={produto.id}
-              className="relative w-56 h-60 flex flex-col items-center justify-end"
+              className="relative w-56 h-60 flex flex-col items-center justify-end mx-auto"
             >
-              {/* 🟢 Círculo translúcido verde */}
+              {/* Círculo translúcido */}
               <div className="absolute top-0 w-48 h-48 rounded-full bg-green-200/30 backdrop-blur-md border border-green-300/40 flex items-center justify-center">
                 <img
                   src={produto.image}

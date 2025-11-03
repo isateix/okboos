@@ -1,37 +1,41 @@
-import { NextResponse } from "next/server";
-import { getServerAuthSession } from "../../../lib/auth";
-import prisma from "../../../../lib/prisma";
+// pages/api/address.ts
+import { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "../../lib/session"; // ajuste conforme seu getSession
+import prisma from "../../lib/prisma";
 
-export async function POST(req: Request) {
-  // getServerAuthSession aceita Request/NextRequest e usa o header Authorization
-  const session = await getServerAuthSession(req);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const session = await getSession(req);
 
   if (!session?.user) {
-    return NextResponse.json({ error: "Usuário não logado" }, { status: 401 });
+    return res.status(401).json({ error: "Usuário não logado" });
   }
 
-  try {
-    const body = await req.json();
-    const { street, city, state, zip, country } = body;
+  if (req.method === "POST") {
+    const { street, city, state, zip, country } = req.body;
 
     if (!street || !city || !state || !zip || !country) {
-      return NextResponse.json({ error: "Todos os campos são obrigatórios" }, { status: 400 });
+      return res.status(400).json({ error: "Todos os campos são obrigatórios" });
     }
 
-    const address = await prisma.address.create({
-      data: {
-        userId: session.user.id,
-        street,
-        city,
-        state,
-        zip,
-        country,
-      },
-    });
+    try {
+      const address = await prisma.address.create({
+        data: {
+          userId: session.user.id,
+          street,
+          city,
+          state,
+          zip,
+          country,
+        },
+      });
 
-    return NextResponse.json({ address }, { status: 201 });
-  } catch (err) {
-    console.error("address POST error:", err);
-    return NextResponse.json({ error: "Erro ao salvar endereço" }, { status: 500 });
+      return res.status(201).json({ address });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Erro ao salvar endereço" });
+    }
+  } else {
+    res.setHeader("Allow", ["POST"]);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

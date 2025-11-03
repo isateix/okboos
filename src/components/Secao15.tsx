@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { produtos } from "../data/products";
+import { products, Product } from "../data/products"; // ✅ Caminho corrigido
 
 export default function Secao15() {
   const idsSelecionados = ["48", "49", "50", "51", "52", "53", "54"];
-  const produtosSelecionados = produtos.filter((p) =>
+  const produtosSelecionados = products.filter((p) =>
     idsSelecionados.includes(p.id)
   );
 

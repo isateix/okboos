@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { produtos } from "../data/products";
+import { products, Product } from "../data/products"; // ✅ Caminho corrigido
 
 export default function Secao9() {
   const [startIndex, setStartIndex] = useState(0);
   const [itensPorPagina, setItensPorPagina] = useState(5);
 
-  const idsSelecionados = ["144","145","146","147","148","149","150"];
-  const produtosFiltrados = produtos.filter((p) =>
+  const idsSelecionados = ["144", "145", "146", "147", "148", "149", "150"];
+
+  // ✅ Corrigido: usar 'products' em vez de 'produtos'
+  const produtosFiltrados: Product[] = products.filter((p) =>
     idsSelecionados.includes(p.id)
   );
 
@@ -89,13 +91,27 @@ export default function Secao9() {
               className="relative flex-none flex flex-col items-center justify-start w-56 sm:w-56 md:w-56"
             >
               {/* Círculo translúcido */}
-              <div className={`rounded-full bg-purple-200/30 backdrop-blur-md border border-purple-300/40 flex items-center justify-center
-                ${itensPorPagina === 1 ? "w-60 h-60" : itensPorPagina === 2 ? "w-52 h-52" : "w-48 h-48"}`}>
+              <div
+                className={`rounded-full bg-purple-200/30 backdrop-blur-md border border-purple-300/40 flex items-center justify-center
+                ${
+                  itensPorPagina === 1
+                    ? "w-60 h-60"
+                    : itensPorPagina === 2
+                    ? "w-52 h-52"
+                    : "w-48 h-48"
+                }`}
+              >
                 <img
                   src={produto.image}
                   alt={produto.name}
                   className={`object-contain drop-shadow-lg
-                    ${itensPorPagina === 1 ? "w-44 h-44" : itensPorPagina === 2 ? "w-36 h-36" : "w-32 h-32"}`}
+                    ${
+                      itensPorPagina === 1
+                        ? "w-44 h-44"
+                        : itensPorPagina === 2
+                        ? "w-36 h-36"
+                        : "w-32 h-32"
+                    }`}
                 />
               </div>
 

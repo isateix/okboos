@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { produtos } from "../data/products";
+import { products, Product } from "../data/products"; // ✅ Caminho mantido e correto
 
 export default function Secao17() {
   const [startIndex, setStartIndex] = useState(0);
   const [itensPorPagina, setItensPorPagina] = useState(5);
 
   const idsSelecionados = ["38", "39", "40", "41", "42", "43"];
-  const produtosFiltrados = produtos.filter((p) =>
+  const produtosFiltrados = products.filter((p) =>
     idsSelecionados.includes(p.id)
   );
 

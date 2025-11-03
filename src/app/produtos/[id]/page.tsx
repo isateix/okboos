@@ -28,8 +28,7 @@ export default function ProductDetailPage() {
     console.log("ProductDetailPage: foundProduct:", foundProduct);
     if (foundProduct) {
       setProduct(foundProduct);
-      setStock(foundProduct.quantity ?? 10);
-      setSelectedColor(foundProduct.colors?.[0] || '');
+  
 
       // Filter related products
       const related = products.filter(

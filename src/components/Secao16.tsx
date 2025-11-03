@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { produtos } from "../data/products";
+import { products, Product } from "../data/products"; // ✅ Caminho mantido
 
 export default function Secao16() {
   const idsSelecionados = ["44", "45", "46"];
   const produtosDestaque = idsSelecionados
-    .map((id) => produtos.find((p) => p.id === id))
-    .filter(Boolean) as typeof produtos;
+    .map((id) => products.find((p) => p.id === id))
+    .filter(Boolean) as typeof products;
 
   return (
     <section className="mt-12 mb-6 p-4 bg-white w-full">
@@ -32,7 +32,7 @@ export default function Secao16() {
             </div>
 
             {/* Imagem central */}
-            <div className="flex justify-center items-center flex-1 mt-6 mb-4">
+            <div className="flex justify-center items-center flex-1 mt-6 mb-4 relative">
               <div className="relative w-[260px] h-[260px] transition-transform duration-300 hover:scale-110">
                 <Image
                   src={produto.image}
@@ -41,16 +41,24 @@ export default function Secao16() {
                   className="object-contain"
                 />
               </div>
+
+              {/* ✅ Botão do card do meio — descido mais um pouco */}
+              {index === 1 && (
+                <button
+                  className="absolute bottom-0 bg-blue-900 text-white text-sm px-6 py-2 rounded-md shadow-md hover:bg-blue-800 transition font-medium"
+                  style={{ transform: "translateY(45%)" }}
+                >
+                  Comprar agora
+                </button>
+              )}
             </div>
 
-            {/* Botão dentro do card — sobe no card do meio */}
-            <button
-              className={`bg-blue-900 text-white text-sm px-6 py-2 rounded-md shadow-md hover:bg-blue-800 transition font-medium mx-auto ${
-                index === 1 ? "mb-6" : ""
-              }`}
-            >
-              Comprar agora
-            </button>
+            {/* Botão normal para os outros cards */}
+            {index !== 1 && (
+              <button className="bg-blue-900 text-white text-sm px-6 py-2 rounded-md shadow-md hover:bg-blue-800 transition font-medium mx-auto">
+                Comprar agora
+              </button>
+            )}
           </div>
         ))}
       </div>

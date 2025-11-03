@@ -1,6 +1,7 @@
 "use client";
 
-import Navbar from "../components/Navbar"; // Navbar no topo
+import Navbar from "../components/Navbar";
+import Secao20 from "../components/Secao20"; 
 import Secao8 from "../components/Secao8";
 import Secao9 from "../components/Secao9";
 import Secao10 from "../components/Secao10";
@@ -14,51 +15,35 @@ import Secao17 from "../components/Secao17";
 import Secao18 from "../components/Secao18";
 import Secao19 from "../components/Secao19";
 import Footer from "../components/Footer";
-import BottomNav from "../components/BottomNav"; // ajusta o caminho se necessário
+import BottomNav from "../components/BottomNav";
 
 export default function LandingPage() {
   return (
     <div className="bg-white min-h-screen">
-      <Navbar /> {/* sempre no topo */}
-      <main>
-        {/* Secao8 → TopoDestaque: seção grande no topo */}
+      <Navbar />
+<main className="space-y-10 sm:space-y-12 md:space-y-14">
+        <Secao20 />
         <Secao8 />
-
-        {/* Secao9 → Vantagens/Recursos: pequenas caixas com ícones ou checkmarks */}
         <Secao9 />
-
-        {/* Secao10 → Banner Promocional: uma seção maior abaixo das vantagens */}
         <Secao10 />
-
-        {/* Secao11 → Categorias em destaque: quadrados com imagens de categorias */}
         <Secao11 />
-
-        {/* Secao12 → Produtos: grid com nome e preço do produto */}
         <Secao12 />
-
-        {/* Secao13 → Produtos em destaque ou promoções */}
         <Secao13 />
-
-        {/* Secao14 → Banner promocional secundário ou categoria em destaque */}
         <Secao14 />
-
-        {/* Secao15 → Produtos por categoria específica */}
         <Secao15 />
-
-        {/* Secao16 → Promoções relâmpago ou ofertas do dia */}
         <Secao16 />
-
-        {/* Secao17 → Novidades / lançamentos */}
         <Secao17 />
-
-        {/* Secao18 → Produtos mais vendidos / populares */}
         <Secao18 />
-
-        {/* Secao19 → Última seção de promoções ou CTA final */}
         <Secao19 />
       </main>
-     <BottomNav /> {/* barra inferior fixa no mobile */}
-<Footer />
+
+      {/* Barra inferior fixa no mobile */}
+      <BottomNav />
+
+      {/* Footer aparece apenas no desktop */}
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </div>
   );
 }

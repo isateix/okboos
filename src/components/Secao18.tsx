@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { produtos } from "../data/products";
+import { products, Product } from "../data/products"; // ✅ Mesmo padrão da Secao17
 
 export default function Secao18() {
   const idsSelecionados = ["33", "35", "34", "37", "36"];
   const produtosDestaque = idsSelecionados
-    .map((id) => produtos.find((p) => p.id === id))
-    .filter(Boolean) as typeof produtos;
+    .map((id) => products.find((p) => p.id === id))
+    .filter(Boolean) as typeof products;
 
   return (
     <section className="mt-16 mb-8 p-6 bg-white w-full">
@@ -28,7 +28,7 @@ export default function Secao18() {
             <Image
               src={produtosDestaque[0].image}
               alt="Eletrodomésticos"
-              width={480} // um pouco menor para alinhar
+              width={480}
               height={480}
               className="object-contain mx-auto"
             />
@@ -107,7 +107,7 @@ export default function Secao18() {
             <Image
               src={produtosDestaque[4].image}
               alt="Lava-louça"
-              width={320} // menor para alinhar
+              width={320}
               height={320}
               className="object-contain mx-auto"
             />

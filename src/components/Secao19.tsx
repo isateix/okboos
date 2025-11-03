@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { produtos } from "../data/products";
+import { products, Product } from "../data/products"; // ✅ Caminho correto e padronizado
 
 export default function Secao19() {
   const [startIndex, setStartIndex] = useState(0);
@@ -20,7 +20,7 @@ export default function Secao19() {
   }, []);
 
   const endIndex = startIndex + itensPorPagina;
-  const produtosVisiveis = produtos.slice(startIndex, endIndex);
+  const produtosVisiveis = products.slice(startIndex, endIndex); // ✅ corrigido
 
   const handlePrev = () => {
     setStartIndex((prev) => Math.max(prev - itensPorPagina, 0));
@@ -28,7 +28,7 @@ export default function Secao19() {
 
   const handleNext = () => {
     setStartIndex((prev) =>
-      Math.min(prev + itensPorPagina, produtos.length - itensPorPagina)
+      Math.min(prev + itensPorPagina, products.length - itensPorPagina) // ✅ corrigido
     );
   };
 
@@ -52,7 +52,7 @@ export default function Secao19() {
         <div
           className={`flex gap-8 justify-center`}
           style={{
-            width: `${itensPorPagina * 20}rem`, // desktop = 5*20rem = 100rem, tablet/mobile menor
+            width: `${itensPorPagina * 20}rem`,
             maxWidth: "100%",
           }}
         >
@@ -85,7 +85,7 @@ export default function Secao19() {
         {/* Botão próximo */}
         <button
           onClick={handleNext}
-          disabled={startIndex + itensPorPagina >= produtos.length}
+          disabled={startIndex + itensPorPagina >= products.length} // ✅ corrigido
           className="absolute right-0 top-1/2 -translate-y-1/2 px-3 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 transition z-10 text-2xl font-bold"
         >
           &gt;

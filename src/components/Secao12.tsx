@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { produtos } from "../data/products";
+import { products, Product } from "../data/products"; // ✅ Caminho corrigido
 
 export default function Secao12() {
   const idsSelecionados = ["69", "70", "71"];
   const produtosDestaque = idsSelecionados
-    .map((id) => produtos.find((p) => p.id === id))
-    .filter(Boolean) as typeof produtos;
+    .map((id) => products.find((p) => p.id === id))
+    .filter(Boolean) as typeof products;
 
   return (
     <section className="mt-12 mb-6 p-4 bg-white w-full">

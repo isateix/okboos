@@ -1,3 +1,5 @@
+"use client";
+
 export type Product = {
   id: string;
   name: string;
@@ -7,9 +9,10 @@ export type Product = {
   category?: string;
   originalPrice?: number;
   discountPercentage?: number;
+  colors?: string[]; // 👈 adiciona isto
 };
 
-export const produtos: Product[] = [
+export const products: Product[] = [
   // Produtos antigos (1 a 76)
   { id: "1", name: "Moedor Pimenta e Sal VD 19CM ED509860", price: 25, image: "/images/produtos/1.jpg" },
   { id: "2", name: "Pote Hermético 2L", price: 30, image: "/images/produtos/2.jpg" },
@@ -190,6 +193,9 @@ export const produtos: Product[] = [
 { id: "158", name: "Liquidificador Portátil", price: 70, image: "/images/produtos/158.png", category: "eletrodomesticos" },
 { id: "159", name: "Vídeo", price: 200, image: "/images/produtos/159.png", category: "eletrodomesticos" },
 { id: "160", name: "Ventilador", price: 100, image: "/images/produtos/160.png", category: "eletrodomesticos" },
+{ id: "161", name: "Rolo de Filme Plástico", price: 20, image: "/images/produtos/161.jpg" },
+{ id: "162", name: "Tigela de Taque Wey (Pequena)", price: 35, image: "/images/produtos/162.jpg" },
+{ id: "163", name: "Tigela de Taque Wey (Grande)", price: 45, image: "/images/produtos/163.jpg" },
 
 
 
