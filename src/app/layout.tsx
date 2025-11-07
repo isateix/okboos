@@ -1,6 +1,6 @@
 // src/app/layout.tsx
-import { ClerkProvider } from "@clerk/nextjs";
-import { ptBR } from "@clerk/localizations";
+// import { ClerkProvider } from "@clerk/nextjs";
+// import { ptBR } from "@clerk/localizations";
 import Navbar from "../components/Navbar";
 import { CartProvider } from "../context/CartContext";
 import { UserProvider } from "../context/UserContext";
@@ -15,10 +15,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      localization={ptBR}
-    >
+    // 🔹 Comentar ClerkProvider temporariamente
+    // <ClerkProvider
+    //   publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    //   localization={ptBR}
+    // >
       <AuthProvider> {/* 🔹 Adicione AuthProvider aqui */}
         <UserProvider>
           <CartProvider>
@@ -31,6 +32,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </CartProvider>
         </UserProvider>
       </AuthProvider>
-    </ClerkProvider>
+    // </ClerkProvider>
   );
 }

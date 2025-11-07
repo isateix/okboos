@@ -5,16 +5,15 @@ import { FiHome } from "react-icons/fi";
 import { Heart, ShoppingCart, User, Grid } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCart } from '../context/CartContext';
-import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
+// import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs"; // 🔹 Clerk comentado
 
 export default function Navbar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [locale, setLocale] = useState<"pt" | "en" | "cn">("pt");
-  const [searchQuery, setSearchQuery] = useState(""); // 🔹 estado da pesquisa
+  const [searchQuery, setSearchQuery] = useState("");
   const { cart } = useCart();
 
-  // 🔹 Função de pesquisa
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchQuery.trim() !== "") {
       router.push(`/produtos?search=${encodeURIComponent(searchQuery)}`);
@@ -61,7 +60,7 @@ export default function Navbar() {
             placeholder="Pesquisar produtos"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleSearch} // 🔹 tecla Enter
+            onKeyDown={handleSearch}
             className="w-full border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
           />
         </div>
@@ -84,6 +83,7 @@ export default function Navbar() {
           </div>
 
           {/* Login / Perfil */}
+          {/*
           <SignedIn>
             <UserButton appearance={{ elements: { avatarBox: "w-8 h-8" } }} />
           </SignedIn>
@@ -95,6 +95,7 @@ export default function Navbar() {
               </button>
             </SignInButton>
           </SignedOut>
+          */}
 
           {/* Idioma */}
           <select
@@ -131,7 +132,7 @@ export default function Navbar() {
               placeholder="Pesquisar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={handleSearch} // 🔹 tecla Enter
+              onKeyDown={handleSearch}
               className="w-full border border-gray-300 rounded-full px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
             />
           </div>
@@ -187,11 +188,10 @@ export default function Navbar() {
               <span className="text-xs">Carrinho</span>
             </button>
 
-            {/* 🔥 Clerk no Mobile */}
+            {/*
             <SignedIn>
               <UserButton />
             </SignedIn>
-
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="flex flex-col items-center text-gray-700">
@@ -200,6 +200,7 @@ export default function Navbar() {
                 </button>
               </SignInButton>
             </SignedOut>
+            */}
           </div>
         </nav>
       </div>
