@@ -4,7 +4,8 @@
 import Navbar from "../components/Navbar";
 import { CartProvider } from "../context/CartContext";
 import { UserProvider } from "../context/UserContext";
-import { AuthProvider } from "../context/AuthContext"; // ✅ importar AuthProvider
+import { AuthProvider } from "../context/AuthContext";
+import { WishlistProvider } from "../context/WishlistContext"; // 🔹 importar WishlistProvider
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -15,20 +16,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // 🔹 Comentar ClerkProvider temporariamente
+    // 🔹 ClerkProvider comentado temporariamente
     // <ClerkProvider
     //   publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
     //   localization={ptBR}
     // >
-      <AuthProvider> {/* 🔹 Adicione AuthProvider aqui */}
+      <AuthProvider>
         <UserProvider>
           <CartProvider>
-            <html lang="pt">
-              <body className="antialiased bg-white text-gray-900">
-                <Navbar />
-                <main className="min-h-screen pt-24">{children}</main>
-              </body>
-            </html>
+            <WishlistProvider> {/* 🔹 Adicionado para corrigir useWishlist */}
+              <html lang="pt">
+                <body className="antialiased bg-white text-gray-900">
+                  <Navbar />
+                  <main className="min-h-screen pt-24">{children}</main>
+                </body>
+              </html>
+            </WishlistProvider>
           </CartProvider>
         </UserProvider>
       </AuthProvider>

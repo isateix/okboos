@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
+// ✅ Tipo de produto no carrinho
 export type ProdutoCarrinho = {
   id: string;
   name: string;
@@ -14,7 +15,7 @@ export type ProdutoCarrinho = {
 type CartContextType = {
   cart: ProdutoCarrinho[];
   addToCart: (produto: ProdutoCarrinho) => void;
-  removeFromCart: (id: string) => void;
+  removeFromCart: (id: string, selectedColor?: string) => void;
   clearCart: () => void;
   total: number;
 };
@@ -25,22 +26,30 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<ProdutoCarrinho[]>([]);
   const [total, setTotal] = useState(0);
 
+  // ✅ Carregar do localStorage
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("carrinho") || "[]");
-    setCart(savedCart);
+    if (typeof window !== "undefined") {
+      const savedCart = JSON.parse(localStorage.getItem("carrinho") || "[]");
+      setCart(savedCart);
+    }
   }, []);
 
+  // ✅ Salvar no localStorage e atualizar total
   useEffect(() => {
-    localStorage.setItem("carrinho", JSON.stringify(cart));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("carrinho", JSON.stringify(cart));
+    }
     const newTotal = cart.reduce((acc, item) => acc + item.price * item.quantidade, 0);
     setTotal(newTotal);
   }, [cart]);
 
+  // ✅ Adicionar produto ao carrinho
   const addToCart = (produto: ProdutoCarrinho) => {
     setCart(prev => {
       const index = prev.findIndex(
-        p => p.id === produto.id && p.selectedColor === produto.selectedColor
+        p => p.id === produto.id && (p.selectedColor || "") === (produto.selectedColor || "")
       );
+
       if (index >= 0) {
         const newCart = [...prev];
         newCart[index].quantidade += produto.quantidade;
@@ -51,10 +60,18 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeFromCart = (id: string) => {
-    setCart(prev => prev.filter(p => p.id !== id));
+  // ✅ Remover produto (tratando cor indefinida)
+  const removeFromCart = (id: string, selectedColor?: string) => {
+    setCart(prev =>
+      prev.filter(p => {
+        const pColor = p.selectedColor || "";
+        const color = selectedColor || "";
+        return !(p.id === id && pColor === color);
+      })
+    );
   };
 
+  // ✅ Limpar carrinho
   const clearCart = () => setCart([]);
 
   return (
@@ -64,6 +81,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// ✅ Hook para consumir o carrinho
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart deve ser usado dentro de CartProvider");

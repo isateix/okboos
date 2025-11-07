@@ -19,9 +19,7 @@ export default function CarrinhoPage() {
       router.push("/checkout");
     }
   };
-  
 
-  // 🛒 Caso o carrinho esteja vazio
   if (cart.length === 0)
     return (
       <div className="flex flex-col items-center justify-center h-[70vh] text-center bg-gray-50">
@@ -38,7 +36,6 @@ export default function CarrinhoPage() {
       </div>
     );
 
-  // ✅ Caso o carrinho tenha itens
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
       {/* ===== CABEÇALHO ===== */}
@@ -91,8 +88,9 @@ export default function CarrinhoPage() {
                 <p>Qtd: {item.quantidade}</p>
               </div>
 
+              {/* ✅ Botão remover funcionando */}
               <button
-                onClick={() => removeFromCart(item.id)}
+                onClick={() => removeFromCart(item.id, item.selectedColor)}
                 className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
               >
                 Remover
