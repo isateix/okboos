@@ -1,25 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { products, Product } from "../data/products"; // ✅ Caminho mantido e correto
+import { products } from "../data/products";
+import { useCart } from "../context/CartContext";
 
 export default function Secao17() {
+  const { addToCart } = useCart(); // ✅ Contexto do carrinho
   const [startIndex, setStartIndex] = useState(0);
   const [itensPorPagina, setItensPorPagina] = useState(5);
 
-  const idsSelecionados = ["38", "39", "40", "41", "42", "43"];
+  const idsSelecionados = [
+    "2","3","4","21","22","23","27","28","29","38","39","63","68","72","73","74","78"
+  ];
+
   const produtosFiltrados = products.filter((p) =>
     idsSelecionados.includes(p.id)
   );
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) setItensPorPagina(1); // mobile
-      else if (window.innerWidth < 1024) setItensPorPagina(2); // tablet
-      else setItensPorPagina(5); // desktop
+      if (window.innerWidth < 640) setItensPorPagina(1);
+      else if (window.innerWidth < 1024) setItensPorPagina(2);
+      else setItensPorPagina(5);
     };
 
-    handleResize(); // inicial
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -37,10 +42,22 @@ export default function Secao17() {
     );
   };
 
+  const handleAddToCart = (produto: any) => {
+    addToCart({
+      id: produto.id,
+      name: produto.name,
+      price: produto.price,
+      image: produto.image,
+      quantidade: 1,
+      selectedColor: produto.selectedColor || "",
+    });
+  };
+
   return (
-    <section className="my-16 p-6 bg-transparent w-full relative overflow-hidden">
-      <h2 className="text-3xl font-bold mb-10 text-left text-pink-700 ml-10">
-        Beleza & Cuidados
+    <section className="my-10 p-4 bg-transparent w-full relative overflow-hidden">
+      {/* Título da seção */}
+      <h2 className="text-2xl font-bold mb-6 text-left text-gray-800 ml-4">
+        Calçado
       </h2>
 
       <div className="relative flex items-center justify-center">
@@ -48,31 +65,39 @@ export default function Secao17() {
         <button
           onClick={handlePrev}
           disabled={startIndex === 0}
-          className="absolute left-0 top-1/2 -translate-y-1/2 px-4 py-4 bg-pink-600 text-white rounded-full hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 transition z-10 text-2xl font-bold"
+          className="absolute left-0 top-1/2 -translate-y-1/2 px-3 py-3 bg-gray-600 text-white rounded-full hover:bg-gray-700 disabled:bg-gray-300 disabled:text-gray-500 transition z-10 text-xl font-bold"
         >
           &lt;
         </button>
 
         {/* Produtos visíveis */}
-        <div className="flex gap-10 justify-center w-full">
+        <div className="flex gap-6 justify-center w-full">
           {produtosVisiveis.map((produto) => (
             <div
               key={produto.id}
-              className="relative w-56 h-60 flex flex-col items-center justify-end mx-auto"
+              className="relative w-48 h-56 flex flex-col items-center justify-end mx-auto"
             >
-              {/* Círculo translúcido */}
-              <div className="absolute top-0 w-48 h-48 rounded-full bg-pink-200/30 backdrop-blur-md border border-pink-300/40 flex items-center justify-center">
+              {/* Círculo translúcido maior com cor neutra */}
+              <div className="absolute top-0 w-40 h-40 rounded-full bg-gray-200/50 backdrop-blur-md border border-gray-400 flex items-center justify-center">
                 <img
                   src={produto.image}
                   alt={produto.name}
-                  className="w-32 h-32 object-contain drop-shadow-lg"
+                  className="w-28 h-28 object-contain drop-shadow-lg"
                 />
               </div>
 
               {/* Nome do produto */}
-              <span className="mt-[190px] text-center text-base font-medium text-gray-900 px-2 leading-snug">
+              <span className="mt-[200px] text-center text-sm font-medium text-gray-900 px-1 leading-snug">
                 {produto.name}
               </span>
+
+              {/* Botão Comprar com adicionar ao carrinho */}
+              <button
+                onClick={() => handleAddToCart(produto)}
+                className="mt-2 px-3 py-1 bg-[#0071BC] text-white text-sm rounded-lg hover:bg-[#005fa3] transition"
+              >
+                Comprar
+              </button>
             </div>
           ))}
         </div>
@@ -81,7 +106,7 @@ export default function Secao17() {
         <button
           onClick={handleNext}
           disabled={startIndex + itensPorPagina >= produtosFiltrados.length}
-          className="absolute right-0 top-1/2 -translate-y-1/2 px-4 py-4 bg-pink-600 text-white rounded-full hover:bg-pink-700 disabled:bg-gray-300 disabled:text-gray-500 transition z-10 text-2xl font-bold"
+          className="absolute right-0 top-1/2 -translate-y-1/2 px-3 py-3 bg-gray-600 text-white rounded-full hover:bg-gray-700 disabled:bg-gray-300 disabled:text-gray-500 transition z-10 text-xl font-bold"
         >
           &gt;
         </button>

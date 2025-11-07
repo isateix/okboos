@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { products, ProductType } from "../../data/products";
-import ProductCard from "../../components/ProductCard";
+import Product from "../../components/Product";
 
 interface Props {
   searchParams?: { search?: string; category?: string | string[] };
@@ -13,6 +13,7 @@ export default function ProdutosPage({ searchParams = {} }: Props) {
   const search = searchParams.search?.toLowerCase() || "";
   const categoryValue = searchParams.category;
 
+  
   // Normaliza categoria (array ou string)
   let categoryParams = "";
   if (Array.isArray(categoryValue)) {
@@ -54,8 +55,8 @@ export default function ProdutosPage({ searchParams = {} }: Props) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filtered.map((produto) => (
-            <ProductCard key={produto.id} product={produto} />
-          ))}
+  <Product key={produto.id} product={produto} />
+))}
         </div>
       )}
     </div>

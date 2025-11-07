@@ -1,12 +1,12 @@
 "use client";
 
-import { ProductType } from "../types/ProductType";
-import ProductImage from "./ProductImage";
+import { Product } from '../types/Product';
+import ProductImage from "./ProductImage"; 
 import { formatPrice } from "../lib/utils";
 import { useCart } from "../context/CartContext";
 
 type ProductProps = {
-  product: ProductType;
+  product: Product;
 };
 
 export default function Product({ product }: ProductProps) {
@@ -37,6 +37,7 @@ export default function Product({ product }: ProductProps) {
         <p className="truncate">{product.name}</p>
         <p className="text-md text-[#0071BC]">{formatPrice(product.price)}</p>
       </div>
+
 
       {/* Botão */}
       <button

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function CarrinhoPage() {
-  const { cart, removeFromCart, clearCart, total } = useCart();
+  const { cart, removeFromCart, clearCart, total, updateQuantity } = useCart(); // ✅ adicionamos updateQuantity
   const { user } = useUser();
   const { openAuthModal } = useAuth();
   const router = useRouter();
@@ -38,6 +38,7 @@ export default function CarrinhoPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
+      
       {/* ===== CABEÇALHO ===== */}
       <header className="border-b border-gray-200 bg-white shadow-sm">
         <div className="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto">
@@ -77,18 +78,41 @@ export default function CarrinhoPage() {
                     {item.name}
                   </p>
                 </Link>
+
                 {item.selectedColor && <p>Cor: {item.selectedColor}</p>}
-                <p>
-                  Preço:{" "}
+
+                <p className="mt-1">
                   {item.price.toLocaleString("pt-AO", {
                     style: "currency",
                     currency: "AOA",
                   })}
                 </p>
-                <p>Qtd: {item.quantidade}</p>
+
+                {/* ✅ CONTROLE DE QUANTIDADE */}
+                <div className="flex items-center gap-3 mt-3">
+                  <button
+                    onClick={() =>
+                      updateQuantity(item.id, item.selectedColor, item.quantidade - 1)
+                    }
+                    className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded-lg"
+                  >
+                    -
+                  </button>
+
+                  <span className="font-semibold text-lg">{item.quantidade}</span>
+
+                  <button
+                    onClick={() =>
+                      updateQuantity(item.id, item.selectedColor, item.quantidade + 1)
+                    }
+                    className="px-3 py-1 bg-[#0071BC] hover:bg-[#005fa3] text-white rounded-lg"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
-              {/* ✅ Botão remover funcionando */}
+              {/* ✅ Botão remover */}
               <button
                 onClick={() => removeFromCart(item.id, item.selectedColor)}
                 className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
@@ -99,6 +123,7 @@ export default function CarrinhoPage() {
           ))}
         </div>
 
+        {/* TOTAL E AÇÕES */}
         <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xl font-bold text-[#0071BC]">
             Total:{" "}
@@ -125,13 +150,6 @@ export default function CarrinhoPage() {
           </div>
         </div>
       </main>
-
-      {/* ===== RODAPÉ ===== */}
-      <footer className="bg-[#003D73] text-gray-300 text-sm py-10 mt-8">
-        <div className="text-center text-xs border-t border-[#004a8f] pt-4">
-          © {new Date().getFullYear()} Okbooss. Todos os direitos reservados.
-        </div>
-      </footer>
     </div>
   );
 }

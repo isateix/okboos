@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ProductType } from "../types/ProductType"; // ajuste conforme a pasta
+import { Product } from "../types/Product";
 
 type CartState = {
-  cart: ProductType[];
-  addProduct: (product: ProductType) => void;
-  removeProduct: (product: ProductType) => void;
+  cart: Product[];
+  addProduct: (product: Product) => void;
+  removeProduct: (product: Product) => void;
   isOpen: boolean;
   toggleCart: () => void;
   clearCart: () => void;
@@ -14,7 +14,6 @@ type CartState = {
   paymentIntent: string;
   setPaymentIntent: (paymentIntent: string) => void;
 };
-
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({

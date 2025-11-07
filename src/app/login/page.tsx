@@ -25,11 +25,11 @@ export default function LoginPage() {
     setErro("");
     setLoading(true);
 
-    if (!formData.email || !formData.senha) {
-      setErro(t("login_erro_campos"));
-      setLoading(false);
-      return;
-    }
+   if (!formData.email || !formData.senha) {
+  setErro("Preencha todos os campos");
+  setLoading(false);
+  return;
+}
 
     try {
       const res = await fetch("/api/login", {
@@ -41,10 +41,10 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setErro(data.error || t("login_erro_autenticacao"));
-        setLoading(false);
-        return;
-      }
+  setErro(data.error || "Erro na autenticação");
+  setLoading(false);
+  return;
+}
 
       login(data.user);
       localStorage.setItem("mockAuthToken", JSON.stringify(data.user));
@@ -54,12 +54,10 @@ export default function LoginPage() {
       } else {
         router.push("/");
       }
-    } catch (err) {
-      console.error(err);
-      setErro(t("login_erro_servidor"));
-    } finally {
-      setLoading(false);
-    }
+  } catch (err) {
+  console.error(err);
+  setErro("Erro no servidor");
+}
   };
 
   return (
@@ -70,20 +68,20 @@ export default function LoginPage() {
           <h1 className="text-5xl font-extrabold text-white mb-2">
             Ok<span className="text-orange-600">Boss</span>
           </h1>
-          <p className="text-white/90 mt-2 text-lg">{t("login_bemvindo")}</p>
+          <p className="text-white/90 mt-2 text-lg">Bem-vindo de volta!</p>
         </div>
 
         {/* Caixa de login */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
           <h2 className="text-3xl font-bold mb-6 text-center text-[#0071BC]">
-            {t("login_titulo")}
+            Entrar
           </h2>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-5">
             <input
               type="email"
               name="email"
-              placeholder={t("login_email_placeholder")}
+              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
               className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
@@ -92,7 +90,7 @@ export default function LoginPage() {
             <input
               type="password"
               name="senha"
-              placeholder={t("login_senha_placeholder")}
+              placeholder="Senha"
               value={formData.senha}
               onChange={handleChange}
               className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
@@ -106,14 +104,14 @@ export default function LoginPage() {
               className="bg-[#0071BC] text-white py-3 rounded-lg hover:bg-blue-800 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
-              {loading ? <Loader2 className="animate-spin mr-2" size={24} /> : t("login_botao_entrar")}
+              {loading ? <Loader2 className="animate-spin mr-2" size={24} /> : "Entrar"}
             </button>
           </form>
 
           <p className="mt-6 text-center text-gray-700 text-base">
-            {t("login_nao_tem_conta")}{" "}
+            Não tem uma conta?{" "}
             <Link href="/signup" className="text-orange-600 hover:underline font-medium">
-              {t("login_criar_conta")}
+              Criar Conta
             </Link>
           </p>
         </div>

@@ -1,46 +1,42 @@
-"use client";
+'use client';
+import { createContext, useContext, useState, ReactNode } from 'react';
+import { Product } from '../types/Product';
 
-import React, { useState, useRef, useCallback } from "react";
-import Product from "./Product";
-import { ProductType } from "../types/ProductType";
+interface WishlistContextType {
+  wishlist: Product[];
+  addToWishlist: (product: Product) => void;
+  removeFromWishlist: (id: string) => void;
+  isInWishlist: (id: string) => boolean;
+}
 
-type InfiniteScrollProps = {
-  initialProducts: ProductType[];
-  loadMore?: () => void;
-  hasMore?: boolean;
-};
+const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
-export default function InfiniteScroll({
-  initialProducts,
-  loadMore,
-  hasMore = false,
-}: InfiniteScrollProps) {
-  const [products] = useState(initialProducts || []);
-  const observer = useRef<IntersectionObserver | null>(null);
+export function WishlistProvider({ children }: { children: ReactNode }) {
+  const [wishlist, setWishlist] = useState<Product[]>([]);
 
-  const lastElementRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore && loadMore) {
-          loadMore?.();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [hasMore, loadMore]
-  );
+  const addToWishlist = (product: Product) => {
+    if (!wishlist.find(item => item.id === product.id)) {
+      setWishlist([...wishlist, product]);
+    }
+  };
+
+  const removeFromWishlist = (id: string) => {
+    setWishlist(wishlist.filter(item => item.id !== id));
+  };
+
+  const isInWishlist = (id: string) => wishlist.some(item => item.id === id);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 xl:gap-6">
-      {products.map((product, index) => {
-        const isLast = index === products.length - 1;
-        return (
-          <div key={product.id} ref={isLast ? lastElementRef : null}>
-            <Product product={product} />
-          </div>
-        );
-      })}
-    </div>
+    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, isInWishlist }}>
+      {children}
+    </WishlistContext.Provider>
   );
 }
+
+export const useWishlist = () => {
+  const context = useContext(WishlistContext);
+  if (!context) {
+    throw new Error('useWishlist deve ser usado dentro de um WishlistProvider');
+  }
+  return context;
+};

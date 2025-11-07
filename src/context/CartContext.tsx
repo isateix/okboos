@@ -17,6 +17,7 @@ type CartContextType = {
   addToCart: (produto: ProdutoCarrinho) => void;
   removeFromCart: (id: string, selectedColor?: string) => void;
   clearCart: () => void;
+  updateQuantity: (id: string, selectedColor: string | undefined, newQtd: number) => void; // ✅ ADICIONADO
   total: number;
 };
 
@@ -60,7 +61,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // ✅ Remover produto (tratando cor indefinida)
+  // ✅ Remover produto
   const removeFromCart = (id: string, selectedColor?: string) => {
     setCart(prev =>
       prev.filter(p => {
@@ -74,8 +75,21 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   // ✅ Limpar carrinho
   const clearCart = () => setCart([]);
 
+  // ✅ Atualizar quantidade (+ / -)
+  const updateQuantity = (id: string, selectedColor: string | undefined, newQtd: number) => {
+    setCart(prev =>
+      prev.map(item =>
+        item.id === id && item.selectedColor === selectedColor
+          ? { ...item, quantidade: Math.max(1, newQtd) }
+          : item
+      )
+    );
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, total }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity, total }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -1,10 +1,11 @@
 'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
-import { ProductType } from '../types/ProductType';
+import { Product } from '../types/Product';
 
 type ProductImageProps = {
-  product: ProductType;
+  product: Product;
   fill?: boolean;
 };
 
@@ -16,16 +17,20 @@ export default function ProductImage({ product, fill }: ProductImageProps) {
       src={product.image}
       fill
       alt={product.name}
-      className={`object-cover ${loading ? 'scale-110 blur-3xl grayscale' : 'scale-100 blur-0 grayscale-0'}`}
+      className={`object-cover transition-all duration-500 ${
+        loading ? 'scale-110 blur-3xl grayscale' : 'scale-100 blur-0 grayscale-0'
+      }`}
       onLoadingComplete={() => setLoading(false)}
     />
   ) : (
     <Image
       src={product.image}
       width={400}
-      height={700}
+      height={400}
       alt={product.name}
-      className={`object-cover ${loading ? 'scale-110 blur-3xl grayscale' : 'scale-100 blur-0 grayscale-0'}`}
+      className={`object-cover transition-all duration-500 ${
+        loading ? 'scale-110 blur-3xl grayscale' : 'scale-100 blur-0 grayscale-0'
+      }`}
       onLoadingComplete={() => setLoading(false)}
     />
   );

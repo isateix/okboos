@@ -5,30 +5,36 @@ import ptJson from "../../locales/pt.json";
 import enJson from "../../locales/en.json";
 import cnJson from "../../locales/cn.json";
 
-// 🔹 Tipagem segura para JSONs
-const pt: Record<string, any> = ptJson;
-const en: Record<string, any> = enJson;
-const cn: Record<string, any> = cnJson;
+// 🔹 Tipo baseado no JSON do português
+type Translations = typeof ptJson;
 
+// 🔹 Tipagem das línguas disponíveis
 type Locale = "pt" | "en" | "cn";
 
-const translations: Record<Locale, Record<string, any>> = { pt, en, cn };
+// 🔹 Todas as traduções
+const translations: Record<Locale, Translations> = {
+  pt: ptJson,
+  en: enJson as Translations, // cast para garantir compatibilidade
+  cn: cnJson as Translations,
+};
 
+// 🔹 Contexto com tipagem segura
 type LanguageContextType = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
+  t: (key: keyof Translations) => string;
 };
 
 const LanguageContext = createContext<LanguageContextType>({
   locale: "pt",
   setLocale: () => {},
-  t: (key) => key,
+  t: (key) => key as string,
 });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("pt");
 
+  // 🔹 Recupera idioma salvo no localStorage
   useEffect(() => {
     const savedLocale = localStorage.getItem("locale") as Locale | null;
     if (savedLocale && ["pt", "en", "cn"].includes(savedLocale)) {
@@ -41,8 +47,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("locale", newLocale);
   };
 
-  const t = (key: string) => {
-    return translations[locale][key] || translations.pt[key] || key;
+  // 🔹 Função de tradução tipada
+  const t = (key: keyof Translations) => {
+    return translations[locale][key] || translations.pt[key] || key.toString();
   };
 
   return (
@@ -52,4 +59,5 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// 🔹 Hook para usar em qualquer componente
 export const useLanguage = () => useContext(LanguageContext);
