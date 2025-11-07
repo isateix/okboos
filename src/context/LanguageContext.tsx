@@ -1,13 +1,18 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import pt from "../../locales/pt.json";
-import en from "../../locales/en.json";
-import cn from "../../locales/cn.json";
+import ptJson from "../../locales/pt.json";
+import enJson from "../../locales/en.json";
+import cnJson from "../../locales/cn.json";
+
+// 🔹 Tipagem segura para JSONs
+const pt: Record<string, any> = ptJson;
+const en: Record<string, any> = enJson;
+const cn: Record<string, any> = cnJson;
 
 type Locale = "pt" | "en" | "cn";
 
-const translations: Record<Locale, Record<string, string>> = { pt, en, cn };
+const translations: Record<Locale, Record<string, any>> = { pt, en, cn };
 
 type LanguageContextType = {
   locale: Locale;

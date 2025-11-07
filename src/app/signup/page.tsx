@@ -9,7 +9,7 @@ import { useLanguage } from "../../context/LanguageContext";
 
 export default function SignupPage() {
   const router = useRouter();
-  const { t } = useLanguage(); // 🟢 Usa o contexto de linguagem
+  const { t } = useLanguage();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,12 +23,10 @@ export default function SignupPage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // 🔄 Atualiza campos
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Enviar formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -65,7 +63,6 @@ export default function SignupPage() {
         return;
       }
 
-      // 🟢 Sucesso
       setSuccessMessage(t("signup_sucesso"));
       setShowSuccessModal(true);
     } catch (err) {
@@ -83,19 +80,19 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#f6eee9] px-4">
+    <div className="flex items-center justify-center min-h-screen bg-[#0071BC] px-4">
       <div className="w-full max-w-md space-y-6">
-        {/* 🔸 Logo */}
+        {/* Logo */}
         <div className="text-center">
-          <h1 className="text-5xl font-serif font-bold text-[#5c3b3b]">
-            Ok <span className="text-[#d9a7a0]">Boss</span>
+          <h1 className="text-5xl font-serif font-bold text-white">
+            Ok <span className="text-orange-600">Boss</span>
           </h1>
-          <p className="text-gray-600 mt-2">{t("signup_subtitulo")}</p>
+          <p className="text-white/90 mt-2">{t("signup_subtitulo")}</p>
         </div>
 
-        {/* 🔸 Caixa de cadastro */}
+        {/* Caixa de cadastro */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
-          <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+          <h2 className="text-3xl font-bold mb-6 text-center text-[#0071BC]">
             {t("signup_titulo")}
           </h2>
 
@@ -106,7 +103,7 @@ export default function SignupPage() {
               placeholder={t("signup_nome")}
               value={formData.name}
               onChange={handleChange}
-              className="border rounded-lg px-4 py-3 text-lg"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
               disabled={loading}
             />
             <input
@@ -115,7 +112,7 @@ export default function SignupPage() {
               placeholder={t("signup_email")}
               value={formData.email}
               onChange={handleChange}
-              className="border rounded-lg px-4 py-3 text-lg"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
               disabled={loading}
             />
             <input
@@ -124,7 +121,7 @@ export default function SignupPage() {
               placeholder={t("signup_senha")}
               value={formData.password}
               onChange={handleChange}
-              className="border rounded-lg px-4 py-3 text-lg"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
               disabled={loading}
             />
             <input
@@ -133,7 +130,7 @@ export default function SignupPage() {
               placeholder={t("signup_confirmar_senha")}
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="border rounded-lg px-4 py-3 text-lg"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
               disabled={loading}
             />
 
@@ -141,20 +138,16 @@ export default function SignupPage() {
 
             <button
               type="submit"
-              className="bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#0071BC] text-white py-3 rounded-lg hover:bg-blue-800 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
-              {loading ? (
-                <Loader2 className="animate-spin mr-2" size={24} />
-              ) : (
-                t("signup_botao")
-              )}
+              {loading ? <Loader2 className="animate-spin mr-2" size={24} /> : t("signup_botao")}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-gray-600">
+          <p className="mt-6 text-center text-white/90">
             {t("signup_ja_tem_conta")}{" "}
-            <Link href="/login" className="text-blue-600 hover:underline">
+            <Link href="/login" className="text-orange-600 hover:underline">
               {t("signup_entrar")}
             </Link>
           </p>

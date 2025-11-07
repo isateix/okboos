@@ -1,348 +1,208 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Search,
-  Heart,
-  ShoppingCart,
-  User,
-  Globe,
-  Grid,
-} from "lucide-react";
+import { FiHome } from "react-icons/fi";
+import { Heart, ShoppingCart, User, Grid } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
-import Link from "next/link";
-import { useLanguage } from "../context/LanguageContext";
+import { useCart } from '../context/CartContext';
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 
 export default function Navbar() {
   const router = useRouter();
-  const { cart } = useCart();
-  const { wishlist } = useWishlist(); // ✅ Usa o contexto da wishlist
-  const user = null; // ou um objeto de teste { name: "Isabel", email: "isabel@email.com" }
-  const logout = () => {}; // função vazia temporária
-  const [lang, setLang] = useState("pt");
-  const { t } = useLanguage();
-  const [locale, setLocale] = useState<"pt" | "en" | "cn">("pt");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [locale, setLocale] = useState<"pt" | "en" | "cn">("pt");
+  const [searchQuery, setSearchQuery] = useState(""); // 🔹 estado da pesquisa
+  const { cart } = useCart();
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      router.push(`/produtos?search=${encodeURIComponent(searchTerm)}`);
+  // 🔹 Função de pesquisa
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchQuery.trim() !== "") {
+      router.push(`/produtos?search=${encodeURIComponent(searchQuery)}`);
     }
-  };
-
-  const categorias = {
-    "Todas Categorias": {
-      "Em Destaque": [
-        "Organizadores & Outros",
-        "Verão",
-        "Luzes de Neon",
-        "Porta Chaves",
-        "Desporto",
-        "Facilitadores de Cozinha",
-        "Essenciais",
-        "Limpeza",
-        "Acessórios para WC",
-        "Garrafa de água",
-        "Acessórios Carros",
-        "Enfeites Para Festas",
-        "Roupa de cama",
-        "Sinalização",
-      ],
-      "Beleza e Saúde": [
-        "Cosméticos",
-        "Maquilhagem",
-        "Higiene Pessoal",
-        "Perfumes",
-        "Aparelhos para penteados",
-        "Necessidades",
-      ],
-    },
-    "Eletrodoméstico": {
-      "Grandes Eletrodomésticos": [
-        "Esquentador de Água",
-        "Máquinas De Lavar E Secar",
-        "Ar Condicionados",
-        "Produtos Comerciais",
-        "Fogões e Fornos",
-        "Geladeiras",
-        "Arcas",
-        "Frigobar e Bebedor",
-        "Exaustor",
-        "Acessórios",
-      ],
-      "Pequenos Eletrodomésticos": [
-        "Liquidificadores",
-        "Micro-ondas e Mini Fornos",
-        "Grelhadores e Torradeiras",
-        "Balanças e Outros",
-        "Ventiladores e Aspiradores",
-        "Ferros de Engomar",
-        "Batedeiras e Varinhas",
-      ],
-      Som: ["Som", "Acessórios de TV"],
-    },
-    "Escritório e Escola": {
-      Materiais: [
-        "Diversos",
-        "Agrafador e Mais",
-        "Máquinas",
-        "Mochilas",
-        "Cadernos e Mais",
-        "Capas",
-        "Envelopes",
-        "Papel Cartolina",
-        "Consumiveis",
-        "Canetas, Lápis e Mais",
-        "Quadros",
-        "Tintas",
-        "Utilidades",
-        "Tesouras",
-        "Régua",
-        "Cola",
-        "Compasso",
-      ],
-      "Artigos de Escritórios": ["Cadeiras", "Armários", "Mobílias", "Cofres"],
-    },
-    Roupa: {
-      "Roupas & Acessórios": [
-        "Masculinas",
-        "Femininas",
-        "Meias",
-        "Acessórios Masculinos",
-        "Acessórios Femininos",
-        "Chinelas & Sandál",
-      ],
-    },
-    Brinquedos: {
-      Brinquedos: [
-        "Brinquedos Tradicionais",
-        "Brinquedos Educativos",
-        "Brinquedos Eletrônicos",
-        "Brinquedos para Exterior",
-        "Brinquedos para Bebés",
-        "Acessórios e Outros",
-      ],
-    },
   };
 
   return (
     <header className="fixed top-0 left-0 w-full z-50">
-      {/* NAVBAR PRINCIPAL */}
-      <div className="flex items-center w-full px-4 py-6 gap-6 bg-white border-b border-gray-200 shadow-sm">
-        {/* Logo */}
-        <div
-          className="flex items-center gap-3 cursor-pointer"
-          onClick={() => router.push("/")}
-        >
-          <div className="w-10 h-10 rounded-full bg-[#0071BC] flex items-center justify-center text-white font-bold text-xl">
-            O
-          </div>
-          <span className="text-2xl md:text-3xl font-bold tracking-tight text-[#0071BC]">
-            Okbooss
-          </span>
+
+      {/* NAVBAR SUPERIOR - Desktop */}
+      <div className="hidden md:flex bg-[#0071BC] text-white text-sm py-2 px-6 justify-center items-center">
+        <div className="flex gap-6">
+          <span>Ligue e faça seu pedido: <strong>947 965 623</strong></span>
+          <span>Venda em Okboss: <strong>947 965 623</strong></span>
         </div>
-
-        {/* Menu de Categorias + Pesquisa */}
-        <div className="flex items-center flex-1 relative gap-3">
-        {/* Botão de categorias */}
-<div className="relative">
-  <button
-    onClick={() => setMenuOpen(!menuOpen)}
-    className="flex items-center gap-2 bg-[#0071BC] text-white px-4 py-2 rounded-lg hover:bg-[#005c9d] transition whitespace-nowrap"
-  >
-    <Grid size={18} />
-    <span className="text-sm font-medium">Categorias</span>
-  </button>
-
-  {/* Menu principal */}
-  {menuOpen && (
-    <div
-      className="absolute top-[106px] left-0 flex bg-white border border-gray-200 shadow-lg rounded-none z-50"
-      onMouseLeave={() => setMenuOpen(false)} // Fecha o menu ao sair
-    >
-      {/* Menu lateral */}
-      <div className="w-[300px] h-[400px] p-2 overflow-y-auto flex flex-col border-r border-gray-200">
-        {Object.keys(categorias).map((cat) => (
-          <div
-            key={cat}
-            className={`flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-gray-100 rounded ${
-              hoveredCategory === cat ? "bg-gray-100" : ""
-            }`}
-            onMouseEnter={() => setHoveredCategory(cat)}
-          >
-            <span>{cat}</span>
-            <span>▶</span>
-          </div>
-        ))}
       </div>
 
-      {/* Submenu */}
-      {hoveredCategory && (
-        <div
-          className="w-[60vw] h-[400px] overflow-y-auto bg-white p-4 shadow-inner"
-          onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-          onMouseLeave={() => setHoveredCategory(null)}
-          style={{
-            scrollBehavior: "smooth",
-            scrollbarWidth: "thin",
-            scrollbarColor: "#0071BC #f1f1f1",
-          }}
-        >
-          <div
-            className={`grid ${
-              hoveredCategory === "Eletrodoméstico"
-                ? "grid-cols-3"
-                : "grid-cols-2"
-            } gap-6`}
-          >
-            {Object.entries(categorias[hoveredCategory]).map(
-              ([titulo, itens]) => (
-                <div key={titulo}>
-                  <h3 className="font-bold text-gray-800 mb-2">{titulo}</h3>
-                  <ul className="space-y-1">
-                    {itens.map((item) => (
-                      <li
-                        key={item}
-                        onClick={() =>
-                          router.push(
-                            `/produtos?category=${encodeURIComponent(item)}`
-                          )
-                        }
-                        className="text-sm text-gray-700 hover:text-[#0071BC] cursor-pointer"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  )}
-</div>
-
-{/* 🔍 Barra de pesquisa */}
-<form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-2xl mx-4">
-  <Search className="absolute left-4 top-2.5 text-gray-400" size={18} />
-  <input
-    type="text"
-    placeholder="Pesquisar produtos"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="w-full border border-gray-300 rounded-full px-10 py-2 text-sm bg-[#f7f7f7] focus:outline-none focus:ring-2 focus:ring-[#0071BC] transition-all duration-300 focus:w-[105%]"
-  />
-</form>
-
+      {/* NAVBAR PRINCIPAL - Desktop */}
+      <div className="hidden md:flex items-center w-full px-6 py-4 gap-6 bg-white border-b border-gray-200 shadow-sm">
+        
+        {/* LOGO */}
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/")}>
+          <div className="w-10 h-10 rounded-full bg-[#0071BC] flex items-center justify-center text-white font-bold text-xl">O</div>
+          <span className="text-2xl font-bold text-[#0071BC]">Okboss</span>
         </div>
 
-        {/* Ícones à direita */}
-        <div className="flex items-center gap-6 text-gray-700 ml-auto">
-          {/* ❤️ Lista de Desejos */}
-          <Link href="/lista-desejos" title="Lista de Desejos">
-            <div className="relative flex items-center cursor-pointer hover:text-[#0071BC]">
-              <Heart size={22} />
-              {wishlist.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {wishlist.length}
-                </span>
-              )}
-              <span className="ml-2 text-sm font-medium hidden md:inline">
-                Lista de Desejos
-              </span>
+        {/* CATEGORIAS */}
+        <div className="relative">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="flex items-center gap-2 bg-[#0071BC] text-white px-4 py-2 rounded-lg">
+            <Grid size={18} />
+            <span className="text-sm font-medium">Categorias</span>
+          </button>
+          {menuOpen && (
+            <div className="absolute top-full left-0 bg-white border border-gray-200 w-60 p-2 shadow-lg">
+              <p className="text-gray-700">Categorias aqui...</p>
             </div>
-          </Link>
+          )}
+        </div>
 
-     {/* 👤 Login */}
-{user ? (
-  <div className="flex items-center gap-3">
-    <span className="text-gray-700 font-medium">👋 {user.name || user.email}</span>
-    <button
-      onClick={async () => {
-        await fetch("/api/auth/signout", { method: "POST" });
-        logout();
-        router.push("/");
-      }}
-      className="px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition"
-    >
-      {t("logout") || "Sair"}
-    </button>
-  </div>
-) : (
-  <div className="flex items-center gap-3">
-    <div
-      className="flex items-center cursor-pointer hover:text-gray-700"
-      onClick={() => router.push("/login")}
-      title="Iniciar Sessão"
-    >
-      <User size={22} />
-      <span className="ml-2 text-sm font-medium hidden md:inline">Iniciar Sessão</span>
-    </div>
-  </div>
-)}
+        {/* PESQUISA */}
+        <div className="flex-1 max-w-xl mx-4">
+          <input
+            type="text"
+            placeholder="Pesquisar produtos"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch} // 🔹 tecla Enter
+            className="w-full border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
+          />
+        </div>
 
-          {/* 🛒 Carrinho */}
-          <div
-            className="relative cursor-pointer"
-            onClick={() => router.push("/carrinho")}
-            title="Carrinho"
-          >
-            <ShoppingCart size={22} className="hover:text-[#0071BC]" />
+        {/* AÇÕES (Desejos / Carrinho / Login) */}
+        <div className="hidden md:flex items-center gap-6 ml-auto">
+          <div className="group flex items-center gap-2 text-gray-700 cursor-pointer hover:text-[#0071BC] hover:scale-105 transition-all">
+            <Heart size={22} />
+            <span className="text-sm font-medium">Desejos</span>
+          </div>
+
+          {/* Carrinho */}
+          <div className="relative cursor-pointer" onClick={() => router.push("/cart")}>
+            <ShoppingCart size={22} className="text-gray-700 hover:text-[#0071BC] transition-all" />
             {cart?.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                 {cart.length}
               </span>
             )}
           </div>
+
+          {/* Login / Perfil */}
+          <SignedIn>
+            <UserButton appearance={{ elements: { avatarBox: "w-8 h-8" } }} />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="group flex items-center gap-2 text-gray-700 hover:text-[#0071BC] hover:scale-105 transition-all">
+                <User size={22} />
+                <span className="text-sm font-medium">Entrar</span>
+              </button>
+            </SignInButton>
+          </SignedOut>
+
+          {/* Idioma */}
+          <select
+            value={locale}
+            onChange={(e) => setLocale(e.target.value as "pt" | "en" | "cn")}
+            className="appearance-none bg-white pl-9 pr-3 py-1 text-sm border border-gray-300 rounded-md cursor-pointer hover:border-[#0071BC] focus:ring-2 focus:ring-[#0071BC]"
+            style={{
+              backgroundImage: `url(/flags/${locale}.png)`,
+              backgroundSize: "18px",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "6px center",
+            }}
+          >
+            <option value="pt">Português</option>
+            <option value="en">English</option>
+            <option value="cn">中文</option>
+          </select>
         </div>
       </div>
 
-{/* SEGUNDA NAVBAR */}
-<div className="bg-[#0071BC] text-white text-sm py-3 shadow-md">
-  <div className="max-w-7xl mx-auto flex justify-between items-center px-6">
-    {/* Texto centralizado */}
-    <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-      <span>
-        Ligue e faça seu pedido agora:{" "}
-        <strong className="font-semibold">938 099 342</strong>
-      </span>
-      <span>
-        Venda em Okbooss:{" "}
-        <strong className="font-semibold">922 112 105</strong>
-      </span>
-    </div>
+      {/* NAVBAR MOBILE */}
+      <div className="md:hidden bg-white shadow-sm border-b border-gray-200 px-3 py-2">
+        <div className="flex items-center justify-between gap-2">
+          {/* Logo */}
+          <div className="w-10 h-10 rounded-full bg-[#0071BC] flex items-center justify-center text-white font-extrabold text-3xl cursor-pointer"
+               onClick={() => router.push("/")}>
+            O
+          </div>
 
-    {/* Idioma */}
-    <div className="flex items-center gap-3">
-      <div className="flex items-center rounded-md p-1 bg-[#0071BC] text-white">
-        <img
-          src={`/flags/${locale}.png`}
-          alt={locale}
-          className="w-5 h-5"
-        />
-        <select
-          value={locale}
-          onChange={(e) =>
-            setLocale(e.target.value as "pt" | "en" | "cn")
-          }
-          className="ml-1 bg-[#0071BC] text-white border-none outline-none appearance-none cursor-pointer"
-        >
-          <option value="pt">PT</option>
-          <option value="en">EN</option>
-          <option value="cn">CN</option>
-        </select>
+          {/* Pesquisa */}
+          <div className="flex-1 mx-2">
+            <input
+              type="text"
+              placeholder="Pesquisar..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearch} // 🔹 tecla Enter
+              className="w-full border border-gray-300 rounded-full px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
+            />
+          </div>
 
+          {/* Carrinho */}
+          <div className="relative cursor-pointer" onClick={() => router.push("/cart")}>
+            <ShoppingCart size={22} className="text-gray-700 hover:text-[#0071BC] transition-all" />
+            {cart?.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                {cart.length}
+              </span>
+            )}
+          </div>
+
+          {/* Idioma */}
+          <select
+            value={locale}
+            onChange={(e) => setLocale(e.target.value as "pt" | "en" | "cn")}
+            className="appearance-none bg-white pl-8 pr-1 py-1 text-xs border border-gray-300 rounded-md"
+            style={{
+              backgroundImage: `url(/flags/${locale}.png)`,
+              backgroundSize: "16px",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "4px center",
+            }}
+          >
+            <option value="pt">PT</option>
+            <option value="en">EN</option>
+            <option value="cn">中文</option>
+          </select>
+        </div>
+
+        {/* Barra inferior mobile */}
+        <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-md">
+          <div className="flex justify-around items-center py-2">
+            <button className="flex flex-col items-center text-gray-700">
+              <FiHome size={24} />
+              <span className="text-xs">Home</span>
+            </button>
+
+            <button className="flex flex-col items-center text-gray-700">
+              <Grid size={24} />
+              <span className="text-xs">Categorias</span>
+            </button>
+
+            <button className="flex flex-col items-center text-gray-700">
+              <Heart size={24} />
+              <span className="text-xs">Desejos</span>
+            </button>
+
+            <button className="flex flex-col items-center text-gray-700">
+              <ShoppingCart size={24} />
+              <span className="text-xs">Carrinho</span>
+            </button>
+
+            {/* 🔥 Clerk no Mobile */}
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="flex flex-col items-center text-gray-700">
+                  <User size={24} />
+                  <span className="text-xs">Entrar</span>
+                </button>
+              </SignInButton>
+            </SignedOut>
+          </div>
+        </nav>
       </div>
-    </div>
-  </div>
-</div>
     </header>
   );
 }

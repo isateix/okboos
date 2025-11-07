@@ -1,42 +1,36 @@
-"use client";
-
-import "./globals.css";
-import { LanguageProvider } from "../context/LanguageContext";
+// src/app/layout.tsx
+import { ClerkProvider } from "@clerk/nextjs";
+import { ptBR } from "@clerk/localizations";
+import Navbar from "../components/Navbar";
 import { CartProvider } from "../context/CartContext";
 import { UserProvider } from "../context/UserContext";
-import { AuthProvider } from "../context/AuthContext";
-import { WishlistProvider } from "../context/WishlistContext";
-import Navbar from "../components/Navbar";
-import { usePathname } from "next/navigation";
+import { AuthProvider } from "../context/AuthContext"; // ✅ importar AuthProvider
+import type { Metadata } from "next";
+import "./globals.css";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const pathname = usePathname();
+export const metadata: Metadata = {
+  title: "OkBoss",
+  description: "OkBoss site da Empresa OkBoss",
+};
 
-  // Páginas onde NÃO queremos mostrar a Navbar
-  const hideNavbarOn = ["/", "/login", "/register"];
-  const shouldHideNavbar = hideNavbarOn.includes(pathname);
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt">
-      <body className="bg-white text-gray-900">
-        <LanguageProvider>
-          <AuthProvider>
-            <CartProvider>
-              <WishlistProvider>
-                <UserProvider>
-                  {/* Navbar aparece em todas as páginas, exceto as listadas */}
-                  {!shouldHideNavbar && <Navbar />}
-                  <main className="min-h-screen">{children}</main>
-                </UserProvider>
-              </WishlistProvider>
-            </CartProvider>
-          </AuthProvider>
-        </LanguageProvider>
-      </body>
-    </html>
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      localization={ptBR}
+    >
+      <AuthProvider> {/* 🔹 Adicione AuthProvider aqui */}
+        <UserProvider>
+          <CartProvider>
+            <html lang="pt">
+              <body className="antialiased bg-white text-gray-900">
+                <Navbar />
+                <main className="min-h-screen pt-24">{children}</main>
+              </body>
+            </html>
+          </CartProvider>
+        </UserProvider>
+      </AuthProvider>
+    </ClerkProvider>
   );
 }

@@ -3,19 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../../context/UserContext";
-import { useLanguage } from "../../context/LanguageContext"; // 🟢 Importa o contexto de idioma
+import { useLanguage } from "../../context/LanguageContext";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useUser();
-  const { t } = useLanguage(); // 🟢 Traduções disponíveis
+  const { t } = useLanguage();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    senha: "",
-  });
+  const [formData, setFormData] = useState({ email: "", senha: "" });
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -38,10 +35,7 @@ export default function LoginPage() {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          senha: formData.senha,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
@@ -69,19 +63,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#f6eee9] px-4">
+    <div className="flex items-center justify-center min-h-screen bg-[#0071BC] px-4">
       <div className="w-full max-w-md space-y-6">
-        {/* 🧭 Logo / Cabeçalho */}
+        {/* Logo / Cabeçalho */}
         <div className="text-center">
-          <h1 className="text-5xl font-extrabold text-[#5c3b3b] mb-2">
+          <h1 className="text-5xl font-extrabold text-white mb-2">
             Ok<span className="text-orange-600">Boss</span>
           </h1>
-          <p className="text-gray-700 mt-2 text-lg">{t("login_bemvindo")}</p>
+          <p className="text-white/90 mt-2 text-lg">{t("login_bemvindo")}</p>
         </div>
 
-        {/* 📦 Caixa de login */}
+        {/* Caixa de login */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
-          <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+          <h2 className="text-3xl font-bold mb-6 text-center text-[#0071BC]">
             {t("login_titulo")}
           </h2>
 
@@ -92,7 +86,7 @@ export default function LoginPage() {
               placeholder={t("login_email_placeholder")}
               value={formData.email}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
               disabled={loading}
             />
             <input
@@ -101,7 +95,7 @@ export default function LoginPage() {
               placeholder={t("login_senha_placeholder")}
               value={formData.senha}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#0071BC]"
               disabled={loading}
             />
 
@@ -109,14 +103,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#0071BC] text-white py-3 rounded-lg hover:bg-blue-800 transition text-lg font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
-              {loading ? (
-                <Loader2 className="animate-spin mr-2" size={24} />
-              ) : (
-                t("login_botao_entrar")
-              )}
+              {loading ? <Loader2 className="animate-spin mr-2" size={24} /> : t("login_botao_entrar")}
             </button>
           </form>
 
