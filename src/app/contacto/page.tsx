@@ -3,10 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Footer from "../../components/Footer";
-import { useLanguage } from "../../context/LanguageContext";
 
 export default function Contacto() {
-  const { t } = useLanguage();
   const [status, setStatus] = useState<"success" | "error" | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -46,20 +44,23 @@ export default function Contacto() {
 
   return (
     <>
-      <main className="pt-12 px-6 md:px-16 flex justify-center items-center min-h-screen">
-        <section className="flex flex-col md:flex-row items-stretch gap-12 max-w-6xl w-full">
-          {/* Formulário */}
-          <div className="flex-1 p-8 flex flex-col items-center bg-white/80 backdrop-blur-md rounded-lg shadow">
-            <h3 className="text-3xl font-bold text-orange-600 mb-4 text-center">
-              {t("contacto_titulo")}
-            </h3>
-            <p className="text-center text-gray-700 mb-6">{t("contacto_texto")}</p>
+      <main className="pt-12 px-6 md:px-16 flex justify-center items-start min-h-screen">
+        <div className="flex flex-col md:flex-row items-start gap-12 max-w-7xl w-full">
 
-            <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 flex-1">
+          {/* Formulário à esquerda */}
+          <div className="flex-1 p-6 flex flex-col bg-white/80 backdrop-blur-md rounded-lg shadow">
+            <h3 className="text-2xl font-bold text-orange-600 mb-4 text-center">
+              Contacte-nos
+            </h3>
+            <p className="text-center text-gray-700 mb-4">
+              Preencha o formulário abaixo e entraremos em contacto consigo.
+            </p>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <input
                 type="text"
                 name="nome"
-                placeholder={t("contacto_nome_placeholder")}
+                placeholder="Seu nome"
                 required
                 value={formValues.nome}
                 onChange={handleChange}
@@ -68,7 +69,7 @@ export default function Contacto() {
               <input
                 type="email"
                 name="email"
-                placeholder={t("contacto_email_placeholder")}
+                placeholder="Seu email"
                 required
                 value={formValues.email}
                 onChange={handleChange}
@@ -76,39 +77,41 @@ export default function Contacto() {
               />
               <textarea
                 name="mensagem"
-                placeholder={t("contacto_mensagem_placeholder")}
+                placeholder="Sua mensagem"
                 required
                 value={formValues.mensagem}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-orange-500 flex-1"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-orange-500"
               ></textarea>
 
               <button
                 type="submit"
                 disabled={loading || status === "success"}
-                className="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-500 transition w-auto self-center mt-4"
+                className="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-500 transition mt-3"
               >
                 {loading
-                  ? t("contacto_botao_enviando")
+                  ? "Enviando..."
                   : status === "success"
-                  ? t("contacto_botao_enviado")
-                  : t("contacto_botao_enviar")}
+                  ? "Enviado!"
+                  : "Enviar"}
               </button>
             </form>
           </div>
 
-          {/* Imagem */}
+          {/* Imagem à direita */}
           <div className="flex-1 flex justify-center">
             <Image
               src="/images/call.png"
-              alt={t("contacto_img_alt")}
-              width={400}
-              height={400}
+              alt="Imagem de contacto"
+              width={300}
+              height={300}
               className="rounded-lg shadow object-contain"
             />
           </div>
-        </section>
+
+        </div>
       </main>
+
       <Footer />
     </>
   );

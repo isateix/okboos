@@ -1,78 +1,47 @@
-"use client";
+'use client';
 
 import { useRouter } from "next/navigation";
 import { products } from '../data/products';
-import Product from '../components/Product';
-import Secao17 from '../components/Secao17';
+import CarouselBanner from '../components/CarouselBanner';
+import ProductsList from '../components/ProductsList'; // ✅ usamos ProductsList
+import Secao21 from '../components/Secao21';
+import Secao22 from '../components/Secao22';
+import Footer from '../components/Footer';
 
 export default function Home() {
   const router = useRouter();
 
-  const primeirosProdutos = products.slice(0, 8);
-  const restantesProdutos = products.slice(8);
+  // Produtos específicos para o banner
+  const carouselProducts = products.filter(p => ["5", "36", "49"].includes(p.id));
+
+  // Restante dos produtos
+  const restantesProdutos = products.filter(p => !["5", "36", "49"].includes(p.id));
+
+  // Produtos das novas seções
+  const secao21Products = ["1","2","3","4","5","6","7","8","9","10"];
+  const secao22Products = ["72","74","75","76"];
 
   return (
-    <div className="max-w-7xl mx-auto pt-4 px-8 xl:px-0">
-
+    <div className="max-w-7xl mx-auto px-8 xl:px-0">
+      
       {/* Banner */}
-      <div className="mb-8 bg-white rounded-lg shadow-md overflow-hidden mx-auto w-3/4 h-72 sm:h-64 md:h-72 relative flex items-center justify-center">
-
-        {/* Texto desktop */}
-        <div className="hidden sm:flex absolute left-4 md:left-8 max-w-xs z-10 flex-col">
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#0071BC] leading-tight">
-            Promoção Especial!
-          </h2>
-          <p className="mt-1 text-lg sm:text-xl text-gray-800">
-            Entrega grátis em pedidos acima de 5 caixas
-          </p>
-          <button
-            onClick={() => router.push("/produtos")}
-            className="mt-3 px-4 py-2 bg-[#0071BC] text-white rounded-lg hover:bg-[#005F9D] transition"
-          >
-            Aproveitar Agora
-          </button>
-        </div>
-
-        {/* Texto mobile */}
-        <div className="flex flex-col sm:hidden items-center justify-between absolute inset-0 z-10">
-          <h2 className="text-2xl font-bold text-[#0071BC] mt-4">
-            Promoção Especial!
-          </h2>
-          <button
-            onClick={() => router.push("/produtos")}
-            className="mb-4 px-4 py-2 bg-[#0071BC] text-white rounded-lg hover:bg-[#005F9D] transition"
-          >
-            Aproveitar Agora
-          </button>
-        </div>
-
-        {/* Imagem */}
-        <img
-          src="/images/banner.png"
-          alt="Promoções"
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 h-72 sm:h-80 md:h-88 w-auto object-contain"
-        />
+      <div className="mb-4">
+        <CarouselBanner products={carouselProducts} />
       </div>
 
-      {/* Primeiros 8 produtos */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {primeirosProdutos.map((prod) => (
-          <Product key={prod.id} product={prod} />
-        ))}
-      </div>
+      {/* Seção 21 */}
+      <Secao21 productIds={secao21Products} title="" />
 
-      {/* Seção 17 */}
-      <Secao17 />
+      {/* Seção 22 */}
+      <Secao22 productIds={secao22Products} title="" />
 
-      {/* Restantes produtos */}
+      {/* Restante dos produtos usando ProductsList */}
       {restantesProdutos.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-8">
-          {restantesProdutos.map((prod) => (
-            <Product key={prod.id} product={prod} />
-          ))}
-        </div>
+        <ProductsList produtos={restantesProdutos} />
       )}
 
+      {/* ===== Footer ===== */}
+      <Footer />
     </div>
   );
 }
