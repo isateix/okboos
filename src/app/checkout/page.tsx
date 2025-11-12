@@ -1,21 +1,19 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
-import { useUser } from '../../context/UserContext';
 import { useRouter } from 'next/navigation';
 import SuccessModal from '../../components/SuccessModal';
-import { useAuth } from '../../context/AuthContext';
+import { useUser, SignInButton } from '@clerk/nextjs';
 
 const IBAN = "AO06.0006.0000.0000.0000.0000.000"; // Hardcoded IBAN
 
 const CheckoutPage = () => {
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const { cart, total, clearCart } = useCart();
-  const { user, loading: userLoading } = useUser();
   const router = useRouter();
-  const { openAuthModal } = useAuth();
+  const { cart, total, clearCart } = useCart();
+  const { user, isSignedIn } = useUser(); // ✅ Clerk
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,22 +21,19 @@ const CheckoutPage = () => {
     address: '',
   });
 
-  const [paymentMethod, setPaymentMethod] = useState('CASH_ON_DELIVERY');
+  const [paymentMethod, setPaymentMethod] = useState<'CASH_ON_DELIVERY' | 'BANK_TRANSFER'>('CASH_ON_DELIVERY');
   const [proofOfPaymentFile, setProofOfPaymentFile] = useState<File | null>(null);
 
   useEffect(() => {
-    if (!userLoading && !user) {
-      openAuthModal();
-    } else if (user) {
+    if (isSignedIn && user) {
       setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        phone: '', // Assuming phone and address are not in user model yet
-        address: '',
+        name: user.fullName || '',
+        email: user.emailAddresses[0]?.emailAddress || '',
+        phone: '', // ajuste caso tenha telefone no seu modelo
+        address: '', // ajuste caso tenha endereço
       });
     }
-  }, [user, userLoading, router, openAuthModal]);
-
+  }, [isSignedIn, user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,11 +41,16 @@ const CheckoutPage = () => {
   };
 
   const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPaymentMethod(e.target.value);
+    setPaymentMethod(e.target.value as 'CASH_ON_DELIVERY' | 'BANK_TRANSFER');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isSignedIn) {
+      alert('Você precisa entrar para finalizar a compra.');
+      return;
+    }
 
     let proofOfPaymentPath: string | undefined;
 
@@ -60,25 +60,23 @@ const CheckoutPage = () => {
         return;
       }
 
-      const formData = new FormData();
-      formData.append('file', proofOfPaymentFile);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', proofOfPaymentFile);
 
       try {
         const response = await fetch('/api/upload', {
           method: 'POST',
-          body: formData,
+          body: uploadFormData,
         });
 
         if (response.ok) {
           const { filePath } = await response.json();
           proofOfPaymentPath = filePath;
         } else {
-          console.error('Failed to upload proof of payment');
           alert('Falha ao enviar o comprovativo de pagamento.');
           return;
         }
       } catch (error) {
-        console.error('Error uploading proof of payment:', error);
         alert('Erro ao enviar o comprovativo de pagamento.');
         return;
       }
@@ -96,51 +94,65 @@ const CheckoutPage = () => {
     try {
       const response = await fetch('/api/orders', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
       });
 
       if (response.ok) {
-        const order = await response.json();
         clearCart();
+        setShowSuccessModal(true);
         router.push('/meus-pedidos');
       } else {
-        console.error('Failed to create order');
         alert('Falha ao finalizar o pedido.');
       }
     } catch (error) {
-      console.error('Error creating order:', error);
       alert('Erro ao finalizar o pedido.');
     }
   };
 
+  if (!isSignedIn) {
+    return (
+      <div className="container mx-auto p-4 text-center">
+        <p className="mb-4">Você precisa entrar para finalizar a compra.</p>
+        <SignInButton mode="modal">
+          <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+            Entrar
+          </button>
+        </SignInButton>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Finalizar Compra</h1>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Informações de envio */}
           <div>
             <h2 className="text-xl font-semibold mb-2">Informações de Envio</h2>
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome Completo</label>
-              <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-              <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Número de Telefone</label>
-              <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleInputChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700">Endereço de Entrega</label>
-              <input type="text" id="address" name="address" value={formData.address} onChange={handleInputChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required />
-            </div>
+            {['name', 'email', 'phone', 'address'].map((field) => (
+              <div key={field} className="mb-4">
+                <label htmlFor={field} className="block text-sm font-medium text-gray-700">
+                  {field === 'name' && 'Nome Completo'}
+                  {field === 'email' && 'Email'}
+                  {field === 'phone' && 'Número de Telefone'}
+                  {field === 'address' && 'Endereço de Entrega'}
+                </label>
+                <input
+                  type={field === 'email' ? 'email' : 'text'}
+                  id={field}
+                  name={field}
+                  value={formData[field as keyof typeof formData]}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  required
+                />
+              </div>
+            ))}
           </div>
+
+          {/* Método de pagamento */}
           <div>
             <h2 className="text-xl font-semibold mb-2">Método de Pagamento</h2>
             <div className="flex flex-col gap-2">
@@ -159,21 +171,27 @@ const CheckoutPage = () => {
                 <p className="font-semibold mb-2">Detalhes para Transferência:</p>
                 <p><strong>Banco:</strong> Exemplo Banco</p>
                 <p><strong>IBAN:</strong> {IBAN}</p>
-                <p className="text-sm text-gray-600 mt-2">Por favor, faça a transferência para o IBAN acima e envie o comprovativo abaixo.</p>
                 <div className="mt-4">
                   <label htmlFor="proofOfPayment" className="block text-sm font-medium text-gray-700">Comprovativo de Pagamento</label>
-                  <input type="file" id="proofOfPayment" name="proofOfPayment" onChange={(e) => setProofOfPaymentFile(e.target.files ? e.target.files[0] : null)} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required={paymentMethod === 'BANK_TRANSFER'} />
+                  <input
+                    type="file"
+                    id="proofOfPayment"
+                    onChange={(e) => setProofOfPaymentFile(e.target.files ? e.target.files[0] : null)}
+                    className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    required={paymentMethod === 'BANK_TRANSFER'}
+                  />
                 </div>
               </div>
             )}
 
+            {/* Resumo do pedido */}
             <div className="mt-4">
               <h2 className="text-xl font-semibold mb-2">Resumo do Pedido</h2>
               <div className="flex flex-col gap-2">
                 {cart.map((item) => (
                   <div key={item.id} className="flex justify-between">
                     <span>{item.name} x {item.quantidade}</span>
-                    <span>{item.price * item.quantidade} AOA</span>
+                    <span>{(item.price * item.quantidade).toLocaleString("pt-AO")} AOA</span>
                   </div>
                 ))}
                 <div className="flex justify-between font-bold mt-2">
@@ -182,13 +200,17 @@ const CheckoutPage = () => {
                 </div>
               </div>
             </div>
+
             <div className="mt-4">
               <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Finalizar Pedido</button>
             </div>
           </div>
         </div>
       </form>
+
+      {showSuccessModal && <SuccessModal onClose={() => setShowSuccessModal(false)} />}
     </div>
   );
 };
+
 export default CheckoutPage;
